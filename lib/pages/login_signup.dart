@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:regexed_validator/regexed_validator.dart';
+import 'routes.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   LoginScreenState createState() => LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   bool _rememberMe = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -227,7 +229,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget buildSignupButton() {
     return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
+      onTap: () => Navigator.of(context).push(createRoute()),
       child: RichText(
         text: TextSpan(
           children: [
@@ -269,10 +271,10 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return backgroundScaffold(context, [
       headerText(),
-      SizedBox(height: 30.0),
+      SizedBox(height: 15.0),
       buildEmailForm(),
       SizedBox(
-        height: 30.0,
+        height: 15.0,
       ),
       buildPasswordForm(),
       buildForgotPasswordButton(),

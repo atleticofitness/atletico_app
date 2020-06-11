@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:atletico_app/util/constants.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key key}) : super(key: key);
@@ -10,8 +11,6 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-       child: null,
-    );
+    return backgroundScaffold(context, []);
   }
 }
