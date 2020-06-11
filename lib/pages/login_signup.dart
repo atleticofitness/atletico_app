@@ -199,9 +199,9 @@ class LoginScreenState extends State<LoginScreen>
     return backgroundScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_emailController, "Email", hintText: "Enter your Email", iconData: Icons.email),
+      buildTextBoxForm(_emailController, "Email", hintText: "Enter your Email", iconData: Icons.email, keyboardType: TextInputType.emailAddress),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_emailController, "Password", hintText: "Enter your Password", iconData: Icons.vpn_key),
+      buildTextBoxForm(_passwordController, "Password", hintText: "Enter your Password", iconData: Icons.vpn_key, obscureText: true),
       buildForgotPasswordButton(),
       buildRememberMeCheckbox(),
       buildLoginButton(),
