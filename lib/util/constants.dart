@@ -70,8 +70,7 @@ Widget backgroundScaffold(BuildContext context, List<Widget> widgets) {
   );
 }
 
-Widget buildTextBoxForm(TextEditingController controller, String label,
-    String hintText, IconData iconData) {
+Widget buildTextBoxForm(TextEditingController controller, String label, {TextInputType keyboardType, IconData iconData, String hintText = "", bool obscureText=false}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -84,9 +83,10 @@ Widget buildTextBoxForm(TextEditingController controller, String label,
         alignment: Alignment.centerLeft,
         decoration: boxDecorationStyle,
         height: 60.0,
-        child: TextField(
+        child: TextFormField(
           controller: controller,
-          obscureText: true,
+          obscureText: obscureText,
+          keyboardType: keyboardType != null ? keyboardType : null,
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
@@ -94,10 +94,10 @@ Widget buildTextBoxForm(TextEditingController controller, String label,
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(
+            prefixIcon: iconData != null ? Icon(
               iconData,
               color: Colors.white,
-            ),
+            ) : null,
             hintText: hintText,
             hintStyle: hintTextStyle,
           ),

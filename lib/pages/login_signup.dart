@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'routes.dart';
@@ -14,78 +13,6 @@ class LoginScreenState extends State<LoginScreen>
   bool _rememberMe = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  Widget buildEmailForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Email',
-          style: labelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: boxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your Email',
-              hintStyle: hintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildPasswordForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Password',
-          style: labelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: boxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: _passwordController,
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.vpn_key,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your Password',
-              hintStyle: hintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget buildForgotPasswordButton() {
     return Container(
@@ -272,9 +199,9 @@ class LoginScreenState extends State<LoginScreen>
     return backgroundScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      buildEmailForm(),
+      buildTextBoxForm(_emailController, "Email", hintText: "Enter your Email", iconData: Icons.email),
       SizedBox(height: 15.0),
-      buildPasswordForm(),
+      buildTextBoxForm(_emailController, "Password", hintText: "Enter your Password", iconData: Icons.vpn_key),
       buildForgotPasswordButton(),
       buildRememberMeCheckbox(),
       buildLoginButton(),

@@ -10,6 +10,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _fullNameController = TextEditingController();
+  final _emailController = TextEditingController();
+
 
   Widget headerText() {
     return Text(
@@ -28,9 +30,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return backgroundScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_fullNameController, "Name", "John Doe", Icons.person),
+      buildTextBoxForm(_fullNameController, "Name", hintText: "John Doe", iconData: Icons.person),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_fullNameController, "Name", "John Doe", Icons.person)
+      buildTextBoxForm(_emailController, "Email", hintText: "example@email.com", iconData: Icons.person)
 
     ]);
   }
