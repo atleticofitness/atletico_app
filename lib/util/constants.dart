@@ -69,3 +69,40 @@ Widget backgroundScaffold(BuildContext context, List<Widget> widgets) {
     ),
   );
 }
+
+Widget buildTextBoxForm(TextEditingController controller, String label,
+    String hintText, IconData iconData) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text(
+        label,
+        style: labelStyle,
+      ),
+      SizedBox(height: 10.0),
+      Container(
+        alignment: Alignment.centerLeft,
+        decoration: boxDecorationStyle,
+        height: 60.0,
+        child: TextField(
+          controller: controller,
+          obscureText: true,
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'OpenSans',
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(
+              iconData,
+              color: Colors.white,
+            ),
+            hintText: hintText,
+            hintStyle: hintTextStyle,
+          ),
+        ),
+      ),
+    ],
+  );
+}

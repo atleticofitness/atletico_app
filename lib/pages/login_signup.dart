@@ -273,9 +273,7 @@ class LoginScreenState extends State<LoginScreen>
       headerText(),
       SizedBox(height: 15.0),
       buildEmailForm(),
-      SizedBox(
-        height: 15.0,
-      ),
+      SizedBox(height: 15.0),
       buildPasswordForm(),
       buildForgotPasswordButton(),
       buildRememberMeCheckbox(),
