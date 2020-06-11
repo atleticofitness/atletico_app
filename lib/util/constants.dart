@@ -24,7 +24,7 @@ final boxDecorationStyle = BoxDecoration(
   ],
 );
 
-Widget backgroundScaffold(BuildContext context, List<Widget> widgets) {
+Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
   return Scaffold(
     body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -70,7 +70,11 @@ Widget backgroundScaffold(BuildContext context, List<Widget> widgets) {
   );
 }
 
-Widget buildTextBoxForm(TextEditingController controller, String label, {TextInputType keyboardType, IconData iconData, String hintText = "", bool obscureText=false}) {
+Widget loginSignupTextForm(TextEditingController controller, String label,
+    {TextInputType keyboardType,
+    IconData iconData,
+    String hintText = "",
+    bool obscureText = false}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -84,6 +88,7 @@ Widget buildTextBoxForm(TextEditingController controller, String label, {TextInp
         decoration: boxDecorationStyle,
         height: 60.0,
         child: TextFormField(
+          maxLines: 1,
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType != null ? keyboardType : null,
@@ -94,10 +99,12 @@ Widget buildTextBoxForm(TextEditingController controller, String label, {TextInp
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: iconData != null ? Icon(
-              iconData,
-              color: Colors.white,
-            ) : null,
+            prefixIcon: iconData != null
+                ? Icon(
+                    iconData,
+                    color: Colors.white,
+                  )
+                : null,
             hintText: hintText,
             hintStyle: hintTextStyle,
           ),

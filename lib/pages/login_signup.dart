@@ -196,12 +196,18 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    return backgroundScaffold(context, [
+    return loginSignUpScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_emailController, "Email", hintText: "Enter your Email", iconData: Icons.email, keyboardType: TextInputType.emailAddress),
+      buildTextBoxForm(_emailController, "Email",
+          hintText: "Enter your Email",
+          iconData: Icons.email,
+          keyboardType: TextInputType.emailAddress),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_passwordController, "Password", hintText: "Enter your Password", iconData: Icons.vpn_key, obscureText: true),
+      buildTextBoxForm(_passwordController, "Password",
+          hintText: "Enter your Password",
+          iconData: Icons.vpn_key,
+          obscureText: true),
       buildForgotPasswordButton(),
       buildRememberMeCheckbox(),
       buildLoginButton(),
