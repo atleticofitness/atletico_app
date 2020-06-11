@@ -72,7 +72,8 @@ Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
 
 Widget loginSignupTextForm(TextEditingController controller, String label,
     {TextInputType keyboardType,
-    IconData iconData,
+    IconData prefixIcon,
+    IconButton suffixIcon,
     String hintText = "",
     bool obscureText = false}) {
   return Column(
@@ -99,12 +100,13 @@ Widget loginSignupTextForm(TextEditingController controller, String label,
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: iconData != null
+            prefixIcon: prefixIcon != null
                 ? Icon(
-                    iconData,
+                    prefixIcon,
                     color: Colors.white,
                   )
                 : null,
+            suffixIcon: suffixIcon != null ? suffixIcon : null,
             hintText: hintText,
             hintStyle: hintTextStyle,
           ),

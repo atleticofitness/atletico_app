@@ -13,6 +13,7 @@ class LoginScreenState extends State<LoginScreen>
   bool _rememberMe = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _textObscured = true;
 
   Widget buildForgotPasswordButton() {
     return Container(
@@ -199,15 +200,24 @@ class LoginScreenState extends State<LoginScreen>
     return loginSignUpScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_emailController, "Email",
+      loginSignupTextForm(_emailController, "Email",
           hintText: "Enter your Email",
-          iconData: Icons.email,
+          prefixIcon: Icons.email,
           keyboardType: TextInputType.emailAddress),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_passwordController, "Password",
+      loginSignupTextForm(_passwordController, "Password",
           hintText: "Enter your Password",
-          iconData: Icons.vpn_key,
-          obscureText: true),
+          prefixIcon: Icons.lock,
+          suffixIcon: IconButton(
+              icon: _textObscured
+                  ? Icon(Icons.visibility, color: Colors.white)
+                  : Icon(Icons.visibility_off, color: Colors.white),
+              onPressed: () {
+                setState(() {
+                  _textObscured = !_textObscured;
+                });
+              }),
+          obscureText: _textObscured),
       buildForgotPasswordButton(),
       buildRememberMeCheckbox(),
       buildLoginButton(),

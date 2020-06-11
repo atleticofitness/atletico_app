@@ -29,11 +29,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return loginSignUpScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_fullNameController, "Name",
-          hintText: "John Doe", iconData: Icons.person),
+      loginSignupTextForm(_fullNameController, "Name",
+          hintText: "John Doe", prefixIcon: Icons.person),
       SizedBox(height: 15.0),
-      buildTextBoxForm(_emailController, "Email",
-          hintText: "example@email.com", iconData: Icons.person)
+      loginSignupTextForm(_emailController, "Email",
+          hintText: "example@email.com", prefixIcon: Icons.person)
     ]);
   }
 }
