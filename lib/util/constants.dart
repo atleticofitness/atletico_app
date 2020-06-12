@@ -75,7 +75,9 @@ Widget loginSignupTextForm(TextEditingController controller, String label,
     IconData prefixIcon,
     IconButton suffixIcon,
     String hintText = "",
-    bool obscureText = false}) {
+    bool obscureText = false,
+    BuildContext context,
+    Function onTap}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -89,6 +91,7 @@ Widget loginSignupTextForm(TextEditingController controller, String label,
         decoration: boxDecorationStyle,
         height: 60.0,
         child: TextFormField(
+          onTap: () => onTap != null ? onTap(context) : null,
           maxLines: 1,
           controller: controller,
           obscureText: obscureText,
