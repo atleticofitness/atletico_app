@@ -78,8 +78,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       loginSignupTextForm(_dateOfBirthController, "D.O.B",
           hintText: "MM/DD/YYYY",
           prefixIcon: Icons.calendar_today,
-          context: context,
-          onTap: selectDate)
+          readOnly: true,
+          showCursor: false,
+          onTap: selectDate,
+          functionParamters: [context])
     ]);
   }
 }
