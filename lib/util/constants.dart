@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+final String atleticoURL = "http://10.0.2.2:8000/api/v1";
+
 final hintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',
@@ -79,7 +81,9 @@ Widget loginSignupTextForm(TextEditingController controller, String label,
     String hintText = "",
     bool obscureText = false,
     Function onTap,
-    List functionParamters}) {
+    List functionParamters,
+    Function validator,
+    Function onSaved}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -95,6 +99,8 @@ Widget loginSignupTextForm(TextEditingController controller, String label,
         child: TextFormField(
           readOnly: readOnly,
           showCursor: showCursor,
+          onSaved: (newValue) => onSaved != null ? onSaved(newValue) : null,
+          validator: (value) => validator != null ? validator(value) : null,
           onTap: () => onTap != null ? Function.apply(onTap, functionParamters) : null,
           maxLines: 1,
           controller: controller,

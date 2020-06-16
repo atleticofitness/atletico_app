@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
-import 'package:regexed_validator/regexed_validator.dart';
 import 'routes.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,7 +61,7 @@ class LoginScreenState extends State<LoginScreen>
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => verifyEmailAndPassword(),
+        onPressed: () => null,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -80,13 +79,6 @@ class LoginScreenState extends State<LoginScreen>
         ),
       ),
     );
-  }
-
-  Widget verifyEmailAndPassword() {
-    if (!validator.email(_emailController.text)) return null;
-    if (!validator.password(_passwordController.text)) return null;
-
-    return Text("PASSED");
   }
 
   Widget buildSignInWithText() {
