@@ -9,6 +9,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  final _emailKey = GlobalKey<FormState>();
+  final _passwordKey = GlobalKey<FormState>();
   bool _rememberMe = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -192,12 +194,12 @@ class LoginScreenState extends State<LoginScreen>
     return loginSignUpScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_emailController, "Email",
+      loginSignupTextForm(_emailKey, _emailController, "Email",
           hintText: "Enter your Email",
           prefixIcon: Icons.email,
           keyboardType: TextInputType.emailAddress),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_passwordController, "Password",
+      loginSignupTextForm(_passwordKey, _passwordController, "Password",
           hintText: "Enter your Password",
           prefixIcon: Icons.lock,
           suffixIcon: IconButton(
@@ -219,3 +221,45 @@ class LoginScreenState extends State<LoginScreen>
     ]);
   }
 }
+
+/*
+  @override
+  Widget build(BuildContext context) {
+    return loginSignUpScaffold(context, [
+      headerText(),
+      SizedBox(height: 15.0),
+      Form(
+        key: _key,
+        child: Column(
+          children: <Widget>[
+            loginSignupTextForm(_emailController, "Email",
+                hintText: "Enter your Email",
+                prefixIcon: Icons.email,
+                keyboardType: TextInputType.emailAddress),
+            SizedBox(height: 15.0),
+            loginSignupTextForm(_passwordController, "Password",
+                hintText: "Enter your Password",
+                prefixIcon: Icons.lock,
+                suffixIcon: IconButton(
+                    icon: _textObscured
+                        ? Icon(Icons.visibility, color: Colors.white)
+                        : Icon(Icons.visibility_off, color: Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        _textObscured = !_textObscured;
+                      });
+                    }),
+                obscureText: _textObscured),
+          ],
+        ),
+      ),
+      buildForgotPasswordButton(),
+      buildRememberMeCheckbox(),
+      buildLoginButton(),
+      buildSignInWithText(),
+      buildSocialButtonRow(),
+      buildSignupButton(),
+    ]);
+  }
+}
+ */

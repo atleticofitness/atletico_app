@@ -72,18 +72,21 @@ Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
   );
 }
 
-Widget loginSignupTextForm(TextEditingController controller, String label,
-    {bool readOnly = false,
+Widget loginSignupTextForm(
+    Key key, TextEditingController controller, String label,
+    {bool autoValidate = false,
+    bool readOnly = false,
     bool showCursor = true,
     TextInputType keyboardType,
     IconData prefixIcon,
-    IconButton suffixIcon,
+    StatelessWidget suffixIcon,
     String hintText = "",
     bool obscureText = false,
     Function onTap,
     List functionParamters,
     Function validator,
-    Function onSaved}) {
+    Function onSaved,
+    Function onChanged}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -97,11 +100,15 @@ Widget loginSignupTextForm(TextEditingController controller, String label,
         decoration: boxDecorationStyle,
         height: 60.0,
         child: TextFormField(
+          key: key,
+          autovalidate: autoValidate,
           readOnly: readOnly,
           showCursor: showCursor,
+          onChanged: (value) => onChanged != null ? onChanged(value) : null,
           onSaved: (newValue) => onSaved != null ? onSaved(newValue) : null,
           validator: (value) => validator != null ? validator(value) : null,
-          onTap: () => onTap != null ? Function.apply(onTap, functionParamters) : null,
+          onTap: () =>
+              onTap != null ? Function.apply(onTap, functionParamters) : null,
           maxLines: 1,
           controller: controller,
           obscureText: obscureText,
