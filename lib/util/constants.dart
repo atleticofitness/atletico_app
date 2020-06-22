@@ -26,8 +26,10 @@ final boxDecorationStyle = BoxDecoration(
   ],
 );
 
-Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
+Widget loginSignUpScaffold(
+    Key key, BuildContext context, List<Widget> widgets) {
   return Scaffold(
+    key: key,
     body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: GestureDetector(

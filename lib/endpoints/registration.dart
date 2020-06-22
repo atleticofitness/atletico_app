@@ -2,8 +2,7 @@ import 'dart:async';
 import 'package:atletico_app/endpoints/users/users.dart';
 import 'package:http/http.dart' as http;
 import 'package:atletico_app/util/constants.dart';
-import 'package:dart_json_mapper/dart_json_mapper.dart'
-    show JsonMapper;
+import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
 
 var client = http.Client();
 

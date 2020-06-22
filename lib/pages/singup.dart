@@ -13,6 +13,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _signUpKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   final _firstNameKey = GlobalKey<FormState>();
   final _lastNameKey = GlobalKey<FormState>();
@@ -112,62 +113,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return loginSignUpScaffold(context, [
+    return loginSignUpScaffold(_signUpKey, context, [
       headerText(),
       SizedBox(height: 15.0),
       Form(
         key: _formKey,
-        autovalidate: false,
-        child: Column(
-          children: <Widget>[
-            loginSignupTextForm(_firstNameKey, _firstNameController, "First Name",
-                hintText: "Jose",
-                prefixIcon: Icons.person,
-                validator: validateName),
-            SizedBox(height: 15.0),
-            loginSignupTextForm(_lastNameKey, _lastNameController, "Last Name",
-                hintText: "Lopez",
-                prefixIcon: Icons.person,
-                validator: validateName),
-            SizedBox(height: 15.0),
-            loginSignupTextForm(_emailKey, _emailController, "Email",
-                autoValidate: false,
-                hintText: "example@email.com",
-                prefixIcon: Icons.email,
-                suffixIcon: !_validEmailAddress
-                    ? Icon(Icons.error, color: Colors.white)
-                    : null,
-                validator: validateEmail),
-            SizedBox(height: 15.0),
-            loginSignupTextForm(_passwordKey, _passwordController, "Password",
-                hintText: "Enter your Password",
-                prefixIcon: Icons.lock,
-                obscureText: _textObscured),
-            SizedBox(height: 15.0),
-            loginSignupTextForm(_passwordConfirmKey, _passwordConfirmController,
-                "Confirm Password",
-                hintText: "Re-enter your Password",
-                prefixIcon: Icons.lock,
-                suffixIcon: IconButton(
-                    icon: _textObscured
-                        ? Icon(Icons.visibility, color: Colors.white)
-                        : Icon(Icons.visibility_off, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        _textObscured = !_textObscured;
-                      });
-                    }),
-                obscureText: _textObscured),
-            SizedBox(height: 15.0),
-            loginSignupTextForm(_dobKey, _dateOfBirthController, "D.O.B",
-                hintText: "MM/DD/YYYY",
-                prefixIcon: Icons.calendar_today,
-                readOnly: true,
-                showCursor: false,
-                onTap: selectDate,
-                functionParamters: [context]),
-          ],
-        ),
+        child: Column(children: <Widget>[
+          loginSignupTextForm(_firstNameKey, _firstNameController, "First Name",
+              hintText: "Jose",
+              prefixIcon: Icons.person,
+              validator: validateName),
+          SizedBox(height: 15.0),
+          loginSignupTextForm(_lastNameKey, _lastNameController, "Last Name",
+              hintText: "Lopez",
+              prefixIcon: Icons.person,
+              validator: validateName),
+          SizedBox(height: 15.0),
+          loginSignupTextForm(_emailKey, _emailController, "Email",
+              autoValidate: false,
+              hintText: "example@email.com",
+              prefixIcon: Icons.email,
+              suffixIcon: !_validEmailAddress
+                  ? Icon(Icons.error, color: Colors.white)
+                  : null,
+              validator: validateEmail),
+          SizedBox(height: 15.0),
+          loginSignupTextForm(_passwordKey, _passwordController, "Password",
+              hintText: "Enter your Password",
+              prefixIcon: Icons.lock,
+              obscureText: _textObscured),
+          SizedBox(height: 15.0),
+          loginSignupTextForm(_passwordConfirmKey, _passwordConfirmController,
+              "Confirm Password",
+              hintText: "Re-enter your Password",
+              prefixIcon: Icons.lock,
+              suffixIcon: IconButton(
+                  icon: _textObscured
+                      ? Icon(Icons.visibility, color: Colors.white)
+                      : Icon(Icons.visibility_off, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      _textObscured = !_textObscured;
+                    });
+                  }),
+              obscureText: _textObscured),
+          SizedBox(height: 15.0),
+          loginSignupTextForm(_dobKey, _dateOfBirthController, "D.O.B",
+              hintText: "MM/DD/YYYY",
+              prefixIcon: Icons.calendar_today,
+              readOnly: true,
+              showCursor: false,
+              onTap: selectDate,
+              functionParamters: [context]),
+        ]),
       ),
       buildSignUpButton()
     ]);

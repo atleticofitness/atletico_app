@@ -9,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  final _homeScreenKey = GlobalKey<ScaffoldState>();
   final _emailKey = GlobalKey<FormState>();
   final _passwordKey = GlobalKey<FormState>();
   bool _rememberMe = false;
@@ -144,6 +145,12 @@ class LoginScreenState extends State<LoginScreen>
               'assets/logos/google.jpg',
             ),
           ),
+          buildSocialButton(
+            () => print('Login with Apple'),
+            AssetImage(
+              'assets/logos/apple.png',
+            ),
+          ),
         ],
       ),
     );
@@ -191,7 +198,7 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    return loginSignUpScaffold(context, [
+    return loginSignUpScaffold(_homeScreenKey, context, [
       headerText(),
       SizedBox(height: 15.0),
       loginSignupTextForm(_emailKey, _emailController, "Email",
