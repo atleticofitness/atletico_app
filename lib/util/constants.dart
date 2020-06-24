@@ -26,10 +26,8 @@ final boxDecorationStyle = BoxDecoration(
   ],
 );
 
-Widget loginSignUpScaffold(
-    Key key, BuildContext context, List<Widget> widgets) {
+Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
   return Scaffold(
-    key: key,
     body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: GestureDetector(
@@ -86,7 +84,7 @@ Widget loginSignupTextForm(
     bool obscureText = false,
     Function onTap,
     List functionParamters,
-    Function validator,
+    String Function(String) validator,
     Function onSaved,
     Function onChanged}) {
   return Column(
