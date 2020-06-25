@@ -88,9 +88,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (emailInUse != null)
       emailInUse.then((exist) {
         if (exist)
-          setState(() => _validEmailAddress = true);
-        else
           setState(() => _validEmailAddress = false);
+        else
+          setState(() => _validEmailAddress = true);
       });
     return null;
   }

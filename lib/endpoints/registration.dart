@@ -11,7 +11,7 @@ Future<bool> checkIfEmailExists(String email) async {
       body: JsonMapper.toJson({"email": email}));
   bool found = false;
   if (response.statusCode == 200) {
-    var body = JsonMapper.fromJson(response.body);
+    var body = JsonMapper.fromJson<Map<String, dynamic>>(response.body);
     found = body["valid_email"];
   } else {
     throw EmailNotFoundException(
