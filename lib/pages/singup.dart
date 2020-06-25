@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:atletico_app/endpoints/registration.dart';
 import 'package:regexed_validator/regexed_validator.dart';
+import 'package:flutter_password_strength/flutter_password_strength.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key key}) : super(key: key);
@@ -29,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _validEmailAddress = true;
   final format = DateFormat("MM/dd/yyyy");
   DateTime selectedDate = DateTime.now();
+  String _password;
 
   Widget headerText() {
     return Text(
@@ -55,6 +57,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
   }
 
+  Widget checkPasswordPolicy() {
+    return Center(
+        child: Column(
+      children: <Widget>[
+        Text("Cannot contain parts of your name or email.",
+            style: TextStyle(color: Colors.grey)),
+        Text(""),
+        Text("")
+      ],
+    ));
+  }
+
   String validateName(String value) {
     return null;
   }
@@ -74,9 +88,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (emailInUse != null)
       emailInUse.then((exist) {
         if (exist)
-          setState(() => _validEmailAddress = false);
-        else
           setState(() => _validEmailAddress = true);
+        else
+          setState(() => _validEmailAddress = false);
       });
     return null;
   }
@@ -107,20 +121,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  void animatePassword(String value) {
+    setState(() {
+      _password = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loginSignUpScaffold(context, [
       headerText(),
       SizedBox(height: 15.0),
       loginSignupTextForm(_firstNameKey, _firstNameController, "First Name",
-          hintText: "Jose",
-          prefixIcon: Icons.person,
-          validator: validateName),
+          hintText: "Jose", prefixIcon: Icons.person, validator: validateName),
       SizedBox(height: 15.0),
       loginSignupTextForm(_lastNameKey, _lastNameController, "Last Name",
-          hintText: "Lopez",
-          prefixIcon: Icons.person,
-          validator: validateName),
+          hintText: "Lopez", prefixIcon: Icons.person, validator: validateName),
       SizedBox(height: 15.0),
       loginSignupTextForm(_emailKey, _emailController, "Email",
           autoValidate: false,
@@ -129,15 +145,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
           suffixIcon: !_validEmailAddress
               ? Icon(Icons.error, color: Colors.white)
               : null,
-          validator: validateEmail),
+          onChanged: validateEmail),
       SizedBox(height: 15.0),
       loginSignupTextForm(_passwordKey, _passwordController, "Password",
           hintText: "Enter your Password",
           prefixIcon: Icons.lock,
-          obscureText: _textObscured),
+          obscureText: _textObscured,
+          onChanged: animatePassword),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_passwordConfirmKey, _passwordConfirmController,
-          "Confirm Password",
+      FlutterPasswordStrength(
+          password: _password,
+          strengthCallback: (strength) {
+            debugPrint(strength.toString());
+          }),
+      checkPasswordPolicy(),
+      SizedBox(height: 15.0),
+      loginSignupTextForm(
+          _passwordConfirmKey, _passwordConfirmController, "Confirm Password",
           hintText: "Re-enter your Password",
           prefixIcon: Icons.lock,
           suffixIcon: IconButton(

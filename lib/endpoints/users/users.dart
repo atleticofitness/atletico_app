@@ -20,3 +20,10 @@ class User {
       this.dateOfBirth,
       this.isActive});
 }
+
+@jsonSerializable
+class CheckEmail {
+  final bool validEmail;
+  CheckEmail({this.validEmail});
+}
+
