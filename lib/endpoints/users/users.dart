@@ -26,4 +26,3 @@ class CheckEmail {
   final bool validEmail;
   CheckEmail({this.validEmail});
 }
-

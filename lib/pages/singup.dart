@@ -13,6 +13,12 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
+enum PasswordState {
+  good,
+  bad,
+  none
+}
+
 class _SignUpScreenState extends State<SignUpScreen> {
   final _firstNameKey = GlobalKey<FormFieldState>();
   final _lastNameKey = GlobalKey<FormFieldState>();
@@ -31,6 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final format = DateFormat("MM/dd/yyyy");
   DateTime selectedDate = DateTime.now();
   String _password;
+  var _passwordStatus = [PasswordState.none, PasswordState.none, PasswordState.none];
 
   Widget headerText() {
     return Text(
@@ -57,14 +64,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
   }
 
+/*  Color changePasswordPrefixIcon() {
+    if (_password.isEmpty)
+      return null; // No Icon
+    RegExp exp = new RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+    Iterable<RegExpMatch> matches = exp.allMatches(_password);
+    matches.forEach((i, value) {
+      _passwordStatus[i] = if (value.isEmpty())  null : value
+    });
+    
+  }*/
+
   Widget checkPasswordPolicy() {
     return Center(
         child: Column(
       children: <Widget>[
         Text("Cannot contain parts of your name or email.",
-            style: TextStyle(color: Colors.grey)),
-        Text(""),
-        Text("")
+            style: TextStyle(
+                color: Color(0xFF527DAA),
+                letterSpacing: 1.5,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans')),
+        Text("Needs at least one uppercase and one lowercase letter.",
+            style: TextStyle(
+                color: Color(0xFF527DAA),
+                letterSpacing: 1.5,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans')),
+        Text("Needs at least one special character.",
+            style: TextStyle(
+                color: Color(0xFF527DAA),
+                letterSpacing: 1.5,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans'))
       ],
     ));
   }
@@ -156,7 +191,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       FlutterPasswordStrength(
           password: _password,
           strengthCallback: (strength) {
-            debugPrint(strength.toString());
+            //if (strength < 0.26)
+              
           }),
       checkPasswordPolicy(),
       SizedBox(height: 15.0),
