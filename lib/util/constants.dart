@@ -1,3 +1,4 @@
+import 'package:atletico_app/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -134,4 +135,37 @@ Widget loginSignupTextForm(
       ),
     ],
   );
+}
+
+Route routeToWidget(StatefulWidget widget, Offset offset) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => widget,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = offset;
+      var end = Offset.zero;
+      var curve = Curves.easeInCirc;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+DeviceScreenType getDeviceType(MediaQueryData mediaQueryData) {
+  var orientation = mediaQueryData.orientation;
+
+  //Device width is dependent on the orientation of the device
+  double deviceWidth = 0;
+  if (orientation == Orientation.landscape) {
+    deviceWidth = mediaQueryData.size.height;
+  } else {
+    deviceWidth = mediaQueryData.size.width;
+  }
+  if (deviceWidth > 950) return DeviceScreenType.Desktop;
+  if (deviceWidth > 600) return DeviceScreenType.Tablet;
+  return DeviceScreenType.Mobile;
 }

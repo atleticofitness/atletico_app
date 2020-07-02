@@ -6,20 +6,16 @@ import 'package:atletico_app/endpoints/registration.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 
-class SignUpScreen extends StatefulWidget {
-  SignUpScreen({Key key}) : super(key: key);
+import 'login.dart';
+
+class SignUpWidget extends StatefulWidget {
+  SignUpWidget({Key key}) : super(key: key);
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _SignUpWidgetState createState() => _SignUpWidgetState();
 }
 
-enum PasswordState {
-  good,
-  bad,
-  none
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpWidgetState extends State<SignUpWidget> {
   final _firstNameKey = GlobalKey<FormFieldState>();
   final _lastNameKey = GlobalKey<FormFieldState>();
   final _emailKey = GlobalKey<FormFieldState>();
@@ -36,8 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _validEmailAddress = true;
   final format = DateFormat("MM/dd/yyyy");
   DateTime selectedDate = DateTime.now();
-  String _password;
-  var _passwordStatus = [PasswordState.none, PasswordState.none, PasswordState.none];
+  bool _passwordMatches = true;
 
   Widget headerText() {
     return Text(
@@ -64,52 +59,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
   }
 
-/*  Color changePasswordPrefixIcon() {
-    if (_password.isEmpty)
-      return null; // No Icon
-    RegExp exp = new RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-    Iterable<RegExpMatch> matches = exp.allMatches(_password);
-    matches.forEach((i, value) {
-      _passwordStatus[i] = if (value.isEmpty())  null : value
-    });
-    
-  }*/
+  bool doesPasswordMatchPolicy(String password) {
+    if (password.isEmpty) return null;
+    RegExp exp = new RegExp(
+        r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+    return exp.hasMatch(password);
+  }
 
   Widget checkPasswordPolicy() {
-    return Center(
-        child: Column(
-      children: <Widget>[
-        Text("Cannot contain parts of your name or email.",
-            style: TextStyle(
-                color: Color(0xFF527DAA),
-                letterSpacing: 1.5,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans')),
-        Text("Needs at least one uppercase and one lowercase letter.",
-            style: TextStyle(
-                color: Color(0xFF527DAA),
-                letterSpacing: 1.5,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans')),
-        Text("Needs at least one special character.",
-            style: TextStyle(
-                color: Color(0xFF527DAA),
-                letterSpacing: 1.5,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans'))
-      ],
-    ));
-  }
-
-  String validateName(String value) {
-    return null;
-  }
-
-  String validatePassword(String value) {
-    return null;
+    return Row(children: <Widget>[
+      Text(
+          "Password Requirements:\n\t\t• 8 characters long\n\t\t• One uppercase and One lowercase letter\n\t\t• One special character",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 12.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans'))
+    ]);
   }
 
   String validateEmail(String value) {
@@ -136,14 +104,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: null,
+        onPressed: () => null,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         color: Colors.white,
         child: Text(
-          'Sign Up',
+          'SIGN UP',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -156,25 +124,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void animatePassword(String value) {
+  String validateIfPasswordMatchPolicy(String value) {
     setState(() {
-      _password = value;
+      _passwordController.text = value;
     });
+    bool match = doesPasswordMatchPolicy(value);
+    if (match) return null;
+    return "This password does not follow policy guidelines.";
+  }
+
+  String validateIfPasswordsAreEqual(String value) {
+    bool match = doesPasswordMatchPolicy(value);
+    if (match) {
+      setState(() => _passwordMatches = true);
+      return null;
+    }
+    setState(() => _passwordMatches = false);
+    return "The password fields do not match.";
   }
 
   @override
   Widget build(BuildContext context) {
     return loginSignUpScaffold(context, [
-      headerText(),
+      Row(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            iconSize: 40.0,
+            color: Colors.white,
+            alignment: Alignment.center,
+            onPressed: () => Navigator.of(context)
+                .push(routeToWidget(LoginWidget(), Offset(-1.0, 0.0))),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            child: headerText(),
+          )
+        ],
+      ),
       SizedBox(height: 15.0),
       loginSignupTextForm(_firstNameKey, _firstNameController, "First Name",
-          hintText: "Jose", prefixIcon: Icons.person, validator: validateName),
+          hintText: "Jose", prefixIcon: Icons.person),
       SizedBox(height: 15.0),
       loginSignupTextForm(_lastNameKey, _lastNameController, "Last Name",
-          hintText: "Lopez", prefixIcon: Icons.person, validator: validateName),
+          hintText: "Lopez", prefixIcon: Icons.person),
       SizedBox(height: 15.0),
       loginSignupTextForm(_emailKey, _emailController, "Email",
           autoValidate: false,
+          keyboardType: TextInputType.emailAddress,
           hintText: "example@email.com",
           prefixIcon: Icons.email,
           suffixIcon: !_validEmailAddress
@@ -185,21 +182,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       loginSignupTextForm(_passwordKey, _passwordController, "Password",
           hintText: "Enter your Password",
           prefixIcon: Icons.lock,
-          obscureText: _textObscured,
-          onChanged: animatePassword),
-      SizedBox(height: 15.0),
-      FlutterPasswordStrength(
-          password: _password,
-          strengthCallback: (strength) {
-            //if (strength < 0.26)
-              
-          }),
-      checkPasswordPolicy(),
-      SizedBox(height: 15.0),
-      loginSignupTextForm(
-          _passwordConfirmKey, _passwordConfirmController, "Confirm Password",
-          hintText: "Re-enter your Password",
-          prefixIcon: Icons.lock,
           suffixIcon: IconButton(
               icon: _textObscured
                   ? Icon(Icons.visibility, color: Colors.white)
@@ -209,7 +191,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _textObscured = !_textObscured;
                 });
               }),
-          obscureText: _textObscured),
+          obscureText: _textObscured,
+          onChanged: validateIfPasswordMatchPolicy),
+      SizedBox(height: 15.0),
+      FlutterPasswordStrength(password: _passwordController.text),
+      checkPasswordPolicy(),
+      SizedBox(height: 15.0),
+      loginSignupTextForm(
+          _passwordConfirmKey, _passwordConfirmController, "Confirm Password",
+          hintText: "Re-enter your Password",
+          prefixIcon: Icons.lock,
+          suffixIcon:
+              !_passwordMatches ? Icon(Icons.error, color: Colors.white) : null,
+          obscureText: _textObscured,
+          onChanged: validateIfPasswordsAreEqual),
       SizedBox(height: 15.0),
       loginSignupTextForm(_dobKey, _dateOfBirthController, "D.O.B",
           hintText: "MM/DD/YYYY",

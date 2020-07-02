@@ -1,13 +1,14 @@
+import 'package:atletico_app/pages/singup.dart';
+import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
-import 'routes.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginWidget extends StatefulWidget {
   @override
-  LoginScreenState createState() => LoginScreenState();
+  LoginWidgetState createState() => LoginWidgetState();
 }
 
-class LoginScreenState extends State<LoginScreen>
+class LoginWidgetState extends State<LoginWidget>
     with SingleTickerProviderStateMixin {
   final _emailKey = GlobalKey<FormFieldState>();
   final _passwordKey = GlobalKey<FormState>();
@@ -157,7 +158,8 @@ class LoginScreenState extends State<LoginScreen>
 
   Widget buildSignupButton() {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(createRoute()),
+      onTap: () => Navigator.of(context)
+          .push(routeToWidget(SignUpWidget(), Offset(1.0, 0.0))),
       child: RichText(
         text: TextSpan(
           children: [
@@ -197,33 +199,35 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    return loginSignUpScaffold(context, [
-      headerText(),
-      SizedBox(height: 15.0),
-      loginSignupTextForm(_emailKey, _emailController, "Email",
-          hintText: "Enter your Email",
-          prefixIcon: Icons.email,
-          keyboardType: TextInputType.emailAddress),
-      SizedBox(height: 15.0),
-      loginSignupTextForm(_passwordKey, _passwordController, "Password",
-          hintText: "Enter your Password",
-          prefixIcon: Icons.lock,
-          suffixIcon: IconButton(
-              icon: _textObscured
-                  ? Icon(Icons.visibility, color: Colors.white)
-                  : Icon(Icons.visibility_off, color: Colors.white),
-              onPressed: () {
-                setState(() {
-                  _textObscured = !_textObscured;
-                });
-              }),
-          obscureText: _textObscured),
-      buildForgotPasswordButton(),
-      buildRememberMeCheckbox(),
-      buildLoginButton(),
-      buildSignInWithText(),
-      buildSocialButtonRow(),
-      buildSignupButton(),
-    ]);
+    return BaseWidget(builder: (context, sizingInformation) {
+      return loginSignUpScaffold(context, [
+        headerText(),
+        SizedBox(height: 15.0),
+        loginSignupTextForm(_emailKey, _emailController, "Email",
+            hintText: "Enter your Email",
+            prefixIcon: Icons.email,
+            keyboardType: TextInputType.emailAddress),
+        SizedBox(height: 15.0),
+        loginSignupTextForm(_passwordKey, _passwordController, "Password",
+            hintText: "Enter your Password",
+            prefixIcon: Icons.lock,
+            suffixIcon: IconButton(
+                icon: _textObscured
+                    ? Icon(Icons.visibility, color: Colors.white)
+                    : Icon(Icons.visibility_off, color: Colors.white),
+                onPressed: () {
+                  setState(() {
+                    _textObscured = !_textObscured;
+                  });
+                }),
+            obscureText: _textObscured),
+        buildForgotPasswordButton(),
+        buildRememberMeCheckbox(),
+        buildLoginButton(),
+        buildSignInWithText(),
+        buildSocialButtonRow(),
+        buildSignupButton(),
+      ]);
+    });
   }
 }

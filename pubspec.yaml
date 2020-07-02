@@ -30,7 +30,8 @@ dependencies:
   dbcrypt: ^1.0.0
   dart_json_mapper:
   dart_json_mapper_flutter:
-
+  device_preview: ^0.4.5
+  
   flutter:
     sdk: flutter
   

@@ -1,14 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'pages/home_screen.dart';
+import 'pages/login.dart';
 import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart'
     show flutterAdapter;
 import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
 import 'main.reflectable.dart' show initializeReflectable;
+import 'package:device_preview/device_preview.dart';
 
 void main() {
   initializeReflectable();
   JsonMapper().useAdapter(flutterAdapter);
-  runApp(MyApp());
+  runApp(DevicePreview(
+      enabled: !kReleaseMode == false, builder: (context) => MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,9 +19,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: DevicePreview.of(context).locale,
+      builder: DevicePreview.appBuilder,
       title: 'atletico',
       debugShowCheckedModeBanner: true,
-      home: LoginScreen(),
+      home: LoginWidget(),
     );
   }
 }
