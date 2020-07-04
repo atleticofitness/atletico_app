@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'pages/login.dart';
+import 'widgets/login/login.dart';
 import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart'
     show flutterAdapter;
 import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;

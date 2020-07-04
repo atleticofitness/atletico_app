@@ -1,3 +1,4 @@
+import 'package:atletico_app/endpoints/users/users.dart';
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'dart:async';
@@ -30,8 +31,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   final _dateOfBirthController = TextEditingController();
   bool _textObscured = true;
   bool _validEmailAddress = true;
-  final format = DateFormat("MM/dd/yyyy");
-  DateTime selectedDate = DateTime.now();
+  final _format = DateFormat("MM/dd/yyyy");
+  DateTime _selectedDate = DateTime.now();
   bool _passwordMatches = true;
 
   Widget headerText() {
@@ -46,38 +47,57 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     );
   }
 
-  Future<Null> selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime(2000),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(DateTime.now().year - 13));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-        _dateOfBirthController.text = format.format(selectedDate);
-      });
-  }
+  Widget buildSignUpButton() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () async {
+          if (!_passwordMatches) return null;
 
-  bool doesPasswordMatchPolicy(String password) {
-    if (password.isEmpty) return null;
-    RegExp exp = new RegExp(
-        r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-    return exp.hasMatch(password);
-  }
+          if (_emailController.text.isEmpty) return null;
 
-  Widget checkPasswordPolicy() {
-    return Row(children: <Widget>[
-      Text(
-          "Password Requirements:\n\t\t• 8 characters long\n\t\t• One uppercase and One lowercase letter\n\t\t• One special character",
-          textAlign: TextAlign.left,
+          if (_firstNameController.text.isEmpty) return null;
+
+          if (_lastNameController.text.isEmpty) return null;
+
+          if (_selectedDate.year > (DateTime.now().year - 13)) return null;
+
+          if (!_validEmailAddress) return null;
+
+          await sendSignUpInfomation(User(
+              email: _emailController.text,
+              password: _passwordController.text,
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              birthDate: _dateOfBirthController.text,
+              isActive: true));
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.white,
+        child: Text(
+          'SIGN UP',
           style: TextStyle(
-              color: Colors.white,
-              letterSpacing: 1.5,
-              fontSize: 12.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans'))
-    ]);
+            color: Color(0xFF527DAA),
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+
+  String validateName(String value) {
+    if (value.isEmpty) return null;
+    bool validName = validator.name(value);
+    if (validName) return null;
+    return "There are characters thr system does not recognize";
   }
 
   String validateEmail(String value) {
@@ -98,49 +118,50 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     return null;
   }
 
-  Widget buildSignUpButton() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () => null,
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'SIGN UP',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
   String validateIfPasswordMatchPolicy(String value) {
     setState(() {
-      _passwordController.text = value;
+      _passwordController.text; // = value;
     });
-    bool match = doesPasswordMatchPolicy(value);
+    bool match = validator.password(value);
     if (match) return null;
     return "This password does not follow policy guidelines.";
   }
 
   String validateIfPasswordsAreEqual(String value) {
-    bool match = doesPasswordMatchPolicy(value);
+    bool match = validator.password(value);
     if (match) {
       setState(() => _passwordMatches = true);
       return null;
     }
     setState(() => _passwordMatches = false);
     return "The password fields do not match.";
+  }
+
+  Widget checkPasswordPolicy() {
+    return Row(children: <Widget>[
+      Text(
+          "Password Requirements:\n\t\t•\t8 characters long\n\t\t•\tOne uppercase and One lowercase letter\n\t\t•\tOne special character",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 12.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans'))
+    ]);
+  }
+
+  Future<Null> selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime(2000),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(DateTime.now().year - 13));
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedDate = picked;
+        _dateOfBirthController.text = _format.format(_selectedDate);
+      });
   }
 
   @override
@@ -164,10 +185,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       ),
       SizedBox(height: 15.0),
       loginSignupTextForm(_firstNameKey, _firstNameController, "First Name",
-          hintText: "Jose", prefixIcon: Icons.person),
+          hintText: "Jose", prefixIcon: Icons.person, onChanged: validateName),
       SizedBox(height: 15.0),
       loginSignupTextForm(_lastNameKey, _lastNameController, "Last Name",
-          hintText: "Lopez", prefixIcon: Icons.person),
+          hintText: "Lopez", prefixIcon: Icons.person, onChanged: validateName),
       SizedBox(height: 15.0),
       loginSignupTextForm(_emailKey, _emailController, "Email",
           autoValidate: false,

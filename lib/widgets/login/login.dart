@@ -1,4 +1,5 @@
-import 'package:atletico_app/pages/singup.dart';
+import 'package:atletico_app/endpoints/registration.dart';
+import 'package:atletico_app/widgets/login/singup.dart';
 import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
@@ -64,7 +65,11 @@ class LoginWidgetState extends State<LoginWidget>
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => null,
+        onPressed: () async {
+          String token =
+              await getToken(_emailController.text, _passwordController.text);
+          print(token);
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),

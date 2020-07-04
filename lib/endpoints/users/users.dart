@@ -8,7 +8,7 @@ class User {
   final String password;
   final String firstName;
   final String lastName;
-  final DateTime dateOfBirth;
+  final String birthDate;
   final bool isActive;
   User(
       {this.id,
@@ -17,6 +17,6 @@ class User {
       this.password,
       this.firstName,
       this.lastName,
-      this.dateOfBirth,
+      this.birthDate,
       this.isActive});
 }
