@@ -54,17 +54,21 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          if (!_passwordMatches) return null;
-
           if (_emailController.text.isEmpty) return null;
+
+          if (!_validEmailAddress) return null;
 
           if (_firstNameController.text.isEmpty) return null;
 
           if (_lastNameController.text.isEmpty) return null;
 
-          if (_selectedDate.year > (DateTime.now().year - 13)) return null;
+          if (!_passwordMatches) return null;
 
-          if (!_validEmailAddress) return null;
+          if (_passwordController.text.isEmpty) return null;
+
+          if (_passwordConfirmController.text.isEmpty) return null;
+
+          if (_selectedDate.year > (DateTime.now().year - 13)) return null;
 
           await sendSignUpInfomation(User(
               email: _emailController.text,

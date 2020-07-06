@@ -10,6 +10,8 @@ class User {
   final String lastName;
   final String birthDate;
   final bool isActive;
+  final String createdDate;
+  final String lastLoginDate;
   User(
       {this.id,
       this.email,
@@ -18,5 +20,7 @@ class User {
       this.firstName,
       this.lastName,
       this.birthDate,
-      this.isActive});
+      this.isActive,
+      this.createdDate,
+      this.lastLoginDate});
 }

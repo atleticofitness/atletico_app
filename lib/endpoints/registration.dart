@@ -1,20 +1,22 @@
 import 'dart:async';
 import 'package:atletico_app/endpoints/users/users.dart';
-import 'package:http/http.dart' as http;
 import 'package:atletico_app/util/constants.dart';
 import 'package:dart_json_mapper/dart_json_mapper.dart'
     show JsonMapper, SerializationOptions, DeserializationOptions, CaseStyle;
+import 'package:dio/dio.dart';
 
-var client = http.Client();
+var dio = Dio(BaseOptions(
+  baseUrl: atleticoURL
+));
 var serializeOption =
     SerializationOptions(indent: '', caseStyle: CaseStyle.Snake);
 var deserializeOption = DeserializationOptions(caseStyle: CaseStyle.Camel);
 
 Future<bool> checkIfEmailExists(String email) async {
-  var response = await client.post("$atleticoURL/registration/check-email",
-      body: JsonMapper.toJson({"email": email}));
+  var response = await dio.post("/registration/check-email",
+      data: JsonMapper.toJson({"email": email}));
   if (response.statusCode == 200) {
-    var body = JsonMapper.fromJson<Map<String, dynamic>>(response.body);
+    var body = JsonMapper.fromJson<Map<String, dynamic>>(response.data);
     return body["valid_email"];
   }
   throw EmailNotFoundException(
@@ -22,22 +24,26 @@ Future<bool> checkIfEmailExists(String email) async {
 }
 
 Future<User> sendSignUpInfomation(User user) async {
-  var response = await client.post("$atleticoURL/registration/new-user",
-      body: JsonMapper.toJson(user, serializeOption));
+  var response = await dio.post("/registration/new-user",
+      data: JsonMapper.toJson(user, serializeOption));
   if (response.statusCode == 200) {
-    return JsonMapper.fromJson<User>(response.body, deserializeOption);
+    return JsonMapper.fromJson<User>(response.data, deserializeOption);
   }
   throw AccountNotCreatedException("Could not create the user.");
 }
 
 Future<String> getToken(String email, String password) async {
-  var response = await client.post("$atleticoURL/token",
-      body: JsonMapper.toJson({"username": email, "password": password}));
-  if (response.statusCode == 200) {
-    var tokenData = JsonMapper.fromJson<Map<String, dynamic>>(response.body);
+  try {
+    var response =await dio.post("/token",
+        data: FormData.fromMap({"username": email, "password": password}));
+    var tokenData = JsonMapper.fromJson<Map<String, dynamic>>(response.data);
     return tokenData["access_token"];
+  } on DioError catch (error) {
+    if (error.response.statusCode == 401)
+      throw CouldNotObtainTokenError("Could not obtain token from server, either account does not exist or the credentials are wrong.");
+    else
+      throw Exception(error.toString());
   }
-  return null;
 }
 
 class EmailNotFoundException implements Exception {
