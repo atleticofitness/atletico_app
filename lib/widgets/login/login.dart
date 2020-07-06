@@ -1,4 +1,5 @@
-import 'package:atletico_app/endpoints/registration.dart';
+import 'package:atletico_app/endpoints/authentication/atletico.dart'
+    show getToken;
 import 'package:atletico_app/widgets/login/singup.dart';
 import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
@@ -66,8 +67,9 @@ class LoginWidgetState extends State<LoginWidget>
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          String token =
-              await getToken(_emailController.text, _passwordController.text);
+          if (_emailController.text.isEmpty) return null;
+          if (_passwordController.text.isEmpty) return null;
+          var token = await getToken(_emailController.text, _passwordController.text);
           print(token);
         },
         padding: EdgeInsets.all(15.0),

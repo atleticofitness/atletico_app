@@ -25,7 +25,6 @@ dependencies:
   flutter_password_strength: ^0.1.4
   sign_in_with_apple: ^2.5.1
   regexed_validator: ^1.0.4
-  http: ^0.12.1
   intl: ^0.16.1
   dbcrypt: ^1.0.0
   dart_json_mapper:

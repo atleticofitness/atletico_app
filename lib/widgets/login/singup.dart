@@ -1,9 +1,9 @@
-import 'package:atletico_app/endpoints/users/users.dart';
+import 'package:atletico_app/data/users.dart';
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:atletico_app/endpoints/registration.dart';
+import 'package:atletico_app/endpoints/registration/registration.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 
