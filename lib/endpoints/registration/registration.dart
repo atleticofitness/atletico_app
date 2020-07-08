@@ -1,25 +1,22 @@
 import 'dart:async';
 import 'package:atletico_app/data/users.dart';
-import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
-import 'package:atletico_app/endpoints/client.dart'
-    show dio, serializeOption, deserializeOption;
+import 'package:atletico_app/endpoints/client.dart' show dio;
 
 Future<bool> checkIfEmailExists(String email) async {
   var response = await dio.post("/registration/check-email",
-      data: JsonMapper.toJson({"email": email}));
+      data: {"email": email});
   if (response.statusCode == 200) {
-    var body = JsonMapper.fromJson<Map<String, dynamic>>(response.data);
-    return body["valid_email"];
+    return response.data["validEmail"];
   }
   throw EmailNotFoundException(
       "There was an issue checking if the email existed.");
 }
 
-Future<User> sendSignUpInfomation(User user) async {
+Future<bool> sendSignUpInfomation(User user) async {
   var response = await dio.post("/registration/new-user",
-      data: JsonMapper.toJson(user, serializeOption));
+      data: user.toJson());
   if (response.statusCode == 200) {
-    return JsonMapper.fromJson<User>(response.data, deserializeOption);
+    return true;
   }
   throw AccountNotCreatedException("Could not create the user.");
 }

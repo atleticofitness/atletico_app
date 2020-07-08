@@ -1,8 +1,9 @@
-import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:dio/dio.dart' show Response;
+import 'package:atletico_app/endpoints/client.dart' show dio;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-Future<http.Response> getAppleCredentials(
+Future<Response> getAppleCredentials(
     AuthorizationCredentialAppleID credentials) async {
   // This is the endpoint that will convert an authorization code obtained
   // via Sign in with Apple into a session in your system
@@ -19,8 +20,6 @@ Future<http.Response> getAppleCredentials(
     },
   );
 
-  final session = await http.Client().post(
-    signInWithAppleEndpoint,
-  );
+  final session = await dio.postUri(signInWithAppleEndpoint);
   return session;
 }

@@ -137,7 +137,7 @@ Widget loginSignupTextForm(
   );
 }
 
-Route routeToWidget(StatefulWidget widget, Offset offset) {
+Route routeToWidget(Widget widget, Offset offset) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => widget,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {

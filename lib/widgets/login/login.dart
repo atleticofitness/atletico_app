@@ -1,5 +1,7 @@
 import 'package:atletico_app/endpoints/authentication/atletico.dart'
     show getToken;
+import 'package:atletico_app/endpoints/users/users.dart';
+import 'package:atletico_app/widgets/loggedin/home.dart';
 import 'package:atletico_app/widgets/login/singup.dart';
 import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
@@ -69,8 +71,15 @@ class LoginWidgetState extends State<LoginWidget>
         onPressed: () async {
           if (_emailController.text.isEmpty) return null;
           if (_passwordController.text.isEmpty) return null;
-          var token = await getToken(_emailController.text, _passwordController.text);
-          print(token);
+          var token =
+              await getToken(_emailController.text, _passwordController.text);
+          print(token.makeHeader());
+          //var box = await Hive.openBox("atletico");
+          //box.put('token', token);
+          var user = await getCurrentUser(token);
+          //box.put('user', user);
+          Navigator.of(context)
+              .push(routeToWidget(HomeWidget(), Offset(0.0, -1.0)));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

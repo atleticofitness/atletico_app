@@ -1,15 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'widgets/login/login.dart';
-import 'package:dart_json_mapper_flutter/dart_json_mapper_flutter.dart'
-    show flutterAdapter;
-import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
-import 'main.reflectable.dart' show initializeReflectable;
 import 'package:device_preview/device_preview.dart';
 
-void main() {
-  initializeReflectable();
-  JsonMapper().useAdapter(flutterAdapter);
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox("settings");
   runApp(DevicePreview(
       enabled: !kReleaseMode == false, builder: (context) => MyApp()));
 }
