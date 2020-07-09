@@ -6,7 +6,8 @@ import 'package:dio/dio.dart' show DioError, Options;
 
 Future<User> getCurrentUser(Token token) async {
   try {
-    var response = await dio.get("/users/me/", options: Options(headers: token.makeHeader()));
+    var response = await dio.get("/users/me/",
+        options: Options(headers: token.makeHeader()));
     return User.fromJson(response.data);
   } on DioError catch (error) {
     print(error.response.headers);

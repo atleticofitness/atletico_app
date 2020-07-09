@@ -3,8 +3,8 @@ import 'package:atletico_app/data/users.dart';
 import 'package:atletico_app/endpoints/client.dart' show dio;
 
 Future<bool> checkIfEmailExists(String email) async {
-  var response = await dio.post("/registration/check-email",
-      data: {"email": email});
+  var response =
+      await dio.post("/registration/check-email", data: {"email": email});
   if (response.statusCode == 200) {
     return response.data["validEmail"];
   }
@@ -13,8 +13,7 @@ Future<bool> checkIfEmailExists(String email) async {
 }
 
 Future<bool> sendSignUpInfomation(User user) async {
-  var response = await dio.post("/registration/new-user",
-      data: user.toJson());
+  var response = await dio.post("/registration/new-user", data: user.toJson());
   if (response.statusCode == 200) {
     return true;
   }

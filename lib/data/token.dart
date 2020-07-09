@@ -12,5 +12,6 @@ class Token extends HiveObject {
   Token({this.accessToken, this.tokenType});
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
   Map<String, dynamic> toJson() => _$TokenToJson(this);
-  Map<String, dynamic> makeHeader() => {"Authorization" : "$tokenType $accessToken"};
+  Map<String, dynamic> makeHeader() =>
+      {"Authorization": "$tokenType $accessToken"};
 }
