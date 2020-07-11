@@ -7,7 +7,7 @@ import 'package:atletico_app/endpoints/registration/registration.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 
-import 'login.dart';
+import '../login/login.dart';
 
 class SignUpWidget extends StatefulWidget {
   SignUpWidget({Key key}) : super(key: key);
@@ -170,8 +170,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return loginSignUpScaffold(context, [
-      Row(
+    return loginSignUpScaffold(context, null);
+  }
+}
+
+/*
+Row(
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.arrow_back),
@@ -239,6 +243,5 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           onTap: selectDate,
           functionParamters: [context]),
       buildSignUpButton()
-    ]);
-  }
-}
+
+ */

@@ -27,7 +27,7 @@ final boxDecorationStyle = BoxDecoration(
   ],
 );
 
-Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
+Widget loginSignUpScaffold(BuildContext context, Widget widget) {
   return Scaffold(
     body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -60,10 +60,7 @@ Widget loginSignUpScaffold(BuildContext context, List<Widget> widgets) {
                   horizontal: 40.0,
                   vertical: 120.0,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: widgets,
-                ),
+                child: widget,
               ),
             )
           ],

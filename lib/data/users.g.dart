@@ -3,61 +3,6 @@
 part of 'users.dart';
 
 // **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
-
-class UserAdapter extends TypeAdapter<User> {
-  @override
-  final typeId = 1;
-
-  @override
-  User read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return User(
-      id: fields[0] as String,
-      email: fields[1] as String,
-      username: fields[2] as String,
-      password: fields[3] as String,
-      firstName: fields[4] as String,
-      lastName: fields[5] as String,
-      birthDate: fields[6] as String,
-      isActive: fields[7] as bool,
-      createdDate: fields[8] as String,
-      lastLoginDate: fields[9] as String,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, User obj) {
-    writer
-      ..writeByte(10)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.email)
-      ..writeByte(2)
-      ..write(obj.username)
-      ..writeByte(3)
-      ..write(obj.password)
-      ..writeByte(4)
-      ..write(obj.firstName)
-      ..writeByte(5)
-      ..write(obj.lastName)
-      ..writeByte(6)
-      ..write(obj.birthDate)
-      ..writeByte(7)
-      ..write(obj.isActive)
-      ..writeByte(8)
-      ..write(obj.createdDate)
-      ..writeByte(9)
-      ..write(obj.lastLoginDate);
-  }
-}
-
-// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

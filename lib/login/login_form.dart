@@ -1,19 +1,16 @@
-import 'package:atletico_app/endpoints/authentication/atletico.dart'
-    show getToken;
-import 'package:atletico_app/endpoints/users/users.dart';
-import 'package:atletico_app/widgets/loggedin/home.dart';
-import 'package:atletico_app/widgets/login/singup.dart';
-import 'package:atletico_app/util/base_widget.dart';
-import 'package:flutter/material.dart';
+import 'package:atletico_app/login/bloc/login_bloc.dart';
 import 'package:atletico_app/util/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginWidget extends StatefulWidget {
+class LoginForm extends StatefulWidget {
+  LoginForm({Key key}) : super(key: key);
+
   @override
-  LoginWidgetState createState() => LoginWidgetState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class LoginWidgetState extends State<LoginWidget>
-    with SingleTickerProviderStateMixin {
+class _LoginFormState extends State<LoginForm> {
   final _emailKey = GlobalKey<FormFieldState>();
   final _passwordKey = GlobalKey<FormState>();
   bool _rememberMe = false;
@@ -62,25 +59,14 @@ class LoginWidgetState extends State<LoginWidget>
     );
   }
 
-  Widget buildLoginButton() {
+  Widget buildLoginButton(LoginState state) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () async {
-          if (_emailController.text.isEmpty) return null;
-          if (_passwordController.text.isEmpty) return null;
-          var token =
-              await getToken(_emailController.text, _passwordController.text);
-          print(token.makeHeader());
-          //var box = await Hive.openBox("atletico");
-          //box.put('token', token);
-          var user = await getCurrentUser(token);
-          //box.put('user', user);
-          Navigator.of(context)
-              .push(routeToWidget(HomeWidget(), Offset(0.0, -1.0)));
-        },
+        onPressed: () =>
+            state is! LoginInProgress ? onLoginButtonPressed() : null,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -174,8 +160,9 @@ class LoginWidgetState extends State<LoginWidget>
 
   Widget buildSignupButton() {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .push(routeToWidget(SignUpWidget(), Offset(1.0, 0.0))),
+      onTap: () => null,
+      /*Navigator.of(context)
+          .push(routeToWidget(SignUpWidget(), Offset(1.0, 0.0))),*/
       child: RichText(
         text: TextSpan(
           children: [
@@ -213,10 +200,10 @@ class LoginWidgetState extends State<LoginWidget>
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BaseWidget(builder: (context, sizingInformation) {
-      return loginSignUpScaffold(context, [
+  Widget buildForm(BuildContext context, LoginState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
         headerText(),
         SizedBox(height: 15.0),
         loginSignupTextForm(_emailKey, _emailController, "Email",
@@ -239,11 +226,34 @@ class LoginWidgetState extends State<LoginWidget>
             obscureText: _textObscured),
         buildForgotPasswordButton(),
         buildRememberMeCheckbox(),
-        buildLoginButton(),
+        buildLoginButton(state),
+        Container(
+            child:
+                state is LoginInProgress ? CircularProgressIndicator() : null),
         buildSignInWithText(),
         buildSocialButtonRow(),
         buildSignupButton(),
-      ]);
-    });
+      ],
+    );
+  }
+
+  void onLoginButtonPressed() {
+    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
+        email: _emailController.text, password: _passwordController.text));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is LoginFailure)
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('${state.error}'),
+          backgroundColor: Colors.black,
+        ));
+    }, child: BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return buildForm(context, state);
+      },
+    ));
   }
 }
