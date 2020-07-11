@@ -24,6 +24,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginInProgress();
 
       try {
+        if (event.email.isEmpty)
+          yield LoginFailure(error: 'No email has been provided.');
+        if (event.password.isEmpty)
+          yield LoginFailure(error: 'No password has been provided.');
+          
         final token = await getToken(event.email, event.password);
         authenticationBloc.add(AuthenticationLoggedIn(token: token));
         yield LoginInitial();
