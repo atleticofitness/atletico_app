@@ -158,11 +158,11 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget buildSignupButton() {
+  Widget buildRegistrationButton() {
     return GestureDetector(
       onTap: () => null,
       /*Navigator.of(context)
-          .push(routeToWidget(SignUpWidget(), Offset(1.0, 0.0))),*/
+          .push(routeToWidget(RegistrationWidget(), Offset(1.0, 0.0))),*/
       child: RichText(
         text: TextSpan(
           children: [
@@ -206,12 +206,12 @@ class _LoginFormState extends State<LoginForm> {
       children: <Widget>[
         headerText(),
         SizedBox(height: 15.0),
-        loginSignupTextForm(_emailKey, _emailController, "Email",
+        loginRegistrationTextForm(_emailKey, _emailController, "Email",
             hintText: "Enter your Email",
             prefixIcon: Icons.email,
             keyboardType: TextInputType.emailAddress),
         SizedBox(height: 15.0),
-        loginSignupTextForm(_passwordKey, _passwordController, "Password",
+        loginRegistrationTextForm(_passwordKey, _passwordController, "Password",
             hintText: "Enter your Password",
             prefixIcon: Icons.lock,
             suffixIcon: IconButton(
@@ -232,7 +232,7 @@ class _LoginFormState extends State<LoginForm> {
                 state is LoginInProgress ? CircularProgressIndicator() : null),
         buildSignInWithText(),
         buildSocialButtonRow(),
-        buildSignupButton(),
+        buildRegistrationButton(),
       ],
     );
   }

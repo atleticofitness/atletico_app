@@ -12,11 +12,10 @@ Future<bool> checkIfEmailExists(String email) async {
       "There was an issue checking if the email existed.");
 }
 
-Future<bool> sendSignUpInfomation(User user) async {
+Future<bool> sendRegistrationInfomation(User user) async {
   var response = await dio.post("/registration/new-user", data: user.toJson());
-  if (response.statusCode == 200) {
-    return true;
-  }
+  if (response.statusCode == 200) return true;
+  if (response.statusCode == 400) return false;
   throw AccountNotCreatedException("Could not create the user.");
 }
 

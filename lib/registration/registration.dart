@@ -9,14 +9,14 @@ import 'package:flutter_password_strength/flutter_password_strength.dart';
 
 import '../login/login.dart';
 
-class SignUpWidget extends StatefulWidget {
-  SignUpWidget({Key key}) : super(key: key);
+class RegistrationWidget extends StatefulWidget {
+  RegistrationWidget({Key key}) : super(key: key);
 
   @override
-  _SignUpWidgetState createState() => _SignUpWidgetState();
+  _RegistrationWidgetState createState() => _RegistrationWidgetState();
 }
 
-class _SignUpWidgetState extends State<SignUpWidget> {
+class _RegistrationWidgetState extends State<RegistrationWidget> {
   final _firstNameKey = GlobalKey<FormFieldState>();
   final _lastNameKey = GlobalKey<FormFieldState>();
   final _emailKey = GlobalKey<FormFieldState>();
@@ -47,7 +47,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     );
   }
 
-  Widget buildSignUpButton() {
+  Widget buildRegistrationButton() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -70,7 +70,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
           if (_selectedDate.year > (DateTime.now().year - 13)) return null;
 
-          await sendSignUpInfomation(User(
+          await sendRegistrationInfomation(User(
               email: _emailController.text,
               password: _passwordController.text,
               firstName: _firstNameController.text,
@@ -170,7 +170,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return loginSignUpScaffold(context, null);
+    return loginRegistrationScaffold(context, null);
   }
 }
 
@@ -192,13 +192,13 @@ Row(
         ],
       ),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_firstNameKey, _firstNameController, "First Name",
+      loginRegistrationTextForm(_firstNameKey, _firstNameController, "First Name",
           hintText: "Jose", prefixIcon: Icons.person, onChanged: validateName),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_lastNameKey, _lastNameController, "Last Name",
+      loginRegistrationTextForm(_lastNameKey, _lastNameController, "Last Name",
           hintText: "Lopez", prefixIcon: Icons.person, onChanged: validateName),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_emailKey, _emailController, "Email",
+      loginRegistrationTextForm(_emailKey, _emailController, "Email",
           autoValidate: false,
           keyboardType: TextInputType.emailAddress,
           hintText: "example@email.com",
@@ -208,7 +208,7 @@ Row(
               : null,
           onChanged: validateEmail),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_passwordKey, _passwordController, "Password",
+      loginRegistrationTextForm(_passwordKey, _passwordController, "Password",
           hintText: "Enter your Password",
           prefixIcon: Icons.lock,
           suffixIcon: IconButton(
@@ -226,7 +226,7 @@ Row(
       FlutterPasswordStrength(password: _passwordController.text),
       checkPasswordPolicy(),
       SizedBox(height: 15.0),
-      loginSignupTextForm(
+      loginRegistrationTextForm(
           _passwordConfirmKey, _passwordConfirmController, "Confirm Password",
           hintText: "Re-enter your Password",
           prefixIcon: Icons.lock,
@@ -235,13 +235,13 @@ Row(
           obscureText: _textObscured,
           onChanged: validateIfPasswordsAreEqual),
       SizedBox(height: 15.0),
-      loginSignupTextForm(_dobKey, _dateOfBirthController, "D.O.B",
+      loginRegistrationTextForm(_dobKey, _dateOfBirthController, "D.O.B",
           hintText: "MM/DD/YYYY",
           prefixIcon: Icons.calendar_today,
           readOnly: true,
           showCursor: false,
           onTap: selectDate,
           functionParamters: [context]),
-      buildSignUpButton()
+      buildRegistrationButton()
 
  */

@@ -7,13 +7,15 @@ Future<Token> getToken(String email, String password) async {
     var response = await dio.post("/token",
         data: FormData.fromMap(
             {"username": email, "password": password, "scope": "me"}));
+    print(response.data);
     return Token.fromJson(response.data);
   } on DioError catch (error) {
     if (error.response.statusCode == 401)
       throw CouldNotObtainTokenError(
           "Could not obtain token from server, either account does not exist or the credentials are wrong.");
     else
-      throw Exception(error.toString());
+      print("here");
+    throw Exception(error.toString());
   }
 }
 

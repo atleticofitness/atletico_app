@@ -1,4 +1,4 @@
-import 'package:atletico_app/authentication/authentication.dart';
+import 'package:atletico_app/authentication/bloc/authentication.dart';
 import 'package:atletico_app/data/token.dart';
 import 'package:atletico_app/util/bloc_observer.dart';
 import 'package:atletico_app/loggedin/home.dart';
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             if (state is AuthenticationInProgress)
               return CircularProgressIndicator();
 
-            return null;
+            return Container();
           },
         ));
   }

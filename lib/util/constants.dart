@@ -27,7 +27,7 @@ final boxDecorationStyle = BoxDecoration(
   ],
 );
 
-Widget loginSignUpScaffold(BuildContext context, Widget widget) {
+Widget loginRegistrationScaffold(BuildContext context, Widget widget) {
   return Scaffold(
     body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -70,7 +70,7 @@ Widget loginSignUpScaffold(BuildContext context, Widget widget) {
   );
 }
 
-Widget loginSignupTextForm(
+Widget loginRegistrationTextForm(
     Key key, TextEditingController controller, String label,
     {bool autoValidate = false,
     bool readOnly = false,

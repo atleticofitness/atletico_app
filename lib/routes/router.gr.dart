@@ -8,16 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:atletico_app/login/login.dart';
-import 'package:atletico_app/signup/singup.dart';
+import 'package:atletico_app/registration/singup.dart';
 import 'package:atletico_app/loggedin/home.dart';
 
 class Routes {
   static const String loginWidget = '/';
-  static const String signUpWidget = '/signup';
+  static const String RegistrationWidget = '/registration';
   static const String homeWidget = '/landing';
   static const all = <String>{
     loginWidget,
-    signUpWidget,
+    RegistrationWidget,
     homeWidget,
   };
 }
@@ -27,7 +27,7 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.loginWidget, page: LoginWidget),
-    RouteDef(Routes.signUpWidget, page: SignUpWidget),
+    RouteDef(Routes.RegistrationWidget, page: RegistrationWidget),
     RouteDef(Routes.homeWidget, page: HomeWidget),
   ];
   @override
@@ -39,11 +39,11 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    SignUpWidget: (RouteData data) {
-      var args = data.getArgs<SignUpWidgetArguments>(
-          orElse: () => SignUpWidgetArguments());
+    RegistrationWidget: (RouteData data) {
+      var args = data.getArgs<RegistrationWidgetArguments>(
+          orElse: () => RegistrationWidgetArguments());
       return MaterialPageRoute<dynamic>(
-        builder: (context) => SignUpWidget(key: args.key),
+        builder: (context) => RegistrationWidget(key: args.key),
         settings: data,
       );
     },
@@ -62,10 +62,10 @@ class Router extends RouterBase {
 // Arguments holder classes
 // **************************************************************************
 
-//SignUpWidget arguments holder class
-class SignUpWidgetArguments {
+//RegistrationWidget arguments holder class
+class RegistrationWidgetArguments {
   final Key key;
-  SignUpWidgetArguments({this.key});
+  RegistrationWidgetArguments({this.key});
 }
 
 //HomeWidget arguments holder class

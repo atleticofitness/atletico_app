@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:atletico_app/authentication/authentication.dart';
+import 'package:atletico_app/authentication/bloc/authentication.dart';
+import 'package:atletico_app/data/token.dart';
 import 'package:atletico_app/endpoints/authentication/atletico.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -28,8 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginFailure(error: 'No email has been provided.');
         if (event.password.isEmpty)
           yield LoginFailure(error: 'No password has been provided.');
-          
-        final token = await getToken(event.email, event.password);
+        Token token = await getToken(event.email, event.password);
         authenticationBloc.add(AuthenticationLoggedIn(token: token));
         yield LoginInitial();
       } catch (error) {

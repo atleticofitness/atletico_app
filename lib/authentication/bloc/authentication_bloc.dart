@@ -1,4 +1,4 @@
-import 'package:atletico_app/authentication/authentication.dart';
+import 'package:atletico_app/authentication/bloc/authentication.dart';
 import 'package:atletico_app/data/token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'authentication_states.dart';
@@ -25,7 +25,7 @@ class AuthenticationBloc
 
     if (event is AuthenticationLoggedIn) {
       yield AuthenticationInProgress();
-      await token.save();
+      await event.token.save();
       yield AuthenticationSuccess();
     }
 

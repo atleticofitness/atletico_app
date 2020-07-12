@@ -1,4 +1,4 @@
-import 'package:atletico_app/authentication/authentication_bloc.dart';
+import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
 import 'package:atletico_app/login/login_form.dart';
 import 'package:atletico_app/util/base_widget.dart';
@@ -16,7 +16,7 @@ class LoginWidgetState extends State<LoginWidget>
   @override
   Widget build(BuildContext context) {
     return BaseWidget(builder: (context, sizingInformation) {
-      return loginSignUpScaffold(
+      return loginRegistrationScaffold(
           context,
           BlocProvider(
               create: (context) {
