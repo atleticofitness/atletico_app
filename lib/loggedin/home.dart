@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HomeWidget extends StatefulWidget {
-  HomeWidget({Key key}) : super(key: key);
+class AtleticoWidget extends StatefulWidget {
+  AtleticoWidget({Key key}) : super(key: key);
 
   @override
-  HomeWidgetState createState() => HomeWidgetState();
+  AtleticoWidgetState createState() => AtleticoWidgetState();
 }
 
-class HomeWidgetState extends State<HomeWidget> {
+class AtleticoWidgetState extends State<AtleticoWidget> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

@@ -8,17 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:atletico_app/login/login.dart';
-import 'package:atletico_app/registration/singup.dart';
+import 'package:atletico_app/registration/registration.dart';
+import 'package:atletico_app/authentication/authentication_guard.dart';
 import 'package:atletico_app/loggedin/home.dart';
 
 class Routes {
   static const String loginWidget = '/';
-  static const String RegistrationWidget = '/registration';
-  static const String homeWidget = '/landing';
+  static const String registrationWidget = '/registration';
+  static const String atleticoWidget = '/atletico';
   static const all = <String>{
     loginWidget,
-    RegistrationWidget,
-    homeWidget,
+    registrationWidget,
+    atleticoWidget,
   };
 }
 
@@ -27,8 +28,9 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.loginWidget, page: LoginWidget),
-    RouteDef(Routes.RegistrationWidget, page: RegistrationWidget),
-    RouteDef(Routes.homeWidget, page: HomeWidget),
+    RouteDef(Routes.registrationWidget,
+        page: RegistrationWidget, guards: [AuthenticationGuard]),
+    RouteDef(Routes.atleticoWidget, page: AtleticoWidget),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -47,11 +49,11 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    HomeWidget: (RouteData data) {
-      var args = data.getArgs<HomeWidgetArguments>(
-          orElse: () => HomeWidgetArguments());
+    AtleticoWidget: (RouteData data) {
+      var args = data.getArgs<AtleticoWidgetArguments>(
+          orElse: () => AtleticoWidgetArguments());
       return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeWidget(key: args.key),
+        builder: (context) => AtleticoWidget(key: args.key),
         settings: data,
       );
     },
@@ -68,8 +70,8 @@ class RegistrationWidgetArguments {
   RegistrationWidgetArguments({this.key});
 }
 
-//HomeWidget arguments holder class
-class HomeWidgetArguments {
+//AtleticoWidget arguments holder class
+class AtleticoWidgetArguments {
   final Key key;
-  HomeWidgetArguments({this.key});
+  AtleticoWidgetArguments({this.key});
 }

@@ -1,5 +1,9 @@
+import 'package:atletico_app/data/token.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
+import 'package:atletico_app/registration/registration.dart';
+import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -160,9 +164,7 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget buildRegistrationButton() {
     return GestureDetector(
-      onTap: () => null,
-      /*Navigator.of(context)
-          .push(routeToWidget(RegistrationWidget(), Offset(1.0, 0.0))),*/
+      onTap: () => ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.registrationWidget),
       child: RichText(
         text: TextSpan(
           children: [
