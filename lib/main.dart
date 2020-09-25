@@ -33,8 +33,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        builder: (context, child) { 
-          child = ExtendedNavigator<Router>(router: Router(), guards: [AuthenticationGuard()],);
+        builder: (context, child) {
+          child = ExtendedNavigator<Router>(
+            router: Router(),
+            guards: [AuthenticationGuard()],
+          );
           child = DevicePreview.appBuilder(context, child);
           return child;
         },
