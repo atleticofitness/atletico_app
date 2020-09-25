@@ -33,7 +33,7 @@ dependencies:
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
   path_provider: ^1.6.11
-  flutter_bloc: ^5.0.1
+  flutter_bloc: ^6.0.0
   auto_route: ^0.6.1
   
   flutter:
