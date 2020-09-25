@@ -42,11 +42,11 @@ class _LoginFormState extends State<LoginForm> {
       child: Row(
         children: <Widget>[
           Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
+            data: ThemeData(unselectedWidgetColor: buttonColor),
+            child: Checkbox(tristate: false,
               value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
+              checkColor: Colors.white,
+              activeColor: buttonColor,
               onChanged: (value) {
                 setState(() {
                   _rememberMe = value;
@@ -63,32 +63,6 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget buildLoginButton(LoginState state) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () =>
-            state is! LoginInProgress ? onLoginButtonPressed() : null,
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget buildSignInWithText() {
     return Column(
@@ -96,7 +70,7 @@ class _LoginFormState extends State<LoginForm> {
         Text(
           '- OR -',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -117,7 +91,7 @@ class _LoginFormState extends State<LoginForm> {
         width: 60.0,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: buttonColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
@@ -135,28 +109,13 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget buildSocialButtonRow() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      padding: EdgeInsets.symmetric(vertical: 15.0),
+      child: Column(
+        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          buildSocialButton(
-            () => print('Login with Facebook'),
-            AssetImage(
-              'assets/logos/facebook.jpg',
-            ),
-          ),
-          buildSocialButton(
-            () => print('Login with Google'),
-            AssetImage(
-              'assets/logos/google.jpg',
-            ),
-          ),
-          buildSocialButton(
-            () => print('Login with Apple'),
-            AssetImage(
-              'assets/logos/apple.png',
-            ),
-          ),
+          buildGenericButton(null, 'LOGIN WITH FACEBOOK'),
+          buildGenericButton(null, 'LOGIN WITH GOOGLE'),
+          buildGenericButton(null, 'LOGIN WITH APPLE'),
         ],
       ),
     );
@@ -164,14 +123,15 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget buildRegistrationButton() {
     return GestureDetector(
-      onTap: () => ExtendedNavigator.ofRouter<Router>().pushNamed(Routes.registrationWidget),
+      onTap: () => ExtendedNavigator.ofRouter<Router>()
+          .pushNamed(Routes.registrationWidget),
       child: RichText(
         text: TextSpan(
           children: [
             TextSpan(
               text: 'Don\'t have an Account? ',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.grey,
                 fontSize: 18.0,
                 fontWeight: FontWeight.w400,
               ),
@@ -179,7 +139,7 @@ class _LoginFormState extends State<LoginForm> {
             TextSpan(
               text: 'Sign Up',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.grey,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -194,7 +154,7 @@ class _LoginFormState extends State<LoginForm> {
     return Text(
       'Sign In',
       style: TextStyle(
-        color: Colors.white,
+        color: buttonColor,
         fontFamily: 'OpenSans',
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
@@ -228,7 +188,7 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: _textObscured),
         buildForgotPasswordButton(),
         buildRememberMeCheckbox(),
-        buildLoginButton(state),
+        buildGenericButton(onPressed, 'LOGIN'),
         Container(
             child:
                 state is LoginInProgress ? CircularProgressIndicator() : null),
@@ -239,10 +199,10 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void onLoginButtonPressed() {
-    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
-        email: _emailController.text, password: _passwordController.text));
-  }
+  void onPressed(LoginState state) {
+    if (state is! LoginInProgress)
+      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(email: _emailController.text, password: _passwordController.text));
+  } 
 
   @override
   Widget build(BuildContext context) {
