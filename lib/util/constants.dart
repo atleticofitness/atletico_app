@@ -2,21 +2,23 @@ import 'package:atletico_app/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final String localAtleticoURL = "http://10.0.2.2:8080/api/v1";
+final String localAtleticoURL = "https://atletico.fitness/api/v1";
 
+final Color mainColor = Colors.white;
+final Color buttonColor = Color.fromARGB(255, 254, 74,86);
 final hintTextStyle = TextStyle(
-  color: Colors.white54,
+  color: Colors.grey,
   fontFamily: 'OpenSans',
 );
 
 final labelStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.grey,
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
 );
 
 final boxDecorationStyle = BoxDecoration(
-  color: Color(0xFF6CA8F1),
+  color: Colors.white,
   borderRadius: BorderRadius.circular(6.0),
   boxShadow: [
     BoxShadow(
@@ -39,17 +41,7 @@ Widget loginRegistrationScaffold(BuildContext context, Widget widget) {
               height: double.infinity,
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF73AEF5),
-                    Color(0xFF61A4F1),
-                    Color(0xFF478DE0),
-                    Color(0xFF398AE5),
-                  ],
-                  stops: [0.1, 0.4, 0.7, 0.9],
-                ),
+                color: mainColor
               ),
             ),
             Container(
@@ -112,7 +104,7 @@ Widget loginRegistrationTextForm(
           obscureText: obscureText,
           keyboardType: keyboardType != null ? keyboardType : null,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
             fontFamily: 'OpenSans',
           ),
           decoration: InputDecoration(
@@ -121,7 +113,7 @@ Widget loginRegistrationTextForm(
             prefixIcon: prefixIcon != null
                 ? Icon(
                     prefixIcon,
-                    color: Colors.white,
+                    color: Colors.grey,
                   )
                 : null,
             suffixIcon: suffixIcon != null ? suffixIcon : null,
@@ -133,6 +125,32 @@ Widget loginRegistrationTextForm(
     ],
   );
 }
+
+  Widget buildGenericButton(Function onPressed, String label) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () => onPressed != null ? onPressed() : null,
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: buttonColor,
+        child: Text(
+          label,
+          style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
 
 Route routeToWidget(Widget widget, Offset offset) {
   return PageRouteBuilder(
