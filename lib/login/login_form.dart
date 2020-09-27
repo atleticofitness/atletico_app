@@ -1,6 +1,4 @@
-import 'package:atletico_app/data/token.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
-import 'package:atletico_app/registration/registration.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';

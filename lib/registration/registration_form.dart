@@ -1,6 +1,5 @@
 import 'package:atletico_app/data/users.dart';
 import 'package:atletico_app/endpoints/registration/registration.dart';
-import 'package:atletico_app/login/login.dart';
 import 'package:atletico_app/registration/bloc/registration_bloc.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
@@ -29,7 +28,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _passwordConfirmController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
   bool _textObscured = true;
   bool _validEmailAddress = true;
@@ -41,7 +40,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     return Text(
       'Sign Up',
       style: TextStyle(
-        color: Colors.white,
+        color: buttonColor,
         fontFamily: 'OpenSans',
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
@@ -49,47 +48,39 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  Widget buildRegistrationButton() {
+  Widget buildRegistrationButton(RegistrationState state) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () async {
-          if (_emailController.text.isEmpty) return null;
-
-          if (!_validEmailAddress) return null;
-
-          if (_firstNameController.text.isEmpty) return null;
-
-          if (_lastNameController.text.isEmpty) return null;
-
-          if (!_passwordMatches) return null;
-
-          if (_passwordController.text.isEmpty) return null;
-
-          if (_passwordConfirmController.text.isEmpty) return null;
-
-          if (_selectedDate.year > (DateTime.now().year - 13)) return null;
-
-          await sendRegistrationInfomation(User(
-              email: _emailController.text,
-              password: _passwordController.text,
-              firstName: _firstNameController.text,
-              lastName: _lastNameController.text,
-              birthDate: _dateOfBirthController.text,
-              isActive: true));
-        //ExtendedNavigator.of(context).pushNamed(Routes.loginWidget)
-        },
+        onPressed: () {
+          return state is! RegistrationInProgress
+              ? BlocProvider.of<RegistrationBloc>(context)
+                  .add(RegistrationButtonPressed(
+                  user: User(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      firstName: _firstNameController.text,
+                      lastName: _lastNameController.text,
+                      birthDate: _dateOfBirthController.text,
+                      isActive: true),
+                  validEmailAddress: _validEmailAddress,
+                  passwordMatches: _passwordMatches,
+                  selectedDate: _selectedDate,
+                  confirmPassword: _confirmPasswordController.text,
+                ))
+              : null;
+        }, ////ExtendedNavigator.of(context).pushNamed(Routes.loginWidget)
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        color: Colors.white,
+        color: buttonColor,
         child: Text(
           'SIGN UP',
           style: TextStyle(
-            color: Color(0xFF527DAA),
+            color: Colors.white,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -150,7 +141,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
           "Password Requirements:\n\t\t•\t8 characters long\n\t\t•\tOne uppercase and One lowercase letter\n\t\t•\tOne special character",
           textAlign: TextAlign.left,
           style: TextStyle(
-              color: Colors.white,
+              color: Colors.grey,
               letterSpacing: 1.5,
               fontSize: 12.0,
               fontWeight: FontWeight.bold,
@@ -163,7 +154,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
         context: context,
         initialDate: DateTime(2000),
         firstDate: DateTime(1900),
-        lastDate: DateTime(DateTime.now().year - 13));
+        lastDate: DateTime(DateTime.now().year - 13),
+        helpText: "Please enter your D.O.B",
+        confirmText: "Confirm",
+        cancelText: "Cancel",
+        errorFormatText: "errorFormatText",
+        errorInvalidText: "errorInvalidText",
+        fieldHintText: "MM/DD/YYYY",
+        fieldLabelText: "D.O.B");
     if (picked != null && picked != _selectedDate)
       setState(() {
         _selectedDate = picked;
@@ -178,9 +176,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
           IconButton(
             icon: Icon(Icons.arrow_back),
             iconSize: 40.0,
-            color: Colors.white,
+            color: Colors.grey,
             alignment: Alignment.center,
-            onPressed: () => ExtendedNavigator.of(context).pushNamed(Routes.loginWidget),
+            onPressed: () =>
+                ExtendedNavigator.of(context).pushNamed(Routes.loginWidget),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 40.0),
@@ -211,8 +210,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
           prefixIcon: Icons.lock,
           suffixIcon: IconButton(
               icon: _textObscured
-                  ? Icon(Icons.visibility, color: Colors.white)
-                  : Icon(Icons.visibility_off, color: Colors.white),
+                  ? Icon(Icons.visibility, color: Colors.grey)
+                  : Icon(Icons.visibility_off, color: Colors.grey),
               onPressed: () {
                 setState(() {
                   _textObscured = !_textObscured;
@@ -225,11 +224,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
       checkPasswordPolicy(),
       SizedBox(height: 15.0),
       loginRegistrationTextForm(
-          _passwordConfirmKey, _passwordConfirmController, "Confirm Password",
+          _passwordConfirmKey, _confirmPasswordController, "Confirm Password",
           hintText: "Re-enter your Password",
           prefixIcon: Icons.lock,
           suffixIcon:
-              !_passwordMatches ? Icon(Icons.error, color: Colors.white) : null,
+              !_passwordMatches ? Icon(Icons.error, color: Colors.grey) : null,
           obscureText: _textObscured,
           onChanged: validateIfPasswordsAreEqual),
       SizedBox(height: 15.0),
@@ -240,7 +239,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
           showCursor: false,
           onTap: selectDate,
           functionParamters: [context]),
-      buildRegistrationButton()
+      buildRegistrationButton(state),
+      Container(
+          child: state is RegistrationInProgress
+              ? CircularProgressIndicator()
+              : null),
     ]);
   }
 
