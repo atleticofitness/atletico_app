@@ -1,4 +1,4 @@
-import 'package:atletico_app/data/token.dart';
+import 'package:atletico_app/models/token.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 

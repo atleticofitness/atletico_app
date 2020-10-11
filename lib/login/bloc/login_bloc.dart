@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:atletico_app/authentication/bloc/authentication.dart';
-import 'package:atletico_app/data/token.dart';
+import 'package:atletico_app/models/token.dart';
 import 'package:atletico_app/endpoints/authentication/atletico.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';

@@ -1,5 +1,5 @@
 import 'package:atletico_app/authentication/bloc/authentication.dart';
-import 'package:atletico_app/data/token.dart';
+import 'package:atletico_app/models/token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'authentication_states.dart';
 import 'package:flutter/material.dart';

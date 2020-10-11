@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:atletico_app/data/token.dart';
-import 'package:atletico_app/data/users.dart';
+import 'package:atletico_app/models/token.dart';
+import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/endpoints/client.dart' show dio;
 import 'package:dio/dio.dart' show DioError, Options;
 

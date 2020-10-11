@@ -41,7 +41,8 @@ class _LoginFormState extends State<LoginForm> {
         children: <Widget>[
           Theme(
             data: ThemeData(unselectedWidgetColor: buttonColor),
-            child: Checkbox(tristate: false,
+            child: Checkbox(
+              tristate: false,
               value: _rememberMe,
               checkColor: Colors.white,
               activeColor: buttonColor,
@@ -60,7 +61,6 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-
 
   Widget buildSignInWithText() {
     return Column(
@@ -121,8 +121,8 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget buildRegistrationButton() {
     return GestureDetector(
-      onTap: () => ExtendedNavigator.ofRouter<Router>()
-          .pushNamed(Routes.registrationWidget),
+      onTap: () =>
+          ExtendedNavigator.of(context).push(Routes.registrationWidget),
       child: RichText(
         text: TextSpan(
           children: [
@@ -199,8 +199,9 @@ class _LoginFormState extends State<LoginForm> {
 
   void onPressed(LoginState state) {
     if (state is! LoginInProgress)
-      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(email: _emailController.text, password: _passwordController.text));
-  } 
+      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
+          email: _emailController.text, password: _passwordController.text));
+  }
 
   @override
   Widget build(BuildContext context) {

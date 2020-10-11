@@ -2,11 +2,16 @@ import 'package:atletico_app/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final String localAtleticoURL = "http://10.0.2.2:8080/api/v1";
+final String localAtleticoURL = "http://192.168.50.197:8080/api/v1";
 
 final Color mainColor = Colors.white;
-final Color buttonColor = Color.fromARGB(255, 254, 74,86);
+final Color buttonColor = Color.fromARGB(255, 254, 74, 86);
 final hintTextStyle = TextStyle(
+  color: Colors.grey,
+  fontFamily: 'OpenSans',
+);
+
+final textStyle = TextStyle(
   color: Colors.grey,
   fontFamily: 'OpenSans',
 );
@@ -40,9 +45,7 @@ Widget loginRegistrationScaffold(BuildContext context, Widget widget) {
             Container(
               height: double.infinity,
               width: double.infinity,
-              decoration: BoxDecoration(
-                color: mainColor
-              ),
+              decoration: BoxDecoration(color: mainColor),
             ),
             Container(
               height: double.infinity,
@@ -91,7 +94,6 @@ Widget loginRegistrationTextForm(
         height: 60.0,
         child: TextFormField(
           key: key,
-          autovalidate: autoValidate,
           readOnly: readOnly,
           showCursor: showCursor,
           onChanged: (value) => onChanged != null ? onChanged(value) : null,
@@ -126,31 +128,31 @@ Widget loginRegistrationTextForm(
   );
 }
 
-  Widget buildGenericButton(Function onPressed, String label) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () => onPressed != null ? onPressed() : null,
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: buttonColor,
-        child: Text(
-          label,
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
+Widget buildGenericButton(Function onPressed, String label) {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 25.0),
+    width: double.infinity,
+    child: RaisedButton(
+      elevation: 5.0,
+      onPressed: () => onPressed != null ? onPressed() : null,
+      padding: EdgeInsets.all(15.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: buttonColor,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'OpenSans',
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
 Route routeToWidget(Widget widget, Offset offset) {
   return PageRouteBuilder(

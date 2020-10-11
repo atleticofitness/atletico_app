@@ -1,7 +1,7 @@
 import 'package:atletico_app/authentication/authentication_guard.dart';
 import 'package:atletico_app/authentication/bloc/authentication.dart';
-import 'package:atletico_app/data/token.dart';
-import 'package:atletico_app/routes/router.gr.dart';
+import 'package:atletico_app/models/token.dart';
+import 'package:atletico_app/routes/router.gr.dart' as route;
 import 'package:atletico_app/util/bloc_observer.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         builder: (context, child) {
-          child = ExtendedNavigator<Router>(
-            router: Router(),
+          child = ExtendedNavigator<route.Router>(
+            router: route.Router(),
             guards: [AuthenticationGuard()],
           );
           child = DevicePreview.appBuilder(context, child);
@@ -47,9 +47,9 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationSuccess)
-              ExtendedNavigator.of(context).pushNamed(Routes.atleticoWidget);
+              ExtendedNavigator.of(context).push(route.Routes.atleticoWidget);
             if (state is AuthenticationFailure)
-              ExtendedNavigator.of(context).pushNamed(Routes.loginWidget);
+              ExtendedNavigator.of(context).push(route.Routes.loginWidget);
 
             if (state is AuthenticationInProgress)
               return CircularProgressIndicator();

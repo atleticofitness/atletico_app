@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:atletico_app/data/users.dart';
+import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/endpoints/client.dart' show dio;
 
 Future<bool> checkIfEmailExists(String email) async {

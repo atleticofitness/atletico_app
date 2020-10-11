@@ -1,5 +1,3 @@
-import 'package:atletico_app/data/users.dart';
-import 'package:atletico_app/endpoints/registration/registration.dart';
 import 'package:atletico_app/registration/bloc/registration_bloc.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
@@ -8,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 import 'package:intl/intl.dart';
-import 'package:regexed_validator/regexed_validator.dart';
 
 class RegistrationForm extends StatefulWidget {
   RegistrationForm({Key key}) : super(key: key);
@@ -17,6 +14,156 @@ class RegistrationForm extends StatefulWidget {
   _RegistrationFormState createState() => _RegistrationFormState();
 }
 
+class _RegistrationFormState extends State<RegistrationForm> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<RegistrationBloc, RegistrationState>(
+        listener: (context, state) {
+      if (state is RegistrationFailure)
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('${state.error}'),
+          backgroundColor: Colors.black,
+        ));
+    }, child: BlocBuilder<RegistrationBloc, RegistrationState>(
+      builder: (context, state) {
+        return buildForm(context, state);
+      },
+    ));
+  }
+
+  Widget headerText() {
+    return Text(
+      'Sign Up',
+      style: TextStyle(
+        color: buttonColor,
+        fontFamily: 'OpenSans',
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget buildForm(BuildContext context, RegistrationState state) {
+    return Column(children: <Widget>[
+      Row(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            iconSize: 40.0,
+            color: Colors.grey,
+            alignment: Alignment.center,
+            onPressed: () =>
+                ExtendedNavigator.of(context).push(Routes.loginWidget),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            child: headerText(),
+          ),
+        ],
+      ),
+      SizedBox(height: 15.0),
+      EmailInput(),
+      SizedBox(height: 15.0),
+      PasswordInput(),
+    ]);
+  }
+}
+
+class EmailInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RegistrationBloc, MyFormState>(
+      buildWhen: (previous, current) => previous.email != current.email,
+      builder: (context, state) {
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Email",
+                style: labelStyle,
+              ),
+              SizedBox(height: 10.0),
+              Container(
+                alignment: Alignment.centerLeft,
+                decoration: boxDecorationStyle,
+                height: 60.0,
+                child: TextFormField(
+                  maxLines: 1,
+                  initialValue: state.email,
+                  style: textStyle,
+                  decoration: InputDecoration(
+                    hintText: "example@example.com",
+                    hintStyle: hintTextStyle,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(top: 14.0),
+                    prefixIcon: Icon(Icons.email, color: Colors.grey),
+                    suffixIcon: (state.status == FormStatus.invalid)
+                        ? Icon(Icons.error, color: buttonColor)
+                        : null,
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    context
+                        .bloc<RegistrationBloc>()
+                        .add(RegistrationEmailForm(email: value));
+                  },
+                ),
+              ),
+            ]);
+      },
+    );
+  }
+}
+
+class PasswordInput extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RegistrationBloc, MyFormState>(
+      buildWhen: (previous, current) => previous.password != current.password || previous.obscured != current.obscured,
+      builder: (context, state) {
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Password",
+                style: labelStyle,
+              ),
+              SizedBox(height: 10.0),
+              Container(
+                alignment: Alignment.centerLeft,
+                decoration: boxDecorationStyle,
+                height: 60.0,
+                child: TextFormField(
+                  maxLines: 1,
+                  initialValue: state.password,
+                  style: textStyle,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: "password",
+                    hintStyle: hintTextStyle,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(top: 14.0),
+                    prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                    suffixIcon: IconButton(
+                      icon: state.obscured
+                          ? Icon(Icons.visibility, color: Colors.grey)
+                          : Icon(Icons.visibility_off, color: Colors.grey),
+                      onPressed: () =>
+                        context.bloc<RegistrationBloc>().add(RegistrationPasswordForm(obscured: !state.obscured)),
+                    ),
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  onChanged: (value) => context.bloc<RegistrationBloc>().add(RegistrationPasswordForm(password: value)),
+                ),
+              ),
+            ]);
+      },
+    );
+  }
+}
+
+/*
 class _RegistrationFormState extends State<RegistrationForm> {
   final _firstNameKey = GlobalKey<FormFieldState>();
   final _lastNameKey = GlobalKey<FormFieldState>();
@@ -71,7 +218,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   confirmPassword: _confirmPasswordController.text,
                 ))
               : null;
-        }, ////ExtendedNavigator.of(context).pushNamed(Routes.loginWidget)
+        }, ////ExtendedNavigator.of(context).push(Routes.loginWidget)
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -95,7 +242,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     if (value.isEmpty) return null;
     bool validName = validator.name(value);
     if (validName) return null;
-    return "There are characters thr system does not recognize";
+    return "There are characters the system does not recognize";
   }
 
   String validateEmail(String value) {
@@ -108,7 +255,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     var emailInUse = checkIfEmailExists(value);
     if (emailInUse != null)
       emailInUse.then((exist) {
-        if (exist)
+        if (exist == null)
           setState(() => _validEmailAddress = false);
         else
           setState(() => _validEmailAddress = true);
@@ -179,7 +326,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             color: Colors.grey,
             alignment: Alignment.center,
             onPressed: () =>
-                ExtendedNavigator.of(context).pushNamed(Routes.loginWidget),
+                ExtendedNavigator.of(context).push(Routes.loginWidget),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 40.0),
@@ -241,9 +388,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
           functionParamters: [context]),
       buildRegistrationButton(state),
       Container(
-          child: state is RegistrationInProgress
-              ? CircularProgressIndicator()
-              : null),
+        child: Builder(builder: (context) {
+          if (state is RegistrationInProgress)
+            return CircularProgressIndicator();
+          else if (state is RegistrationComplete)
+            ExtendedNavigator.of(context).push(Routes.loginWidget);
+          return Container();
+        }),
+      ),
     ]);
   }
 
@@ -263,3 +415,4 @@ class _RegistrationFormState extends State<RegistrationForm> {
     ));
   }
 }
+*/

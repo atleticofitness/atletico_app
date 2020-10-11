@@ -1,4 +1,4 @@
-import 'package:atletico_app/data/token.dart';
+import 'package:atletico_app/models/token.dart';
 import 'package:auto_route/auto_route.dart';
 
 class AuthenticationGuard extends RouteGuard {
