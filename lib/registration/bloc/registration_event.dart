@@ -47,11 +47,9 @@ class RegistrationEmailForm extends RegistrationEvent {
 
   @override
   FormStatus validate() {
-    if (email.isEmpty)
-      return FormStatus.undecided;
-  
-    if (validator.email(email))
-      return FormStatus.valid;
+    if (email.isEmpty) return FormStatus.undecided;
+
+    if (validator.email(email)) return FormStatus.valid;
 
     return FormStatus.invalid;
   }
@@ -67,7 +65,8 @@ class RegistrationPasswordForm extends RegistrationEvent {
   List<Object> get props => [password, obscured];
 
   @override
-  String toString() => 'RegistrationPasswordForm { password: $password, obscured: $obscured }';
+  String toString() =>
+      'RegistrationPasswordForm { password: $password, obscured: $obscured }';
 
   @override
   FormStatus validate() {

@@ -116,11 +116,12 @@ class EmailInput extends StatelessWidget {
 }
 
 class PasswordInput extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegistrationBloc, MyFormState>(
-      buildWhen: (previous, current) => previous.password != current.password || previous.obscured != current.obscured,
+      buildWhen: (previous, current) =>
+          previous.password != current.password ||
+          previous.obscured != current.obscured,
       builder: (context, state) {
         return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,12 +150,14 @@ class PasswordInput extends StatelessWidget {
                       icon: state.obscured
                           ? Icon(Icons.visibility, color: Colors.grey)
                           : Icon(Icons.visibility_off, color: Colors.grey),
-                      onPressed: () =>
-                        context.bloc<RegistrationBloc>().add(RegistrationPasswordForm(obscured: !state.obscured)),
+                      onPressed: () => context.bloc<RegistrationBloc>().add(
+                          RegistrationPasswordForm(obscured: !state.obscured)),
                     ),
                   ),
                   keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) => context.bloc<RegistrationBloc>().add(RegistrationPasswordForm(password: value)),
+                  onChanged: (value) => context
+                      .bloc<RegistrationBloc>()
+                      .add(RegistrationPasswordForm(password: value)),
                 ),
               ),
             ]);

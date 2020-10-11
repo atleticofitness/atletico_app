@@ -20,7 +20,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, MyFormState> {
       yield state.copyWith(email: event.email, status: event.validate());
 
     if (event is RegistrationPasswordForm)
-      yield state.copyWith(password: event.password, obscured: event.obscured, status: event.validate());
-
+      yield state.copyWith(
+          password: event.password,
+          obscured: event.obscured,
+          status: event.validate());
   }
 }
