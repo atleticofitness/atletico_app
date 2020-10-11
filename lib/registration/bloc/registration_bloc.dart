@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:atletico_app/endpoints/registration/registration.dart';
 import 'package:atletico_app/models/users.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,9 +21,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, MyFormState> {
       yield state.copyWith(email: event.email, status: event.validate());
 
     if (event is RegistrationPasswordForm)
-      yield state.copyWith(
-          password: event.password,
-          obscured: event.obscured,
-          status: event.validate());
+      yield state.copyWith(password: event.password, obscured: event.obscured);
   }
 }

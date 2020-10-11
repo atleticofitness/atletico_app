@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/endpoints/client.dart' show dio;
 

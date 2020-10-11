@@ -49,7 +49,13 @@ class RegistrationEmailForm extends RegistrationEvent {
   FormStatus validate() {
     if (email.isEmpty) return FormStatus.undecided;
 
-    if (validator.email(email)) return FormStatus.valid;
+    var emailInUse = checkIfEmailExists(email);
+    if (emailInUse != null)
+      emailInUse.then((exist) {
+        if (exist == null)
+          return FormStatus.invalid;
+        else if (validator.email(email)) return FormStatus.valid;
+      });
 
     return FormStatus.invalid;
   }

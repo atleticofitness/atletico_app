@@ -139,7 +139,7 @@ class PasswordInput extends StatelessWidget {
                   maxLines: 1,
                   initialValue: state.password,
                   style: textStyle,
-                  obscureText: true,
+                  obscureText: state.obscured,
                   decoration: InputDecoration(
                     hintText: "password",
                     hintStyle: hintTextStyle,
