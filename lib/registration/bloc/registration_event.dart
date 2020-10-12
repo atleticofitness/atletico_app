@@ -63,19 +63,31 @@ class RegistrationEmailForm extends RegistrationEvent {
 
 class RegistrationPasswordForm extends RegistrationEvent {
   final String password;
+  final String passwordConfirm;
   final bool obscured;
 
-  const RegistrationPasswordForm({this.password, this.obscured});
+  const RegistrationPasswordForm(
+      {this.password, this.passwordConfirm, this.obscured});
 
   @override
-  List<Object> get props => [password, obscured];
+  List<Object> get props => [password, passwordConfirm, obscured];
 
   @override
   String toString() =>
-      'RegistrationPasswordForm { password: $password, obscured: $obscured }';
+      'RegistrationPasswordForm { password: $password, passwordConfirm: $passwordConfirm, obscured: $obscured }';
 
   @override
   FormStatus validate() {
-    throw UnimplementedError();
+    if (passwordConfirm.isEmpty) return FormStatus.undecided;
+
+    if (password.isEmpty)
+      if (passwordConfirm.isNotEmpty)
+        return FormStatus.undecided;
+
+    if (validator.password(password))
+      if (password == passwordConfirm)
+        return FormStatus.valid;
+
+    return FormStatus.invalid;
   }
 }

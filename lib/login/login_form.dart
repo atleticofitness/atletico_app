@@ -40,12 +40,12 @@ class _LoginFormState extends State<LoginForm> {
       child: Row(
         children: <Widget>[
           Theme(
-            data: ThemeData(unselectedWidgetColor: buttonColor),
+            data: ThemeData(unselectedWidgetColor: secondaryColor),
             child: Checkbox(
               tristate: false,
               value: _rememberMe,
               checkColor: Colors.white,
-              activeColor: buttonColor,
+              activeColor: secondaryColor,
               onChanged: (value) {
                 setState(() {
                   _rememberMe = value;
@@ -89,7 +89,7 @@ class _LoginFormState extends State<LoginForm> {
         width: 60.0,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: buttonColor,
+          color: secondaryColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
@@ -152,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
     return Text(
       'Sign In',
       style: TextStyle(
-        color: buttonColor,
+        color: secondaryColor,
         fontFamily: 'OpenSans',
         fontSize: 30.0,
         fontWeight: FontWeight.bold,

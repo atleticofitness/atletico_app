@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 
 final String localAtleticoURL = "http://192.168.50.197:8080/api/v1";
 
-final Color mainColor = Colors.white;
-final Color buttonColor = Color.fromARGB(255, 254, 74, 86);
+final Color primaryColor = Colors.white;
+final Color secondaryColor = Color.fromARGB(255, 254, 74, 86);
 final hintTextStyle = TextStyle(
   color: Colors.grey,
   fontFamily: 'OpenSans',
@@ -45,7 +45,7 @@ Widget loginRegistrationScaffold(BuildContext context, Widget widget) {
             Container(
               height: double.infinity,
               width: double.infinity,
-              decoration: BoxDecoration(color: mainColor),
+              decoration: BoxDecoration(color: primaryColor),
             ),
             Container(
               height: double.infinity,
@@ -139,7 +139,7 @@ Widget buildGenericButton(Function onPressed, String label) {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      color: buttonColor,
+      color: secondaryColor,
       child: Text(
         label,
         style: TextStyle(

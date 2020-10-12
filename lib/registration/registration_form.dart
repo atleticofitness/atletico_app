@@ -35,7 +35,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     return Text(
       'Sign Up',
       style: TextStyle(
-        color: buttonColor,
+        color: secondaryColor,
         fontFamily: 'OpenSans',
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
@@ -65,6 +65,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
       EmailInput(),
       SizedBox(height: 15.0),
       PasswordInput(),
+      SizedBox(height: 15.0),
+      PasswordConfirmInput(),
     ]);
   }
 }
@@ -98,7 +100,7 @@ class EmailInput extends StatelessWidget {
                     contentPadding: EdgeInsets.only(top: 14.0),
                     prefixIcon: Icon(Icons.email, color: Colors.grey),
                     suffixIcon: (state.status == FormStatus.invalid)
-                        ? Icon(Icons.error, color: buttonColor)
+                        ? Icon(Icons.error, color: secondaryColor)
                         : null,
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -158,6 +160,55 @@ class PasswordInput extends StatelessWidget {
                   onChanged: (value) => context
                       .bloc<RegistrationBloc>()
                       .add(RegistrationPasswordForm(password: value)),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              FlutterPasswordStrength(password: state.password),
+            ]);
+      },
+    );
+  }
+}
+
+class PasswordConfirmInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RegistrationBloc, MyFormState>(
+      buildWhen: (previous, current) =>
+          previous.passwordConfirm != current.passwordConfirm ||
+          previous.obscured != current.obscured,
+      builder: (context, state) {
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Confirm Password",
+                style: labelStyle,
+              ),
+              SizedBox(height: 10.0),
+              Container(
+                alignment: Alignment.centerLeft,
+                decoration: boxDecorationStyle,
+                height: 60.0,
+                child: TextFormField(
+                  maxLines: 1,
+                  initialValue: state.passwordConfirm,
+                  style: textStyle,
+                  obscureText: state.obscured,
+                  decoration: InputDecoration(
+                    hintText: "confirm password",
+                    hintStyle: hintTextStyle,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(top: 14.0),
+                    prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                    suffixIcon: (state.status == FormStatus.invalid)
+                        ? Icon(Icons.error, color: secondaryColor)
+                        : null,
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  onChanged: (value) => context
+                      .bloc<RegistrationBloc>()
+                      .add(RegistrationPasswordForm(passwordConfirm: value)),
                 ),
               ),
             ]);
