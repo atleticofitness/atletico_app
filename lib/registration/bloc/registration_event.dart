@@ -8,29 +8,37 @@ abstract class RegistrationEvent extends Equatable {
 
 class RegistrationButtonPressed extends RegistrationEvent {
   final User user;
-  final bool validEmailAddress;
-  final bool passwordMatches;
-  final DateTime selectedDate;
-  final String confirmPassword;
 
-  const RegistrationButtonPressed(
-      {@required this.user,
-      @required this.validEmailAddress,
-      @required this.passwordMatches,
-      @required this.selectedDate,
-      @required this.confirmPassword});
+  const RegistrationButtonPressed({@required this.user});
 
   @override
-  List<Object> get props =>
-      [user, validEmailAddress, passwordMatches, selectedDate, confirmPassword];
+  List<Object> get props => [user];
 
   @override
-  String toString() =>
-      'RegistrationButton Pressed { user: $user valid_email: $validEmailAddress password_matches: $passwordMatches selected_date: $selectedDate confirm_password: $confirmPassword}';
+  String toString() => 'RegistrationButtonPressed { user: $user }';
 
   @override
   FormStatus validate() {
     throw UnimplementedError();
+  }
+}
+
+class RegistrationNameForm extends RegistrationEvent {
+  final String firstName;
+  final String lastName;
+
+  const RegistrationNameForm({this.firstName, this.lastName});
+
+  @override
+  List<Object> get props => [firstName, lastName];
+
+  @override
+  String toString() =>
+      'RegistrationNameForm { firstName: $firstName, lastName: $lastName }';
+
+  @override
+  FormStatus validate() {
+    return FormStatus.undecided;
   }
 }
 
@@ -80,14 +88,29 @@ class RegistrationPasswordForm extends RegistrationEvent {
   FormStatus validate() {
     if (passwordConfirm.isEmpty) return FormStatus.undecided;
 
-    if (password.isEmpty)
-      if (passwordConfirm.isNotEmpty)
-        return FormStatus.undecided;
+    if (password.isEmpty) if (passwordConfirm.isNotEmpty)
+      return FormStatus.undecided;
 
-    if (validator.password(password))
-      if (password == passwordConfirm)
-        return FormStatus.valid;
+    if (validator.password(password)) if (password == passwordConfirm)
+      return FormStatus.valid;
 
+    return FormStatus.invalid;
+  }
+}
+
+class RegistrationBirthDayForm extends RegistrationEvent {
+  final String dob;
+
+  const RegistrationBirthDayForm({this.dob});
+
+  @override
+  List<Object> get props => [dob];
+
+  @override
+  String toString() => 'RegistrationBirthDayForm { dob: $dob }';
+
+  @override
+  FormStatus validate() {
     return FormStatus.invalid;
   }
 }
