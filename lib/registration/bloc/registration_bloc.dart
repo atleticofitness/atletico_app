@@ -17,9 +17,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, MyFormState> {
   Stream<MyFormState> mapEventToState(
     RegistrationEvent event,
   ) async* {
+    if (event is RegistrationFirstNameForm)
+      yield state.copyWith(
+          firstName: event.firstName, status: event.validate());
 
-    if (event is RegistrationNameForm)
-      yield state.copyWith(firstName: event.firstName, lastName: event.lastName, status: event.validate());
+    if (event is RegistrationLastNameForm)
+      yield state.copyWith(lastName: event.lastName, status: event.validate());
 
     if (event is RegistrationEmailForm)
       yield state.copyWith(email: event.email, status: event.validate());
@@ -29,10 +32,16 @@ class RegistrationBloc extends Bloc<RegistrationEvent, MyFormState> {
           password: event.password,
           obscured: event.obscured,
           status: event.validate());
-  
+
     if (event is RegistrationBirthDayForm)
-      yield state.copyWith(birthDate: event.dob, status: event.validate());
+      yield state.copyWith(
+          birthDate: event.birthDate, status: event.validate());
 
-
+    if (event is RegistrationButtonPressed) {
+      yield state.copyWith(status: FormStatus.inprogress);
+      //Do something
+      await Future<void>.delayed(const Duration(seconds: 1));
+      yield state.copyWith(status: FormStatus.complete);
+    }
   }
 }

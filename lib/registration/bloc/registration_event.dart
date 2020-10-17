@@ -23,22 +23,41 @@ class RegistrationButtonPressed extends RegistrationEvent {
   }
 }
 
-class RegistrationNameForm extends RegistrationEvent {
+class RegistrationFirstNameForm extends RegistrationEvent {
   final String firstName;
-  final String lastName;
 
-  const RegistrationNameForm({this.firstName, this.lastName});
-
-  @override
-  List<Object> get props => [firstName, lastName];
+  const RegistrationFirstNameForm({@required this.firstName});
 
   @override
-  String toString() =>
-      'RegistrationNameForm { firstName: $firstName, lastName: $lastName }';
+  List<Object> get props => [firstName];
+
+  @override
+  String toString() => 'RegistrationFirstNameForm { firstName: $firstName }';
 
   @override
   FormStatus validate() {
-    return FormStatus.undecided;
+    if (firstName.isEmpty) return FormStatus.undecided;
+
+    return FormStatus.valid;
+  }
+}
+
+class RegistrationLastNameForm extends RegistrationEvent {
+  final String lastName;
+
+  const RegistrationLastNameForm({@required this.lastName});
+
+  @override
+  List<Object> get props => [lastName];
+
+  @override
+  String toString() => 'RegistrationLastNameForm { lastName: $lastName }';
+
+  @override
+  FormStatus validate() {
+    if (lastName.isEmpty) return FormStatus.undecided;
+
+    return FormStatus.valid;
   }
 }
 
@@ -99,18 +118,22 @@ class RegistrationPasswordForm extends RegistrationEvent {
 }
 
 class RegistrationBirthDayForm extends RegistrationEvent {
-  final String dob;
+  final String birthDate;
 
-  const RegistrationBirthDayForm({this.dob});
-
-  @override
-  List<Object> get props => [dob];
+  const RegistrationBirthDayForm({@required this.birthDate});
 
   @override
-  String toString() => 'RegistrationBirthDayForm { dob: $dob }';
+  List<Object> get props => [birthDate];
+
+  @override
+  String toString() => 'RegistrationBirthDayForm { birthDate: $birthDate }';
 
   @override
   FormStatus validate() {
-    return FormStatus.invalid;
+    if (this.birthDate.isEmpty) return FormStatus.undecided;
+    DateTime dob = DateTime.parse(this.birthDate);
+    int age = DateTime.now().year - dob.year;
+    if (age < 13) return FormStatus.invalid;
+    return FormStatus.valid;
   }
 }

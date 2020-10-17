@@ -23,7 +23,7 @@ class RegistrationFailure extends RegistrationState {
   String toString() => 'RegistrationFailure { error: $error }';
 }
 
-enum FormStatus { undecided, valid, invalid }
+enum FormStatus { undecided, valid, invalid, inprogress, complete }
 
 class MyFormState extends RegistrationState {
   const MyFormState({
