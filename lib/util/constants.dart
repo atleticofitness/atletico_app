@@ -2,7 +2,7 @@ import 'package:atletico_app/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final String localAtleticoURL = "http://192.168.50.197:8080/api/v1";
+final String localAtleticoURL = "https://atletico.fitness/api/v1";
 
 final Color primaryColor = Colors.white;
 final Color secondaryColor = Color.fromARGB(255, 254, 74, 86);

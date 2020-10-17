@@ -4,6 +4,7 @@ import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
 
@@ -339,10 +340,12 @@ class DateOfBirthInput extends StatelessWidget {
                 height: 60.0,
                 child: TextFormField(
                   maxLines: 1,
+                  maxLength: 8,
                   initialValue: state.birthDate,
                   style: textStyle,
                   decoration: InputDecoration(
-                    hintText: "Birth Date",
+                    counterText: '',
+                    hintText: "YYYY/MM/DD",
                     hintStyle: hintTextStyle,
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(top: 14.0),
@@ -353,7 +356,7 @@ class DateOfBirthInput extends StatelessWidget {
                             ? Icon(Icons.error, color: Colors.green)
                             : null,
                   ),
-                  keyboardType: TextInputType.datetime,
+                  keyboardType: TextInputType.number,
                   onChanged: (value) => context
                       .bloc<RegistrationBloc>()
                       .add(RegistrationBirthDayForm(birthDate: value)),

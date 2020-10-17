@@ -3,7 +3,9 @@ part of 'registration_bloc.dart';
 abstract class RegistrationEvent extends Equatable {
   const RegistrationEvent();
 
-  FormStatus validate();
+  Future<FormStatus> validate() async {
+    throw UnimplementedError();
+  }
 }
 
 class RegistrationButtonPressed extends RegistrationEvent {
@@ -18,7 +20,7 @@ class RegistrationButtonPressed extends RegistrationEvent {
   String toString() => 'RegistrationButtonPressed { user: $user }';
 
   @override
-  FormStatus validate() {
+  Future<FormStatus> validate() async {
     int nulls = 0;
     for (var prop in user.props) {
       if (prop == null) nulls++;
@@ -41,7 +43,7 @@ class RegistrationFirstNameForm extends RegistrationEvent {
   String toString() => 'RegistrationFirstNameForm { firstName: $firstName }';
 
   @override
-  FormStatus validate() {
+  Future<FormStatus> validate() async {
     if (firstName.isEmpty) return FormStatus.undecided;
 
     return FormStatus.valid;
@@ -60,7 +62,7 @@ class RegistrationLastNameForm extends RegistrationEvent {
   String toString() => 'RegistrationLastNameForm { lastName: $lastName }';
 
   @override
-  FormStatus validate() {
+  Future<FormStatus> validate() async {
     if (lastName.isEmpty) return FormStatus.undecided;
 
     return FormStatus.valid;
@@ -79,18 +81,24 @@ class RegistrationEmailForm extends RegistrationEvent {
   String toString() => 'RegistrationEmailForm { email: $email }';
 
   @override
-  FormStatus validate() {
+  Future<FormStatus> validate() async {
     if (email.isEmpty) return FormStatus.undecided;
-
-    var emailInUse = checkIfEmailExists(email);
-    if (emailInUse != null)
-      emailInUse.then((exist) {
-        if (exist == null)
-          return FormStatus.invalid;
-        else if (validator.email(email)) return FormStatus.valid;
-      });
-
-    return FormStatus.invalid;
+    if (!email.contains("@")) return FormStatus.undecided;
+    if (!email.contains(".")) return FormStatus.undecided;
+    if (!validator.email(email)) return FormStatus.invalid;
+    var box = Hive.box("user_information");
+    if (box.get("cached_email")) {
+      return FormStatus.valid;
+    }
+    Future.delayed(Duration(seconds: 3), () async {
+      var emailInUse = await checkIfEmailExists(email);
+      if (emailInUse == null) {
+        box.put("cached_email", email);
+        return FormStatus.valid;
+      }
+      return FormStatus.invalid;
+    });
+    return FormStatus.undecided;
   }
 }
 
@@ -110,7 +118,7 @@ class RegistrationPasswordForm extends RegistrationEvent {
       'RegistrationPasswordForm { password: $password, passwordConfirm: $passwordConfirm, obscured: $obscured }';
 
   @override
-  FormStatus validate() {
+  Future<FormStatus> validate() async {
     if (passwordConfirm.isEmpty) return FormStatus.undecided;
 
     if (password.isEmpty) if (passwordConfirm.isNotEmpty)
@@ -135,11 +143,30 @@ class RegistrationBirthDayForm extends RegistrationEvent {
   String toString() => 'RegistrationBirthDayForm { birthDate: $birthDate }';
 
   @override
-  FormStatus validate() {
+  Future<FormStatus> validate() async {
     if (this.birthDate.isEmpty) return FormStatus.undecided;
     DateTime dob = DateTime.parse(this.birthDate);
+    DateTime now = DateTime.now();
+    if (dob.month > 12 ||
+        dob.month < 1 ||
+        dob.day < 1 ||
+        dob.day > daysInMonth(dob.month, dob.year) ||
+        dob.year < 1810 ||
+        (dob.year > now.year && dob.day > now.day && dob.month > now.month))
+      return FormStatus.invalid;
     int age = DateTime.now().year - dob.year;
     if (age < 13) return FormStatus.invalid;
     return FormStatus.valid;
   }
+
+  int daysInMonth(int month, int year) {
+    int days = 28 +
+        (month + (month / 8).floor()) % 2 +
+        2 % month +
+        2 * (1 / month).floor();
+    return (isLeapYear(year) && month == 2) ? 29 : days;
+  }
+
+  bool isLeapYear(int year) =>
+      ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
 }

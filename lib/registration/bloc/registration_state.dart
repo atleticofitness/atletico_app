@@ -7,18 +7,6 @@ abstract class RegistrationState extends Equatable {
   List<Object> get props => [];
 }
 
-class RegistrationFailure extends RegistrationState {
-  final String error;
-
-  const RegistrationFailure({@required this.error});
-
-  @override
-  List<Object> get props => [error];
-
-  @override
-  String toString() => 'RegistrationFailure { error: $error }';
-}
-
 enum FormStatus { undecided, valid, invalid, inprogress, complete }
 
 class RegistrationFormState extends RegistrationState {
