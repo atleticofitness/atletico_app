@@ -10,11 +10,11 @@ import 'package:regexed_validator/regexed_validator.dart';
 part 'registration_event.dart';
 part 'registration_state.dart';
 
-class RegistrationBloc extends Bloc<RegistrationEvent, MyFormState> {
-  RegistrationBloc() : super(MyFormState());
+class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
+  RegistrationBloc() : super(RegistrationFormState());
 
   @override
-  Stream<MyFormState> mapEventToState(
+  Stream<RegistrationFormState> mapEventToState(
     RegistrationEvent event,
   ) async* {
     if (event is RegistrationFirstNameForm)
@@ -38,10 +38,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, MyFormState> {
           birthDate: event.birthDate, status: event.validate());
 
     if (event is RegistrationButtonPressed) {
-      yield state.copyWith(status: FormStatus.inprogress);
-      //Do something
-      await Future<void>.delayed(const Duration(seconds: 1));
-      yield state.copyWith(status: FormStatus.complete);
+      yield state.copyWith(status: event.validate());
+      if (state.status == FormStatus.valid) {
+        await sendRegistrationInfomation(event.user);
+        await Future<void>.delayed(const Duration(seconds: 1));
+        yield state.copyWith(status: FormStatus.complete);
+      }
     }
   }
 }

@@ -19,7 +19,13 @@ class RegistrationButtonPressed extends RegistrationEvent {
 
   @override
   FormStatus validate() {
-    throw UnimplementedError();
+    int nulls = 0;
+    for (var prop in user.props) {
+      if (prop == null) nulls++;
+    }
+    if (nulls == user.props.length) return FormStatus.undecided;
+    if (nulls == 1) return FormStatus.inprogress;
+    return FormStatus.invalid;
   }
 }
 

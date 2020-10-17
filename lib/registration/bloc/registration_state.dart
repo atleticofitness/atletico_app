@@ -7,10 +7,6 @@ abstract class RegistrationState extends Equatable {
   List<Object> get props => [];
 }
 
-class RegistrationInitial extends RegistrationState {}
-
-class RegistrationInProgress extends RegistrationState {}
-
 class RegistrationFailure extends RegistrationState {
   final String error;
 
@@ -25,8 +21,8 @@ class RegistrationFailure extends RegistrationState {
 
 enum FormStatus { undecided, valid, invalid, inprogress, complete }
 
-class MyFormState extends RegistrationState {
-  const MyFormState({
+class RegistrationFormState extends RegistrationState {
+  const RegistrationFormState({
     this.firstName = "",
     this.lastName = "",
     this.email = "",
@@ -46,7 +42,7 @@ class MyFormState extends RegistrationState {
   final String birthDate;
   final FormStatus status;
 
-  MyFormState copyWith({
+  RegistrationFormState copyWith({
     String firstName,
     String lastName,
     String email,
@@ -56,7 +52,7 @@ class MyFormState extends RegistrationState {
     String birthDate,
     FormStatus status,
   }) {
-    return MyFormState(
+    return RegistrationFormState(
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,

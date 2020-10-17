@@ -6,7 +6,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
-import 'package:intl/intl.dart';
 
 class RegistrationForm extends StatefulWidget {
   RegistrationForm({Key key}) : super(key: key);
@@ -18,18 +17,12 @@ class RegistrationForm extends StatefulWidget {
 class _RegistrationFormState extends State<RegistrationForm> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
+    return BlocListener<RegistrationBloc, RegistrationFormState>(
         listener: (context, state) {
-      if (state is RegistrationFailure)
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('${state.error}'),
-          backgroundColor: Colors.black,
-        ));
-    }, child: BlocBuilder<RegistrationBloc, RegistrationState>(
-      builder: (context, state) {
-        return buildForm(context, state);
-      },
-    ));
+          if (state.status == FormStatus.complete)
+            ExtendedNavigator.of(context).push(Routes.loginWidget);
+        },
+        child: buildForm(context));
   }
 
   Widget headerText() {
@@ -44,7 +37,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  Widget buildForm(BuildContext context, RegistrationState state) {
+  Widget buildForm(BuildContext context) {
     return Column(children: <Widget>[
       Row(
         children: <Widget>[
@@ -83,7 +76,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 class FirstNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.firstName != current.firstName,
       builder: (context, state) {
         return Column(
@@ -110,7 +103,9 @@ class FirstNameInput extends StatelessWidget {
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
                     suffixIcon: (state.status == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : null,
+                        : (state.status == FormStatus.valid)
+                            ? Icon(Icons.error, color: Colors.green)
+                            : null,
                   ),
                   keyboardType: TextInputType.name,
                   onChanged: (value) {
@@ -129,7 +124,7 @@ class FirstNameInput extends StatelessWidget {
 class LastNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.lastName != current.lastName,
       builder: (context, state) {
         return Column(
@@ -156,7 +151,9 @@ class LastNameInput extends StatelessWidget {
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
                     suffixIcon: (state.status == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : null,
+                        : (state.status == FormStatus.valid)
+                            ? Icon(Icons.error, color: Colors.green)
+                            : null,
                   ),
                   keyboardType: TextInputType.name,
                   onChanged: (value) {
@@ -175,7 +172,7 @@ class LastNameInput extends StatelessWidget {
 class EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return Column(
@@ -202,7 +199,9 @@ class EmailInput extends StatelessWidget {
                     prefixIcon: Icon(Icons.email, color: Colors.grey),
                     suffixIcon: (state.status == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : null,
+                        : (state.status == FormStatus.valid)
+                            ? Icon(Icons.error, color: Colors.green)
+                            : null,
                   ),
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
@@ -221,7 +220,7 @@ class EmailInput extends StatelessWidget {
 class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) =>
           previous.password != current.password ||
           previous.obscured != current.obscured,
@@ -274,7 +273,7 @@ class PasswordInput extends StatelessWidget {
 class PasswordConfirmInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) =>
           previous.passwordConfirm != current.passwordConfirm ||
           previous.obscured != current.obscured,
@@ -304,7 +303,9 @@ class PasswordConfirmInput extends StatelessWidget {
                     prefixIcon: Icon(Icons.lock, color: Colors.grey),
                     suffixIcon: (state.status == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : null,
+                        : (state.status == FormStatus.valid)
+                            ? Icon(Icons.error, color: Colors.green)
+                            : null,
                   ),
                   keyboardType: TextInputType.visiblePassword,
                   onChanged: (value) => context
@@ -321,7 +322,7 @@ class PasswordConfirmInput extends StatelessWidget {
 class DateOfBirthInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.birthDate != current.birthDate,
       builder: (context, state) {
         return Column(
@@ -348,7 +349,9 @@ class DateOfBirthInput extends StatelessWidget {
                     prefixIcon: Icon(Icons.calendar_today, color: Colors.grey),
                     suffixIcon: (state.status == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : null,
+                        : (state.status == FormStatus.valid)
+                            ? Icon(Icons.error, color: Colors.green)
+                            : null,
                   ),
                   keyboardType: TextInputType.datetime,
                   onChanged: (value) => context
@@ -365,7 +368,7 @@ class DateOfBirthInput extends StatelessWidget {
 class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, MyFormState>(
+    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return Container(
@@ -374,19 +377,21 @@ class SubmitButton extends StatelessWidget {
             child: RaisedButton(
               elevation: 5.0,
               onPressed: () {
-                return state is! RegistrationInProgress
-                    ? BlocProvider.of<RegistrationBloc>(context).add(
-                        RegistrationButtonPressed(
-                          user: User(
-                              email: state.email,
-                              password: state.password,
-                              firstName: state.firstName,
-                              lastName: state.lastName,
-                              birthDate: state.birthDate,
-                              isActive: true),
-                        ),
-                      )
-                    : null;
+                if (state.status != FormStatus.complete) {
+                  if (state.status != FormStatus.inprogress)
+                    return BlocProvider.of<RegistrationBloc>(context).add(
+                      RegistrationButtonPressed(
+                        user: User(
+                            email: state.email,
+                            password: state.password,
+                            firstName: state.firstName,
+                            lastName: state.lastName,
+                            birthDate: state.birthDate,
+                            isActive: true),
+                      ),
+                    );
+                }
+                return null;
               }, ////ExtendedNavigator.of(context).push(Routes.loginWidget)
               padding: EdgeInsets.all(15.0),
               shape: RoundedRectangleBorder(
