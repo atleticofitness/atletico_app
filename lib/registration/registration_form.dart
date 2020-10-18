@@ -65,8 +65,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
       SizedBox(height: 15.0),
       PasswordInput(),
       SizedBox(height: 15.0),
-      PasswordConfirmInput(),
-      SizedBox(height: 15.0),
       DateOfBirthInput(),
       SizedBox(height: 15.0),
       SubmitButton(),
@@ -271,55 +269,6 @@ class PasswordInput extends StatelessWidget {
   }
 }
 
-class PasswordConfirmInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, RegistrationFormState>(
-      buildWhen: (previous, current) =>
-          previous.passwordConfirm != current.passwordConfirm ||
-          previous.obscured != current.obscured,
-      builder: (context, state) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Confirm Password",
-                style: labelStyle,
-              ),
-              SizedBox(height: 10.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                decoration: boxDecorationStyle,
-                height: 60.0,
-                child: TextFormField(
-                  maxLines: 1,
-                  initialValue: state.passwordConfirm,
-                  style: textStyle,
-                  obscureText: state.obscured,
-                  decoration: InputDecoration(
-                    hintText: "confirm password",
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 14.0),
-                    prefixIcon: Icon(Icons.lock, color: Colors.grey),
-                    suffixIcon: (state.status == FormStatus.invalid)
-                        ? Icon(Icons.error, color: secondaryColor)
-                        : (state.status == FormStatus.valid)
-                            ? Icon(Icons.error, color: Colors.green)
-                            : null,
-                  ),
-                  keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) => context
-                      .bloc<RegistrationBloc>()
-                      .add(RegistrationPasswordForm(passwordConfirm: value)),
-                ),
-              ),
-            ]);
-      },
-    );
-  }
-}
-
 class DateOfBirthInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -345,7 +294,7 @@ class DateOfBirthInput extends StatelessWidget {
                   style: textStyle,
                   decoration: InputDecoration(
                     counterText: '',
-                    hintText: "YYYY/MM/DD",
+                    hintText: "YYYYMMDD",
                     hintStyle: hintTextStyle,
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(top: 14.0),
@@ -395,7 +344,7 @@ class SubmitButton extends StatelessWidget {
                     );
                 }
                 return null;
-              }, ////ExtendedNavigator.of(context).push(Routes.loginWidget)
+              },
               padding: EdgeInsets.all(15.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),

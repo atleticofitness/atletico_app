@@ -18,34 +18,39 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
   Stream<RegistrationFormState> mapEventToState(
     RegistrationEvent event,
   ) async* {
-    if (event is RegistrationFirstNameForm)
-      yield state.copyWith(
-          firstName: event.firstName, status: await event.validate());
+    try {
+      if (event is RegistrationFirstNameForm)
+        yield state.copyWith(
+            firstName: event.firstName, status: await event.validate());
 
-    if (event is RegistrationLastNameForm)
-      yield state.copyWith(
-          lastName: event.lastName, status: await event.validate());
+      if (event is RegistrationLastNameForm)
+        yield state.copyWith(
+            lastName: event.lastName, status: await event.validate());
 
-    if (event is RegistrationEmailForm)
-      yield state.copyWith(email: event.email, status: await event.validate());
+      if (event is RegistrationEmailForm)
+        yield state.copyWith(
+            email: event.email, status: await event.validate());
 
-    if (event is RegistrationPasswordForm)
-      yield state.copyWith(
-          password: event.password,
-          obscured: event.obscured,
-          status: await event.validate());
+      if (event is RegistrationPasswordForm)
+        yield state.copyWith(
+            password: event.password,
+            obscured: event.obscured,
+            status: await event.validate());
 
-    if (event is RegistrationBirthDayForm)
-      yield state.copyWith(
-          birthDate: event.birthDate, status: await event.validate());
+      if (event is RegistrationBirthDayForm)
+        yield state.copyWith(
+            birthDate: event.birthDate, status: await event.validate());
 
-    if (event is RegistrationButtonPressed) {
-      yield state.copyWith(status: await event.validate());
-      if (state.status == FormStatus.valid) {
-        await sendRegistrationInfomation(event.user);
-        await Future<void>.delayed(const Duration(seconds: 1));
-        yield state.copyWith(status: FormStatus.complete);
+      if (event is RegistrationButtonPressed) {
+        yield state.copyWith(status: await event.validate());
+        if (state.status == FormStatus.inprogress) {
+          await sendRegistrationInfomation(event.user);
+          await Future<void>.delayed(const Duration(seconds: 1));
+          yield state.copyWith(status: FormStatus.complete);
+        }
       }
+    } catch (e) {
+      print(e);
     }
   }
 }

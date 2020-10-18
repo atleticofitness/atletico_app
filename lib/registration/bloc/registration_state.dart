@@ -15,7 +15,6 @@ class RegistrationFormState extends RegistrationState {
     this.lastName = "",
     this.email = "",
     this.password = "",
-    this.passwordConfirm = "",
     this.obscured = true,
     this.birthDate = "",
     this.status = FormStatus.undecided,
@@ -25,7 +24,6 @@ class RegistrationFormState extends RegistrationState {
   final String lastName;
   final String email;
   final String password;
-  final String passwordConfirm;
   final bool obscured;
   final String birthDate;
   final FormStatus status;
@@ -35,7 +33,6 @@ class RegistrationFormState extends RegistrationState {
     String lastName,
     String email,
     String password,
-    String passwordConfirm,
     bool obscured,
     String birthDate,
     FormStatus status,
@@ -45,7 +42,6 @@ class RegistrationFormState extends RegistrationState {
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       password: password ?? this.password,
-      passwordConfirm: passwordConfirm ?? this.passwordConfirm,
       obscured: obscured ?? this.obscured,
       birthDate: birthDate ?? this.birthDate,
       status: status ?? this.status,
@@ -53,14 +49,6 @@ class RegistrationFormState extends RegistrationState {
   }
 
   @override
-  List<Object> get props => [
-        firstName,
-        lastName,
-        email,
-        password,
-        passwordConfirm,
-        obscured,
-        birthDate,
-        status
-      ];
+  List<Object> get props =>
+      [firstName, lastName, email, password, obscured, birthDate, status];
 }

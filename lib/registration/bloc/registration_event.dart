@@ -22,11 +22,10 @@ class RegistrationButtonPressed extends RegistrationEvent {
   @override
   Future<FormStatus> validate() async {
     int nulls = 0;
-    for (var prop in user.props) {
-      if (prop == null) nulls++;
-    }
+    for (var prop in user.props) if (prop == null) nulls++;
+
     if (nulls == user.props.length) return FormStatus.undecided;
-    if (nulls == 1) return FormStatus.inprogress;
+    if (nulls < 5) return FormStatus.inprogress;
     return FormStatus.invalid;
   }
 }
@@ -87,10 +86,10 @@ class RegistrationEmailForm extends RegistrationEvent {
     if (!email.contains(".")) return FormStatus.undecided;
     if (!validator.email(email)) return FormStatus.invalid;
     var box = Hive.box("user_information");
-    if (box.get("cached_email")) {
-      return FormStatus.valid;
-    }
-    Future.delayed(Duration(seconds: 3), () async {
+
+    if (box.get("cached_email") != null) return FormStatus.valid;
+
+    await Future<void>.delayed(const Duration(seconds: 1), () async {
       var emailInUse = await checkIfEmailExists(email);
       if (emailInUse == null) {
         box.put("cached_email", email);
@@ -104,30 +103,23 @@ class RegistrationEmailForm extends RegistrationEvent {
 
 class RegistrationPasswordForm extends RegistrationEvent {
   final String password;
-  final String passwordConfirm;
   final bool obscured;
 
-  const RegistrationPasswordForm(
-      {this.password, this.passwordConfirm, this.obscured});
+  const RegistrationPasswordForm({this.password, this.obscured});
 
   @override
-  List<Object> get props => [password, passwordConfirm, obscured];
+  List<Object> get props => [password, obscured];
 
   @override
   String toString() =>
-      'RegistrationPasswordForm { password: $password, passwordConfirm: $passwordConfirm, obscured: $obscured }';
+      'RegistrationPasswordForm { password: $password, obscured: $obscured }';
 
   @override
   Future<FormStatus> validate() async {
-    if (passwordConfirm.isEmpty) return FormStatus.undecided;
-
-    if (password.isEmpty) if (passwordConfirm.isNotEmpty)
-      return FormStatus.undecided;
-
-    if (validator.password(password)) if (password == passwordConfirm)
-      return FormStatus.valid;
-
-    return FormStatus.invalid;
+    if (password == null) return FormStatus.undecided;
+    if (password.isEmpty) return FormStatus.undecided;
+    if (!validator.password(password)) return FormStatus.invalid;
+    return FormStatus.valid;
   }
 }
 
@@ -145,6 +137,7 @@ class RegistrationBirthDayForm extends RegistrationEvent {
   @override
   Future<FormStatus> validate() async {
     if (this.birthDate.isEmpty) return FormStatus.undecided;
+    if (this.birthDate.length < 8) return FormStatus.undecided;
     DateTime dob = DateTime.parse(this.birthDate);
     DateTime now = DateTime.now();
     if (dob.month > 12 ||
@@ -154,9 +147,18 @@ class RegistrationBirthDayForm extends RegistrationEvent {
         dob.year < 1810 ||
         (dob.year > now.year && dob.day > now.day && dob.month > now.month))
       return FormStatus.invalid;
-    int age = DateTime.now().year - dob.year;
+    int age = calculateAge(dob);
     if (age < 13) return FormStatus.invalid;
     return FormStatus.valid;
+  }
+
+  int calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    if (birthDate.month > currentDate.month) age--;
+    else if (currentDate.month == birthDate.month)
+      if (birthDate.day > currentDate.day) age--;
+    return age;
   }
 
   int daysInMonth(int month, int year) {
