@@ -16,37 +16,39 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
 
   @override
   Stream<RegistrationFormState> mapEventToState(
-    RegistrationEvent event,
-  ) async* {
+      RegistrationEvent event) async* {
     try {
-      if (event is RegistrationFirstNameForm)
+      if (event is RegistrationFirstNameForm) {
         yield state.copyWith(
-            firstName: event.firstName, status: await event.validate());
+            firstName: event.firstName,
+            firstNameStatus: await event.validate());
+      }
 
       if (event is RegistrationLastNameForm)
         yield state.copyWith(
-            lastName: event.lastName, status: await event.validate());
+            lastName: event.lastName, lastNameStatus: await event.validate());
 
       if (event is RegistrationEmailForm)
         yield state.copyWith(
-            email: event.email, status: await event.validate());
+            email: event.email, emailStatus: await event.validate());
 
       if (event is RegistrationPasswordForm)
         yield state.copyWith(
             password: event.password,
             obscured: event.obscured,
-            status: await event.validate());
+            passwordStatus: await event.validate());
 
       if (event is RegistrationBirthDayForm)
         yield state.copyWith(
-            birthDate: event.birthDate, status: await event.validate());
+            birthDate: event.birthDate,
+            birthDateStatus: await event.validate());
 
       if (event is RegistrationButtonPressed) {
-        yield state.copyWith(status: await event.validate());
-        if (state.status == FormStatus.inprogress) {
+        yield state.copyWith(userStatus: await event.validate());
+        if (state.userStatus == FormStatus.inprogress) {
           await sendRegistrationInfomation(event.user);
           await Future<void>.delayed(const Duration(seconds: 1));
-          yield state.copyWith(status: FormStatus.complete);
+          yield state.copyWith(userStatus: FormStatus.complete);
         }
       }
     } catch (e) {

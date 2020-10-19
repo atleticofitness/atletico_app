@@ -17,7 +17,12 @@ class RegistrationFormState extends RegistrationState {
     this.password = "",
     this.obscured = true,
     this.birthDate = "",
-    this.status = FormStatus.undecided,
+    this.firstNameStatus = FormStatus.undecided,
+    this.lastNameStatus = FormStatus.undecided,
+    this.passwordStatus = FormStatus.undecided,
+    this.emailStatus = FormStatus.undecided,
+    this.birthDateStatus = FormStatus.undecided,
+    this.userStatus = FormStatus.undecided,
   });
 
   final String firstName;
@@ -26,7 +31,19 @@ class RegistrationFormState extends RegistrationState {
   final String password;
   final bool obscured;
   final String birthDate;
-  final FormStatus status;
+  final FormStatus firstNameStatus;
+  final FormStatus lastNameStatus;
+  final FormStatus passwordStatus;
+  final FormStatus emailStatus;
+  final FormStatus birthDateStatus;
+  final FormStatus userStatus;
+
+  bool isValid() =>
+      firstNameStatus == FormStatus.valid ||
+      lastNameStatus == FormStatus.valid ||
+      emailStatus == FormStatus.valid ||
+      passwordStatus == FormStatus.valid ||
+      birthDateStatus == FormStatus.valid;
 
   RegistrationFormState copyWith({
     String firstName,
@@ -35,7 +52,12 @@ class RegistrationFormState extends RegistrationState {
     String password,
     bool obscured,
     String birthDate,
-    FormStatus status,
+    FormStatus firstNameStatus,
+    FormStatus lastNameStatus,
+    FormStatus passwordStatus,
+    FormStatus emailStatus,
+    FormStatus birthDateStatus,
+    FormStatus userStatus,
   }) {
     return RegistrationFormState(
       firstName: firstName ?? this.firstName,
@@ -44,11 +66,28 @@ class RegistrationFormState extends RegistrationState {
       password: password ?? this.password,
       obscured: obscured ?? this.obscured,
       birthDate: birthDate ?? this.birthDate,
-      status: status ?? this.status,
+      firstNameStatus: firstNameStatus ?? this.firstNameStatus,
+      lastNameStatus: lastNameStatus ?? this.lastNameStatus,
+      passwordStatus: passwordStatus ?? this.passwordStatus,
+      emailStatus: emailStatus ?? this.emailStatus,
+      birthDateStatus: birthDateStatus ?? this.birthDateStatus,
+      userStatus: userStatus ?? this.userStatus,
     );
   }
 
   @override
-  List<Object> get props =>
-      [firstName, lastName, email, password, obscured, birthDate, status];
+  List<Object> get props => [
+        firstName,
+        lastName,
+        email,
+        password,
+        obscured,
+        birthDate,
+        firstNameStatus,
+        lastNameStatus,
+        passwordStatus,
+        emailStatus,
+        birthDateStatus,
+        userStatus,
+      ];
 }

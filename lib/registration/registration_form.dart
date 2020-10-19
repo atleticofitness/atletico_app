@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
+import 'package:string_mask/string_mask.dart';
 
 class RegistrationForm extends StatefulWidget {
   RegistrationForm({Key key}) : super(key: key);
@@ -20,7 +21,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationFormState>(
         listener: (context, state) {
-          if (state.status == FormStatus.complete)
+          if (state.userStatus == FormStatus.complete)
             ExtendedNavigator.of(context).push(Routes.loginWidget);
         },
         child: buildForm(context));
@@ -100,9 +101,9 @@ class FirstNameInput extends StatelessWidget {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(top: 14.0),
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
-                    suffixIcon: (state.status == FormStatus.invalid)
+                    suffixIcon: (state.firstNameStatus == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : (state.status == FormStatus.valid)
+                        : (state.firstNameStatus == FormStatus.valid)
                             ? Icon(Icons.error, color: Colors.green)
                             : null,
                   ),
@@ -148,9 +149,9 @@ class LastNameInput extends StatelessWidget {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(top: 14.0),
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
-                    suffixIcon: (state.status == FormStatus.invalid)
+                    suffixIcon: (state.lastNameStatus == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : (state.status == FormStatus.valid)
+                        : (state.lastNameStatus == FormStatus.valid)
                             ? Icon(Icons.error, color: Colors.green)
                             : null,
                   ),
@@ -196,9 +197,9 @@ class EmailInput extends StatelessWidget {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(top: 14.0),
                     prefixIcon: Icon(Icons.email, color: Colors.grey),
-                    suffixIcon: (state.status == FormStatus.invalid)
+                    suffixIcon: (state.emailStatus == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : (state.status == FormStatus.valid)
+                        : (state.emailStatus == FormStatus.valid)
                             ? Icon(Icons.error, color: Colors.green)
                             : null,
                   ),
@@ -299,16 +300,18 @@ class DateOfBirthInput extends StatelessWidget {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(top: 14.0),
                     prefixIcon: Icon(Icons.calendar_today, color: Colors.grey),
-                    suffixIcon: (state.status == FormStatus.invalid)
+                    suffixIcon: (state.birthDateStatus == FormStatus.invalid)
                         ? Icon(Icons.error, color: secondaryColor)
-                        : (state.status == FormStatus.valid)
+                        : (state.birthDateStatus == FormStatus.valid)
                             ? Icon(Icons.error, color: Colors.green)
                             : null,
                   ),
                   keyboardType: TextInputType.number,
-                  onChanged: (value) => context
-                      .bloc<RegistrationBloc>()
-                      .add(RegistrationBirthDayForm(birthDate: value)),
+                  onChanged: (value) {
+                    context
+                        .bloc<RegistrationBloc>()
+                        .add(RegistrationBirthDayForm(birthDate: value));
+                  },
                 ),
               ),
             ]);
@@ -321,47 +324,46 @@ class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegistrationBloc, RegistrationFormState>(
-        buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 25.0),
-            width: double.infinity,
-            child: RaisedButton(
-              elevation: 5.0,
-              onPressed: () {
-                if (state.status != FormStatus.complete) {
-                  if (state.status != FormStatus.inprogress)
-                    return BlocProvider.of<RegistrationBloc>(context).add(
-                      RegistrationButtonPressed(
-                        user: User(
-                            email: state.email,
-                            password: state.password,
-                            firstName: state.firstName,
-                            lastName: state.lastName,
-                            birthDate: state.birthDate,
-                            isActive: true),
-                      ),
-                    );
-                }
-                return null;
-              },
-              padding: EdgeInsets.all(15.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              color: secondaryColor,
-              child: Text(
-                'SIGN UP',
-                style: TextStyle(
-                  color: Colors.white,
-                  letterSpacing: 1.5,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans',
-                ),
-              ),
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () {
+            if (!state.isValid()) return null;
+            var formatter = StringMask("0000/00/00");
+              if (state.userStatus != FormStatus.complete && state.userStatus != FormStatus.inprogress)
+                return BlocProvider.of<RegistrationBloc>(context).add(
+                  RegistrationButtonPressed(
+                    user: User(
+                        email: state.email,
+                        password: state.password,
+                        firstName: state.firstName,
+                        lastName: state.lastName,
+                        birthDate: formatter.apply(state.birthDate),
+                        isActive: true),
+                  ),
+                );
+            return null;
+          },
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: secondaryColor,
+          child: Text(
+            'SIGN UP',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
             ),
-          );
-        });
+          ),
+        ),
+      );
+    });
   }
 }

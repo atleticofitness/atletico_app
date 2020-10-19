@@ -5,7 +5,7 @@ Future<bool> checkIfEmailExists(String email) async {
   var response =
       await dio.post("/registration/check-email", data: {"email": email});
   if (response.statusCode == 200) {
-    return response.data["validEmail"];
+    return response.data["valid_email"];
   }
   throw EmailNotFoundException(
       "There was an issue checking if the email existed.");

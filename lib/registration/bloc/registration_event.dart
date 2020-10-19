@@ -86,18 +86,16 @@ class RegistrationEmailForm extends RegistrationEvent {
     if (!email.contains(".")) return FormStatus.undecided;
     if (!validator.email(email)) return FormStatus.invalid;
     var box = Hive.box("user_information");
-
-    if (box.get("cached_email") != null) return FormStatus.valid;
-
-    await Future<void>.delayed(const Duration(seconds: 1), () async {
-      var emailInUse = await checkIfEmailExists(email);
-      if (emailInUse == null) {
-        box.put("cached_email", email);
-        return FormStatus.valid;
-      }
-      return FormStatus.invalid;
-    });
-    return FormStatus.undecided;
+    var cachedEmail = box.get("cached_email");
+    if (cachedEmail != null) {
+      if (cachedEmail == email) return FormStatus.valid;
+    }
+    var emailInUse = await checkIfEmailExists(email);
+    if (!emailInUse) {
+      box.put("cached_email", email);
+      return FormStatus.valid;
+    }
+    return FormStatus.invalid;
   }
 }
 
