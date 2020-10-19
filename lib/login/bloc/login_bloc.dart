@@ -23,5 +23,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
   @override
   Stream<LoginFormState> mapEventToState(
     LoginEvent event,
-  ) async* {}
+  ) async* {
+    if (event is LoginEmailForm)
+      yield state.copyWith(email: event.email);
+
+    if (event is LoginPasswordForm)
+      yield state.copyWith(password: event.password, obscured: event.obscured);
+
+    if (event is LoginRememberMeForm)
+      yield state.copyWith(rememberMe: event.rememberMe);
+
+    if (event is LoginButtonPressed)
+      event.submitInfo();
+      
+
+  }
 }

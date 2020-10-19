@@ -22,6 +22,8 @@ class LoginFormState extends LoginState {
       this.emailStatus,
       this.passwordStatus});
 
+  bool isValid() => email.isNotEmpty && password.isNotEmpty;
+
   LoginFormState copyWith(
           {String email,
           String password,

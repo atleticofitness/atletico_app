@@ -34,6 +34,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget buildSignInWithText() {
     return Column(
       children: <Widget>[
+        SizedBox(height: 20.0),
         Text(
           '- OR -',
           style: TextStyle(
@@ -61,11 +62,12 @@ class _LoginFormState extends State<LoginForm> {
         PasswordInput(),
         ForgotPasswordInput(),
         RememberMeInput(),
+        LoginButton(),
+        RegistrationInput(),
         buildSignInWithText(),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0),
           child: Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               FacebookLoginButton(),
               GoogleLoginButton(),
@@ -73,7 +75,6 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-        LoginButton(),
       ],
     );
   }
@@ -210,9 +211,10 @@ class RememberMeInput extends StatelessWidget {
                     value: state.rememberMe,
                     checkColor: Colors.white,
                     activeColor: secondaryColor,
-                    onChanged: (value) => context
+                    onChanged: (value) =>
+                      context
                         .bloc<LoginBloc>()
-                        .add(LoginRememberMeForm(rememberMe: state.rememberMe)),
+                        .add(LoginRememberMeForm(rememberMe: !state.rememberMe)),
                   ),
                 ),
                 Text(
@@ -269,9 +271,8 @@ class LoginButton extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () {
-            return null;
-          },
+          onPressed: () =>
+            context.bloc<LoginBloc>().add(LoginButtonPressed(email: state.email, password: state.password)),
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),

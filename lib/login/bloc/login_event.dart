@@ -55,4 +55,8 @@ class LoginButtonPressed extends LoginEvent {
   @override
   String toString() =>
       'LoginButton Pressed { email: $email, password: $password }';
+
+  void submitInfo() {
+    
+  }
 }
