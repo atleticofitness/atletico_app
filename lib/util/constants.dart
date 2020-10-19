@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 
 final String localAtleticoURL = "https://atletico.fitness/api/v1";
 
+enum FormStatus { undecided, valid, invalid, inprogress, complete }
+
 final Color primaryColor = Colors.white;
 final Color secondaryColor = Color.fromARGB(255, 254, 74, 86);
 final hintTextStyle = TextStyle(

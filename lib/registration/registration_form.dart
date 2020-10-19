@@ -40,9 +40,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   Widget buildForm(BuildContext context) {
-    return Column(children: <Widget>[
+    return Column(children: [
       Row(
-        children: <Widget>[
+        children: [
           IconButton(
             icon: Icon(Icons.arrow_back),
             iconSize: 40.0,
@@ -79,43 +79,41 @@ class FirstNameInput extends StatelessWidget {
     return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.firstName != current.firstName,
       builder: (context, state) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "First Name",
-                style: labelStyle,
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "First Name",
+            style: labelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: boxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              maxLines: 1,
+              initialValue: state.firstName,
+              style: textStyle,
+              decoration: InputDecoration(
+                hintText: "first name",
+                hintStyle: hintTextStyle,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(Icons.person, color: Colors.grey),
+                suffixIcon: (state.firstNameStatus == FormStatus.invalid)
+                    ? Icon(Icons.error, color: secondaryColor)
+                    : (state.firstNameStatus == FormStatus.valid)
+                        ? Icon(Icons.error, color: Colors.green)
+                        : null,
               ),
-              SizedBox(height: 10.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                decoration: boxDecorationStyle,
-                height: 60.0,
-                child: TextFormField(
-                  maxLines: 1,
-                  initialValue: state.firstName,
-                  style: textStyle,
-                  decoration: InputDecoration(
-                    hintText: "first name",
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 14.0),
-                    prefixIcon: Icon(Icons.person, color: Colors.grey),
-                    suffixIcon: (state.firstNameStatus == FormStatus.invalid)
-                        ? Icon(Icons.error, color: secondaryColor)
-                        : (state.firstNameStatus == FormStatus.valid)
-                            ? Icon(Icons.error, color: Colors.green)
-                            : null,
-                  ),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) {
-                    context
-                        .bloc<RegistrationBloc>()
-                        .add(RegistrationFirstNameForm(firstName: value));
-                  },
-                ),
-              ),
-            ]);
+              keyboardType: TextInputType.name,
+              onChanged: (value) {
+                context
+                    .bloc<RegistrationBloc>()
+                    .add(RegistrationFirstNameForm(firstName: value));
+              },
+            ),
+          ),
+        ]);
       },
     );
   }
@@ -127,43 +125,41 @@ class LastNameInput extends StatelessWidget {
     return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.lastName != current.lastName,
       builder: (context, state) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Last Name",
-                style: labelStyle,
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "Last Name",
+            style: labelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: boxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              maxLines: 1,
+              initialValue: state.lastName,
+              style: textStyle,
+              decoration: InputDecoration(
+                hintText: "last name",
+                hintStyle: hintTextStyle,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(Icons.person, color: Colors.grey),
+                suffixIcon: (state.lastNameStatus == FormStatus.invalid)
+                    ? Icon(Icons.error, color: secondaryColor)
+                    : (state.lastNameStatus == FormStatus.valid)
+                        ? Icon(Icons.error, color: Colors.green)
+                        : null,
               ),
-              SizedBox(height: 10.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                decoration: boxDecorationStyle,
-                height: 60.0,
-                child: TextFormField(
-                  maxLines: 1,
-                  initialValue: state.lastName,
-                  style: textStyle,
-                  decoration: InputDecoration(
-                    hintText: "last name",
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 14.0),
-                    prefixIcon: Icon(Icons.person, color: Colors.grey),
-                    suffixIcon: (state.lastNameStatus == FormStatus.invalid)
-                        ? Icon(Icons.error, color: secondaryColor)
-                        : (state.lastNameStatus == FormStatus.valid)
-                            ? Icon(Icons.error, color: Colors.green)
-                            : null,
-                  ),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) {
-                    context
-                        .bloc<RegistrationBloc>()
-                        .add(RegistrationLastNameForm(lastName: value));
-                  },
-                ),
-              ),
-            ]);
+              keyboardType: TextInputType.name,
+              onChanged: (value) {
+                context
+                    .bloc<RegistrationBloc>()
+                    .add(RegistrationLastNameForm(lastName: value));
+              },
+            ),
+          ),
+        ]);
       },
     );
   }
@@ -175,43 +171,41 @@ class EmailInput extends StatelessWidget {
     return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Email",
-                style: labelStyle,
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "Email",
+            style: labelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: boxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              maxLines: 1,
+              initialValue: state.email,
+              style: textStyle,
+              decoration: InputDecoration(
+                hintText: "example@example.com",
+                hintStyle: hintTextStyle,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(Icons.email, color: Colors.grey),
+                suffixIcon: (state.emailStatus == FormStatus.invalid)
+                    ? Icon(Icons.error, color: secondaryColor)
+                    : (state.emailStatus == FormStatus.valid)
+                        ? Icon(Icons.error, color: Colors.green)
+                        : null,
               ),
-              SizedBox(height: 10.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                decoration: boxDecorationStyle,
-                height: 60.0,
-                child: TextFormField(
-                  maxLines: 1,
-                  initialValue: state.email,
-                  style: textStyle,
-                  decoration: InputDecoration(
-                    hintText: "example@example.com",
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 14.0),
-                    prefixIcon: Icon(Icons.email, color: Colors.grey),
-                    suffixIcon: (state.emailStatus == FormStatus.invalid)
-                        ? Icon(Icons.error, color: secondaryColor)
-                        : (state.emailStatus == FormStatus.valid)
-                            ? Icon(Icons.error, color: Colors.green)
-                            : null,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (value) {
-                    context
-                        .bloc<RegistrationBloc>()
-                        .add(RegistrationEmailForm(email: value));
-                  },
-                ),
-              ),
-            ]);
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (value) {
+                context
+                    .bloc<RegistrationBloc>()
+                    .add(RegistrationEmailForm(email: value));
+              },
+            ),
+          ),
+        ]);
       },
     );
   }
@@ -225,46 +219,45 @@ class PasswordInput extends StatelessWidget {
           previous.password != current.password ||
           previous.obscured != current.obscured,
       builder: (context, state) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Password",
-                style: labelStyle,
-              ),
-              SizedBox(height: 10.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                decoration: boxDecorationStyle,
-                height: 60.0,
-                child: TextFormField(
-                  maxLines: 1,
-                  initialValue: state.password,
-                  style: textStyle,
-                  obscureText: state.obscured,
-                  decoration: InputDecoration(
-                    hintText: "password",
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 14.0),
-                    prefixIcon: Icon(Icons.lock, color: Colors.grey),
-                    suffixIcon: IconButton(
-                      icon: state.obscured
-                          ? Icon(Icons.visibility, color: Colors.grey)
-                          : Icon(Icons.visibility_off, color: Colors.grey),
-                      onPressed: () => context.bloc<RegistrationBloc>().add(
-                          RegistrationPasswordForm(obscured: !state.obscured)),
-                    ),
-                  ),
-                  keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) => context
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "Password",
+            style: labelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: boxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              maxLines: 1,
+              initialValue: state.password,
+              style: textStyle,
+              obscureText: state.obscured,
+              decoration: InputDecoration(
+                hintText: "password",
+                hintStyle: hintTextStyle,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                suffixIcon: IconButton(
+                  icon: state.obscured
+                      ? Icon(Icons.visibility, color: Colors.grey)
+                      : Icon(Icons.visibility_off, color: Colors.grey),
+                  onPressed: () => context
                       .bloc<RegistrationBloc>()
-                      .add(RegistrationPasswordForm(password: value)),
+                      .add(RegistrationPasswordForm(obscured: !state.obscured)),
                 ),
               ),
-              SizedBox(height: 15.0),
-              FlutterPasswordStrength(password: state.password),
-            ]);
+              keyboardType: TextInputType.visiblePassword,
+              onChanged: (value) => context
+                  .bloc<RegistrationBloc>()
+                  .add(RegistrationPasswordForm(password: value)),
+            ),
+          ),
+          SizedBox(height: 15.0),
+          FlutterPasswordStrength(password: state.password),
+        ]);
       },
     );
   }
@@ -276,45 +269,43 @@ class DateOfBirthInput extends StatelessWidget {
     return BlocBuilder<RegistrationBloc, RegistrationFormState>(
       buildWhen: (previous, current) => previous.birthDate != current.birthDate,
       builder: (context, state) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Date of Birth",
-                style: labelStyle,
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "Date of Birth",
+            style: labelStyle,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: boxDecorationStyle,
+            height: 60.0,
+            child: TextFormField(
+              maxLines: 1,
+              maxLength: 8,
+              initialValue: state.birthDate,
+              style: textStyle,
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: "YYYYMMDD",
+                hintStyle: hintTextStyle,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(Icons.calendar_today, color: Colors.grey),
+                suffixIcon: (state.birthDateStatus == FormStatus.invalid)
+                    ? Icon(Icons.error, color: secondaryColor)
+                    : (state.birthDateStatus == FormStatus.valid)
+                        ? Icon(Icons.error, color: Colors.green)
+                        : null,
               ),
-              SizedBox(height: 10.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                decoration: boxDecorationStyle,
-                height: 60.0,
-                child: TextFormField(
-                  maxLines: 1,
-                  maxLength: 8,
-                  initialValue: state.birthDate,
-                  style: textStyle,
-                  decoration: InputDecoration(
-                    counterText: '',
-                    hintText: "YYYYMMDD",
-                    hintStyle: hintTextStyle,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 14.0),
-                    prefixIcon: Icon(Icons.calendar_today, color: Colors.grey),
-                    suffixIcon: (state.birthDateStatus == FormStatus.invalid)
-                        ? Icon(Icons.error, color: secondaryColor)
-                        : (state.birthDateStatus == FormStatus.valid)
-                            ? Icon(Icons.error, color: Colors.green)
-                            : null,
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    context
-                        .bloc<RegistrationBloc>()
-                        .add(RegistrationBirthDayForm(birthDate: value));
-                  },
-                ),
-              ),
-            ]);
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                context
+                    .bloc<RegistrationBloc>()
+                    .add(RegistrationBirthDayForm(birthDate: value));
+              },
+            ),
+          ),
+        ]);
       },
     );
   }

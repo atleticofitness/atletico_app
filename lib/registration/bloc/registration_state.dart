@@ -7,9 +7,20 @@ abstract class RegistrationState extends Equatable {
   List<Object> get props => [];
 }
 
-enum FormStatus { undecided, valid, invalid, inprogress, complete }
-
 class RegistrationFormState extends RegistrationState {
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String password;
+  final bool obscured;
+  final String birthDate;
+  final FormStatus firstNameStatus;
+  final FormStatus lastNameStatus;
+  final FormStatus passwordStatus;
+  final FormStatus emailStatus;
+  final FormStatus birthDateStatus;
+  final FormStatus userStatus;
+
   const RegistrationFormState({
     this.firstName = "",
     this.lastName = "",
@@ -24,19 +35,6 @@ class RegistrationFormState extends RegistrationState {
     this.birthDateStatus = FormStatus.undecided,
     this.userStatus = FormStatus.undecided,
   });
-
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String password;
-  final bool obscured;
-  final String birthDate;
-  final FormStatus firstNameStatus;
-  final FormStatus lastNameStatus;
-  final FormStatus passwordStatus;
-  final FormStatus emailStatus;
-  final FormStatus birthDateStatus;
-  final FormStatus userStatus;
 
   bool isValid() =>
       firstNameStatus == FormStatus.valid ||
@@ -58,22 +56,21 @@ class RegistrationFormState extends RegistrationState {
     FormStatus emailStatus,
     FormStatus birthDateStatus,
     FormStatus userStatus,
-  }) {
-    return RegistrationFormState(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      obscured: obscured ?? this.obscured,
-      birthDate: birthDate ?? this.birthDate,
-      firstNameStatus: firstNameStatus ?? this.firstNameStatus,
-      lastNameStatus: lastNameStatus ?? this.lastNameStatus,
-      passwordStatus: passwordStatus ?? this.passwordStatus,
-      emailStatus: emailStatus ?? this.emailStatus,
-      birthDateStatus: birthDateStatus ?? this.birthDateStatus,
-      userStatus: userStatus ?? this.userStatus,
-    );
-  }
+  }) =>
+      RegistrationFormState(
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        email: email ?? this.email,
+        password: password ?? this.password,
+        obscured: obscured ?? this.obscured,
+        birthDate: birthDate ?? this.birthDate,
+        firstNameStatus: firstNameStatus ?? this.firstNameStatus,
+        lastNameStatus: lastNameStatus ?? this.lastNameStatus,
+        passwordStatus: passwordStatus ?? this.passwordStatus,
+        emailStatus: emailStatus ?? this.emailStatus,
+        birthDateStatus: birthDateStatus ?? this.birthDateStatus,
+        userStatus: userStatus ?? this.userStatus,
+      );
 
   @override
   List<Object> get props => [

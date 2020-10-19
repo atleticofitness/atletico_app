@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:hive/hive.dart';
+import 'package:atletico_app/util/constants.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';
