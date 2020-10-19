@@ -21,12 +21,12 @@ class RegistrationButtonPressed extends RegistrationEvent {
 
   @override
   Future<FormStatus> validate() async {
-    int nulls = 0;
-    for (var prop in user.props) if (prop == null) nulls++;
-
-    if (nulls == user.props.length) return FormStatus.undecided;
-    if (nulls < 5) return FormStatus.inprogress;
-    return FormStatus.invalid;
+    if (user.firstName == null ||
+        user.lastName == null ||
+        user.password == null ||
+        user.email == null ||
+        user.birthDate == null) return FormStatus.invalid;
+    return FormStatus.inprogress;
   }
 }
 
@@ -155,9 +155,10 @@ class RegistrationBirthDayForm extends RegistrationEvent {
   int calculateAge(DateTime birthDate) {
     DateTime currentDate = DateTime.now();
     int age = currentDate.year - birthDate.year;
-    if (birthDate.month > currentDate.month) age--;
-    else if (currentDate.month == birthDate.month)
-      if (birthDate.day > currentDate.day) age--;
+    if (birthDate.month > currentDate.month)
+      age--;
+    else if (currentDate.month == birthDate.month) if (birthDate.day >
+        currentDate.day) age--;
     return age;
   }
 
