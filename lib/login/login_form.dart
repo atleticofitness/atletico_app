@@ -31,40 +31,6 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget buildForm(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        headerText(),
-        SizedBox(height: 15.0),
-        EmailInput(),
-        SizedBox(height: 15.0),
-        PasswordInput(),
-        ForgotPasswordInput(),
-        RememberMeInput(),
-      ],
-    );
-  }
-}
-
-/*
-
-  Widget buildForm(BuildContext context, LoginState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-
-        buildGenericButton(onPressed, 'LOGIN'),
-        Container(
-            child:
-                state is LoginInProgress ? CircularProgressIndicator() : null),
-        buildSignInWithText(),
-        buildSocialButtonRow(),
-        buildRegistrationButton(),
-      ],
-    );
-  }
-
   Widget buildSignInWithText() {
     return Column(
       children: <Widget>[
@@ -84,74 +50,35 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget buildSocialButton(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: secondaryColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
+  Widget buildForm(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        headerText(),
+        SizedBox(height: 15.0),
+        EmailInput(),
+        SizedBox(height: 15.0),
+        PasswordInput(),
+        ForgotPasswordInput(),
+        RememberMeInput(),
+        buildSignInWithText(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              FacebookLoginButton(),
+              GoogleLoginButton(),
+              AppleLoginButton()
+            ],
           ),
         ),
-      ),
+        LoginButton(),
+      ],
     );
   }
+}
 
-  Widget buildSocialButtonRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 15.0),
-      child: Column(
-        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          buildGenericButton(null, 'LOGIN WITH FACEBOOK'),
-          buildGenericButton(null, 'LOGIN WITH GOOGLE'),
-          buildGenericButton(null, 'LOGIN WITH APPLE'),
-        ],
-      ),
-    );
-  }
-
-  Widget buildRegistrationButton() {
-    return GestureDetector(
-      onTap: () =>
-          ExtendedNavigator.of(context).push(Routes.registrationWidget),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Don\'t have an Account? ',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Sign Up',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
- */
 class EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -296,5 +223,171 @@ class RememberMeInput extends StatelessWidget {
             ),
           );
         });
+  }
+}
+
+class RegistrationInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
+      return GestureDetector(
+        onTap: () =>
+            ExtendedNavigator.of(context).push(Routes.registrationWidget),
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Don\'t have an Account? ',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              TextSpan(
+                text: 'Sign Up',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () {
+            return null;
+          },
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: secondaryColor,
+          child: Text(
+            'LOGIN',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class FacebookLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () {
+            return null;
+          },
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: secondaryColor,
+          child: Text(
+            'LOGIN WITH FACEBOOK',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class GoogleLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () {
+            return null;
+          },
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: secondaryColor,
+          child: Text(
+            'LOGIN WITH GOOGLE',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class AppleLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () {
+            return null;
+          },
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: secondaryColor,
+          child: Text(
+            'LOGIN WITH APPLE',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
