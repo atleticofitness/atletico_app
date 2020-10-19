@@ -333,18 +333,19 @@ class SubmitButton extends StatelessWidget {
           onPressed: () {
             if (!state.isValid()) return null;
             var formatter = StringMask("0000/00/00");
-              if (state.userStatus != FormStatus.complete && state.userStatus != FormStatus.inprogress)
-                return BlocProvider.of<RegistrationBloc>(context).add(
-                  RegistrationButtonPressed(
-                    user: User(
-                        email: state.email,
-                        password: state.password,
-                        firstName: state.firstName,
-                        lastName: state.lastName,
-                        birthDate: formatter.apply(state.birthDate),
-                        isActive: true),
-                  ),
-                );
+            if (state.userStatus != FormStatus.complete &&
+                state.userStatus != FormStatus.inprogress)
+              return BlocProvider.of<RegistrationBloc>(context).add(
+                RegistrationButtonPressed(
+                  user: User(
+                      email: state.email,
+                      password: state.password,
+                      firstName: state.firstName,
+                      lastName: state.lastName,
+                      birthDate: formatter.apply(state.birthDate),
+                      isActive: true),
+                ),
+              );
             return null;
           },
           padding: EdgeInsets.all(15.0),
