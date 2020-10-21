@@ -21,6 +21,7 @@ class RegistrationButtonPressed extends RegistrationEvent {
 
   void processRegistration() async {
       await sendRegistrationInfomation(user);
+      await Future<void>.delayed(const Duration(seconds: 1));
   }
 
   @override

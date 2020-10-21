@@ -4,7 +4,6 @@ import 'package:atletico_app/authentication/bloc/authentication.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:atletico_app/models/token.dart';
 import 'package:atletico_app/endpoints/authentication/atletico.dart';
-import 'package:atletico_app/registration/bloc/registration_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

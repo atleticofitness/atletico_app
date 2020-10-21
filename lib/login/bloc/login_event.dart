@@ -56,13 +56,14 @@ class LoginButtonPressed extends LoginEvent {
   String toString() =>
       'LoginButton Pressed { email: $email, password: $password }';
 
-  void submitInfo() {
+  void submitInfo() async {
     if (email.isEmpty) return;
     if (!email.contains("@")) return;
     if (!email.contains(".")) return;
     if (!validator.email(email)) return;
     if (password.isEmpty) return;
     if (!validator.password(password)) return;
-    //Process login
+    await getToken(email, password);
+    await Future<void>.delayed(const Duration(seconds: 1));
   }
 }

@@ -7,7 +7,6 @@ Future<Token> getToken(String email, String password) async {
     var response = await dio.post("/token",
         data: FormData.fromMap(
             {"username": email, "password": password, "scope": "me"}));
-    print(response.data);
     return Token.fromJson(response.data);
   } on DioError catch (error) {
     if (error.response.statusCode == 401)
