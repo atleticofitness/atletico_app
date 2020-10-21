@@ -47,7 +47,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
       if (event is RegistrationButtonPressed) {
         yield state.copyWith(userStatus: await event.validate());
         if (state.userStatus == FormStatus.inprogress) {
-          await sendRegistrationInfomation(event.user);
+          event.processRegistration();
           await Future<void>.delayed(const Duration(seconds: 1));
           yield state.copyWith(userStatus: FormStatus.complete);
         }

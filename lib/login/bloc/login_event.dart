@@ -57,6 +57,12 @@ class LoginButtonPressed extends LoginEvent {
       'LoginButton Pressed { email: $email, password: $password }';
 
   void submitInfo() {
-    
+    if (email.isEmpty) return;
+    if (!email.contains("@")) return;
+    if (!email.contains(".")) return;
+    if (!validator.email(email)) return;
+    if (password.isEmpty) return;
+    if (!validator.password(password)) return;
+    //Process login
   }
 }

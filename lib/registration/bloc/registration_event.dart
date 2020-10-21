@@ -19,6 +19,10 @@ class RegistrationButtonPressed extends RegistrationEvent {
   @override
   String toString() => 'RegistrationButtonPressed { user: $user }';
 
+  void processRegistration() async {
+      await sendRegistrationInfomation(user);
+  }
+
   @override
   Future<FormStatus> validate() async {
     if (user.firstName == null ||
