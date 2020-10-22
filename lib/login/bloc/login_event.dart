@@ -35,6 +35,11 @@ class LoginRememberMeForm extends LoginEvent {
 
   const LoginRememberMeForm({@required this.rememberMe});
 
+  void saveRememberMe() {
+    var box = Hive.box("user_information");
+    box.put("remember_me", rememberMe);
+  }
+
   @override
   List<Object> get props => [rememberMe];
 
@@ -65,4 +70,19 @@ class LoginButtonPressed extends LoginEvent {
     if (!validator.password(password)) return false;
     return true;
   }
+
+  Future<Token> getAndSaveToken() async {
+    Token token = await getToken(email: email, password: password);
+    saveToken(token);
+    return token;
+  }
+
+  void saveToken(Token token) {
+    var box = Hive.box("user_information");
+    if (box.containsKey("remember_me")) {
+      if (box.get("remember_me"))
+        box.put("token_data", token.toJson());
+    }
+  }
+
 }

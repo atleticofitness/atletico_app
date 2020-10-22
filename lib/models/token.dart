@@ -21,7 +21,7 @@ class Token extends HiveObject with EquatableMixin {
     if (!box.containsKey('token_data')) return Token();
     Map<String, dynamic> json = box.get('token_data');
     return Token(
-        accessToken: json['access_token'], tokenType: json['tokenType']);
+        accessToken: json['access_token'], tokenType: json['token_type']);
   }
 
   @override
