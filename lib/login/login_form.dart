@@ -19,7 +19,8 @@ class _LoginFormState extends State<LoginForm> {
         listener: (context, state) {
           if (state.loggedIn)
             ExtendedNavigator.of(context).push(Routes.atleticoWidget);
-        }, child: buildForm(context));
+        },
+        child: buildForm(context));
   }
 
   Widget headerText() {

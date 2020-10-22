@@ -14,11 +14,10 @@ class AuthenticationLoggedIn extends AuthenticationEvent {
 
   const AuthenticationLoggedIn({@required this.token});
 
-  void saveToken() {
-    var box = Hive.box("user_information");
-    if (box.containsKey("remember_me"))
-      if (box.get("remember_me"))
-        token.save();
+  void saveToken() async {
+    var box = await Hive.openBox("user_information");
+    if (box.containsKey("remember_me")) if (box.get("remember_me"))
+      token.save();
   }
 
   @override

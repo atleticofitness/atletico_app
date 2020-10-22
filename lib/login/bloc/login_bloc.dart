@@ -24,25 +24,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
   Stream<LoginFormState> mapEventToState(
     LoginEvent event,
   ) async* {
-    if (event is LoginEmailForm) yield state.copyWith(email: event.email);
+    try {
+      if (event is LoginEmailForm) yield state.copyWith(email: event.email);
 
-    if (event is LoginPasswordForm)
-      yield state.copyWith(password: event.password, obscured: event.obscured);
+      if (event is LoginPasswordForm)
+        yield state.copyWith(
+            password: event.password, obscured: event.obscured);
 
-    if (event is LoginRememberMeForm) {
-      event.saveRememberMe();
-      yield state.copyWith(rememberMe: event.rememberMe);
-    }
-
-    if (event is LoginButtonPressed) {
-      if (event.isValid()) {
-        Token token =
-            await getToken(email: event.email, password: event.password);
-        var auth = AuthenticationLoggedIn(token: token);
-        authenticationBloc.add(auth);
-        auth.saveToken();
-        yield state.copyWith(loggedIn: true);
+      if (event is LoginRememberMeForm) {
+        event.saveRememberMe();
+        yield state.copyWith(rememberMe: event.rememberMe);
       }
+
+      if (event is LoginButtonPressed) {
+        if (event.isValid()) {
+          Token token =
+              await getToken(email: event.email, password: event.password);
+          var auth = AuthenticationLoggedIn(token: token);
+          yield state.copyWith(loggedIn: true);
+          authenticationBloc.add(auth);
+        }
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

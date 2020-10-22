@@ -11,7 +11,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:device_preview/device_preview.dart';
 
-
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox("user_information");
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
         },
         locale: DevicePreview.of(context).locale,
         title: 'atletico',
-        debugShowCheckedModeBanner: true,
+        debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationSuccess)

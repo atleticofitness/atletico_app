@@ -19,24 +19,28 @@ class AuthenticationBloc
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
-    if (event is AuthenticationStarted) {
-      bool hasToken = token.hasToken();
-      if (hasToken)
+    try {
+      if (event is AuthenticationStarted) {
+        bool hasToken = token.hasToken();
+        if (hasToken)
+          yield AuthenticationSuccess();
+        else
+          yield AuthenticationFailure();
+      }
+
+      if (event is AuthenticationLoggedIn) {
+        yield AuthenticationInProgress();
+        event.saveToken();
         yield AuthenticationSuccess();
-      else
+      }
+
+      if (event is AuthenticationLoggedOut) {
+        yield AuthenticationInProgress();
+        token.delete();
         yield AuthenticationFailure();
-    }
-
-    if (event is AuthenticationLoggedIn) {
-      yield AuthenticationInProgress();
-      event.saveToken();
-      yield AuthenticationSuccess();
-    }
-
-    if (event is AuthenticationLoggedOut) {
-      yield AuthenticationInProgress();
-      token.delete();
-      yield AuthenticationFailure();
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

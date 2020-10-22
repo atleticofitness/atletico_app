@@ -44,6 +44,13 @@ class LoginFormState extends LoginState {
           passwordStatus: passwordStatus ?? this.passwordStatus);
 
   @override
-  List<Object> get props =>
-      [email, password, rememberMe, obscured, loggedIn, emailStatus, passwordStatus];
+  List<Object> get props => [
+        email,
+        password,
+        rememberMe,
+        obscured,
+        loggedIn,
+        emailStatus,
+        passwordStatus
+      ];
 }
