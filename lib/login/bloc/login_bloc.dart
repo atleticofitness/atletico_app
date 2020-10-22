@@ -7,7 +7,6 @@ import 'package:atletico_app/endpoints/authentication/atletico.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
 
@@ -34,9 +33,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
     if (event is LoginRememberMeForm)
       yield state.copyWith(rememberMe: event.rememberMe);
 
-    if (event is LoginButtonPressed)
-      event.submitInfo();
-      
-
+    if (event is LoginButtonPressed) {
+      if (event.isValid()) {
+        Token token = await getToken(email: event.email, password: event.password);
+        authenticationBloc.add(AuthenticationLoggedIn(token: token));
+      }
+    }
   }
 }
