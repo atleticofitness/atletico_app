@@ -16,7 +16,10 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginFormState>(
-        listener: (context, state) {}, child: buildForm(context));
+        listener: (context, state) {
+          if (state.loggedIn)
+            ExtendedNavigator.of(context).push(Routes.atleticoWidget);
+        }, child: buildForm(context));
   }
 
   Widget headerText() {

@@ -38,7 +38,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
       if (event.isValid()) {
         Token token =
             await getToken(email: event.email, password: event.password);
-        authenticationBloc.add(AuthenticationLoggedIn(token: token));
+        var auth = AuthenticationLoggedIn(token: token);
+        authenticationBloc.add(auth);
+        auth.saveToken();
+        yield state.copyWith(loggedIn: true);
       }
     }
   }

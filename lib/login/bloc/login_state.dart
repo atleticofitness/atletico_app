@@ -11,6 +11,7 @@ class LoginFormState extends LoginState {
   final String password;
   final bool rememberMe;
   final bool obscured;
+  final bool loggedIn;
   final FormStatus emailStatus;
   final FormStatus passwordStatus;
 
@@ -19,6 +20,7 @@ class LoginFormState extends LoginState {
       this.password = "",
       this.rememberMe = false,
       this.obscured = true,
+      this.loggedIn = false,
       this.emailStatus,
       this.passwordStatus});
 
@@ -29,6 +31,7 @@ class LoginFormState extends LoginState {
           String password,
           bool rememberMe,
           bool obscured,
+          bool loggedIn,
           FormStatus emailStatus,
           FormStatus passwordStatus}) =>
       LoginFormState(
@@ -36,10 +39,11 @@ class LoginFormState extends LoginState {
           password: password ?? this.password,
           rememberMe: rememberMe ?? this.rememberMe,
           obscured: obscured ?? this.obscured,
+          loggedIn: loggedIn ?? this.loggedIn,
           emailStatus: emailStatus ?? this.emailStatus,
           passwordStatus: passwordStatus ?? this.passwordStatus);
 
   @override
   List<Object> get props =>
-      [email, password, rememberMe, obscured, emailStatus, passwordStatus];
+      [email, password, rememberMe, obscured, loggedIn, emailStatus, passwordStatus];
 }
