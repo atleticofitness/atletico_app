@@ -18,7 +18,6 @@ class AuthenticationLoggedIn extends AuthenticationEvent {
     var box = await Hive.openBox("user_information");
     if (box.containsKey("remember_me")) if (box.get("remember_me"))
       box.put("token_data", token.toJson());
-    print(box.get("token_data"));
   }
 
   @override
