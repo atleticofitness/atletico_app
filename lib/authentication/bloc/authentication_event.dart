@@ -17,7 +17,8 @@ class AuthenticationLoggedIn extends AuthenticationEvent {
   void saveToken() async {
     var box = await Hive.openBox("user_information");
     if (box.containsKey("remember_me")) if (box.get("remember_me"))
-      token.save();
+      box.put("token_data", token.toJson());
+    print(box.get("token_data"));
   }
 
   @override
@@ -27,4 +28,10 @@ class AuthenticationLoggedIn extends AuthenticationEvent {
   String toString() => 'AuthenticationLoggedIn { token: $token }';
 }
 
-class AuthenticationLoggedOut extends AuthenticationEvent {}
+class AuthenticationLoggedOut extends AuthenticationEvent {
+  void deleteToken() async {
+    var box = await Hive.openBox("user_information");
+    if (box.containsKey("token_data")) box.delete("token_data");
+    if (box.containsKey("remember_me")) box.delete("remember_me");
+  }
+}

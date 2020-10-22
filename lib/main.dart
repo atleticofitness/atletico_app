@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         },
         locale: DevicePreview.of(context).locale,
         title: 'atletico',
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: true,
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationSuccess)

@@ -36,7 +36,7 @@ class AuthenticationBloc
 
       if (event is AuthenticationLoggedOut) {
         yield AuthenticationInProgress();
-        token.delete();
+        event.deleteToken();
         yield AuthenticationFailure();
       }
     } catch (e) {
