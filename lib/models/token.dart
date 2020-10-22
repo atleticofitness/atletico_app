@@ -27,7 +27,7 @@ class Token extends HiveObject with EquatableMixin {
   @override
   List<Object> get props => [accessToken, tokenType];
 
-  Future<bool> hasToken() async {
+  bool hasToken() {
     return Hive.box('user_information').containsKey('token_data');
   }
 }

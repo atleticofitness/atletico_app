@@ -1,5 +1,5 @@
+import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/authentication/authentication_guard.dart';
-import 'package:atletico_app/authentication/bloc/authentication.dart';
 import 'package:atletico_app/models/token.dart';
 import 'package:atletico_app/routes/router.gr.dart' as route;
 import 'package:atletico_app/util/bloc_observer.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:device_preview/device_preview.dart';
+
 
 void main() async {
   await Hive.initFlutter();

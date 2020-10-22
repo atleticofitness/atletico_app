@@ -211,10 +211,8 @@ class RememberMeInput extends StatelessWidget {
                     value: state.rememberMe,
                     checkColor: Colors.white,
                     activeColor: secondaryColor,
-                    onChanged: (value) =>
-                      context
-                        .bloc<LoginBloc>()
-                        .add(LoginRememberMeForm(rememberMe: !state.rememberMe)),
+                    onChanged: (value) => context.bloc<LoginBloc>().add(
+                        LoginRememberMeForm(rememberMe: !state.rememberMe)),
                   ),
                 ),
                 Text(
@@ -271,8 +269,8 @@ class LoginButton extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () =>
-            context.bloc<LoginBloc>().add(LoginButtonPressed(email: state.email, password: state.password)),
+          onPressed: () => context.bloc<LoginBloc>().add(
+              LoginButtonPressed(email: state.email, password: state.password)),
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),

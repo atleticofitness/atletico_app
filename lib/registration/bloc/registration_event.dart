@@ -20,7 +20,7 @@ class RegistrationButtonPressed extends RegistrationEvent {
   String toString() => 'RegistrationButtonPressed { user: $user }';
 
   void processRegistration() async {
-      await sendRegistrationInfomation(user);
+    await sendRegistrationInfomation(user);
   }
 
   @override
