@@ -365,26 +365,6 @@ class GoogleLoginButton extends StatelessWidget {
 }
 
 class AppleLoginButton extends StatelessWidget {
-
-  Widget appleSignIn() {
-    return SignInWithAppleButton(
-      onPressed: () async {
-        final credentials = await SignInWithApple.getAppleIDCredential(
-          scopes: [
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName
-          ],
-          webAuthenticationOptions: WebAuthenticationOptions(
-              clientId: appleSignInClientID,
-              redirectUri: Uri.parse(
-                '$localAtleticoURL/login/sign-in-with-apple',
-              )),
-        );
-        getAppleCredentials(credentials);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
@@ -393,8 +373,19 @@ class AppleLoginButton extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () {
-            return null;
+          onPressed: () async {
+            final credentials = await SignInWithApple.getAppleIDCredential(
+              scopes: [
+                AppleIDAuthorizationScopes.email,
+                AppleIDAuthorizationScopes.fullName
+              ],
+              webAuthenticationOptions: WebAuthenticationOptions(
+                  clientId: appleSignInClientID,
+                  redirectUri: Uri.parse(
+                    '$localAtleticoURL/login/sign-in-with-apple',
+                  )),
+            );
+            getAppleCredentials(credentials);
           },
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
