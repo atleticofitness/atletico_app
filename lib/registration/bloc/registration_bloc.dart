@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:atletico_app/endpoints/registration/registration.dart';
+import 'package:atletico_app/endpoints/registration.dart';
 import 'package:atletico_app/models/users.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
