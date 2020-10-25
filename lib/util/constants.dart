@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 final String localAtleticoURL = "http://192.168.50.196:8080/api/v1";
-
+final String appleSignInClientID = "fitness.atletico.signin";
 enum FormStatus { undecided, valid, invalid, inprogress, complete }
 
 final Color primaryColor = Colors.white;

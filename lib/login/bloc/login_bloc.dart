@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:atletico_app/models/token.dart';
-import 'package:atletico_app/endpoints/authentication/atletico.dart';
+import 'package:atletico_app/endpoints/authentication/login.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

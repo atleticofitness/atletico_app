@@ -1,9 +1,11 @@
+import 'package:atletico_app/endpoints/authentication/login.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key key}) : super(key: key);
@@ -363,6 +365,25 @@ class GoogleLoginButton extends StatelessWidget {
 }
 
 class AppleLoginButton extends StatelessWidget {
+  Widget appleSignIn() {
+    return SignInWithAppleButton(
+      onPressed: () async {
+        final credentials = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName
+          ],
+          webAuthenticationOptions: WebAuthenticationOptions(
+              clientId: appleSignInClientID,
+              redirectUri: Uri.parse(
+                '$localAtleticoURL/login/sign-in-with-apple',
+              )),
+        );
+        getAppleCredentials(credentials);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
