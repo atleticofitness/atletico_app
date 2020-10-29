@@ -385,7 +385,8 @@ class AppleLoginButton extends StatelessWidget {
                     '$localAtleticoURL/login/sign-in-with-apple',
                   )),
             );
-            getAppleCredentials(credentials);
+            var idk = await getAppleCredentials(credentials);
+            print("MEME $idk");
           },
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(

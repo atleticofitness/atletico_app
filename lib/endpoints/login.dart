@@ -30,12 +30,14 @@ Future<Response> getAppleCredentials(
     AuthorizationCredentialAppleID credentials) async {
   // This is the endpoint that will convert an authorization code obtained
   // via Sign in with Apple into a session in your system
-  String url = localAtleticoURL.replaceAll("https://", "");
-  url = localAtleticoURL.replaceAll("http://", "");
+  String url = baseURL;
+  url = url.replaceAll("https://", "");
+  url = url.replaceAll("http://", "");
+
   final signInWithAppleEndpoint = Uri(
     scheme: 'https',
     host: url,
-    path: '/login/sign-in-with-apple-creds',
+    path: '/api/v1/login/sign-in-with-apple-creds',
     queryParameters: <String, String>{
       'code': credentials.authorizationCode,
       'firstName': credentials.givenName,
@@ -44,7 +46,6 @@ Future<Response> getAppleCredentials(
       if (credentials.state != null) 'state': credentials.state,
     },
   );
-
   final session = await dio.postUri(signInWithAppleEndpoint);
   return session;
 }
