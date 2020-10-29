@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'appletoken.g.dart';
+part 'apple_token.g.dart';
 
 @HiveType(typeId: 1)
 @JsonSerializable(fieldRename: FieldRename.snake)
