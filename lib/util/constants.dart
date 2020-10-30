@@ -2,9 +2,11 @@ import 'package:atletico_app/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+final String testIpAddress = "192.168.50.196:8080";
 final String baseURL = "https://atletico.fitness";
-final String localAtleticoURL = "$baseURL/api/v1"; //192.168.50.196:8080
+final String localAtleticoURL = "$baseURL/api/v1";
 final String appleSignInClientID = "fitness.atletico.signin";
+
 enum FormStatus { undecided, valid, invalid, inprogress, complete }
 
 final Color primaryColor = Colors.white;

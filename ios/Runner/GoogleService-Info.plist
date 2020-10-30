@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>206400610467-8ivmqfpjmf738q6dc6lih9bsc2tpbl35.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.206400610467-8ivmqfpjmf738q6dc6lih9bsc2tpbl35</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAAavgj6Hs3Z4MULCZWDis66k0pr20LPSQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>206400610467</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>fitness.atletico.www</string>
+	<key>PROJECT_ID</key>
+	<string>dulcet-bonito-278218</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dulcet-bonito-278218.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:206400610467:ios:a0bff710b804b86400df16</string>
+	<key>DATABASE_URL</key>
+	<string>https://dulcet-bonito-278218.firebaseio.com</string>
+</dict>
+</plist>
