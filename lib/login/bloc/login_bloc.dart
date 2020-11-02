@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:regexed_validator/regexed_validator.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -34,6 +35,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
       if (event is LoginRememberMeForm) {
         event.saveRememberMe();
         yield state.copyWith(rememberMe: event.rememberMe);
+      }
+
+      if (event is LoginWithApple) {
+        var token = await event.signIn();
+        var auth = AuthenticationLoggedIn(token: token);
+        yield state.copyWith(loggedIn: true);
+        authenticationBloc.add(auth);
       }
 
       if (event is LoginButtonPressed) {

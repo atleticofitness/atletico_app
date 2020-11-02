@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:atletico_app/models/token.dart';
-import 'package:atletico_app/models/tokens.dart';
 import 'package:dio/dio.dart' show DioError, FormData;
 import 'package:atletico_app/endpoints/client.dart' show dio;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -27,7 +26,7 @@ class CouldNotObtainTokenError implements Exception {
   const CouldNotObtainTokenError([this.message = ""]);
 }
 
-Future<Tokens> getAppleCredentials(
+Future<Token> getAppleCredentials(
     AuthorizationCredentialAppleID credentials) async {
   // This is the endpoint that will convert an authorization code obtained
   // via Sign in with Apple into a session in your system
@@ -49,7 +48,7 @@ Future<Tokens> getAppleCredentials(
   );
   try {
     final response = await dio.postUri(signInWithAppleEndpoint);
-    return Tokens.fromJson(response.data);
+    return Token.fromJson(response.data);
   } on DioError catch (error) {
     throw error;
   }
