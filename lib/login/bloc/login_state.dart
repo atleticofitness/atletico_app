@@ -11,7 +11,7 @@ class LoginFormState extends LoginState {
   final String password;
   final bool rememberMe;
   final bool obscured;
-  final bool loggedIn;
+  final bool isLoggedIn;
   final FormStatus emailStatus;
   final FormStatus passwordStatus;
 
@@ -20,18 +20,19 @@ class LoginFormState extends LoginState {
       this.password = "",
       this.rememberMe = false,
       this.obscured = true,
-      this.loggedIn = false,
+      this.isLoggedIn = false,
       this.emailStatus,
       this.passwordStatus});
 
-  bool isValid() => email.isNotEmpty && password.isNotEmpty;
+  bool get isValid =>
+      emailStatus == FormStatus.valid && passwordStatus == FormStatus.valid;
 
   LoginFormState copyWith(
           {String email,
           String password,
           bool rememberMe,
           bool obscured,
-          bool loggedIn,
+          bool isLoggedIn,
           FormStatus emailStatus,
           FormStatus passwordStatus}) =>
       LoginFormState(
@@ -39,7 +40,7 @@ class LoginFormState extends LoginState {
           password: password ?? this.password,
           rememberMe: rememberMe ?? this.rememberMe,
           obscured: obscured ?? this.obscured,
-          loggedIn: loggedIn ?? this.loggedIn,
+          isLoggedIn: isLoggedIn ?? this.isLoggedIn,
           emailStatus: emailStatus ?? this.emailStatus,
           passwordStatus: passwordStatus ?? this.passwordStatus);
 
@@ -49,7 +50,7 @@ class LoginFormState extends LoginState {
         password,
         rememberMe,
         obscured,
-        loggedIn,
+        isLoggedIn,
         emailStatus,
         passwordStatus
       ];

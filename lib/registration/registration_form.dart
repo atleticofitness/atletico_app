@@ -57,16 +57,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
           ),
         ],
       ),
-      SizedBox(height: 15.0),
+/*      SizedBox(height: 15.0),
       FirstNameInput(),
       SizedBox(height: 15.0),
-      LastNameInput(),
+      LastNameInput(),*/
       SizedBox(height: 15.0),
       EmailInput(),
       SizedBox(height: 15.0),
       PasswordInput(),
-      SizedBox(height: 15.0),
-      DateOfBirthInput(),
+//      SizedBox(height: 15.0),
+//      DateOfBirthInput(),
       SizedBox(height: 15.0),
       SubmitButton(),
     ]);
@@ -323,11 +323,12 @@ class SubmitButton extends StatelessWidget {
           elevation: 5.0,
           onPressed: () {
             if (!state.isValid()) return null;
-            var formatter = StringMask("0000/00/00");
+            //var formatter = StringMask("0000/00/00");
             if (state.userStatus != FormStatus.complete &&
                 state.userStatus != FormStatus.inprogress)
-              return BlocProvider.of<RegistrationBloc>(context).add(
-                RegistrationButtonPressed(
+              return BlocProvider.of<RegistrationBloc>(context)
+                  .add(RegistrationButtonPressed());
+            /*RegistrationButtonPressed(
                   user: User(
                       email: state.email,
                       password: state.password,
@@ -335,8 +336,7 @@ class SubmitButton extends StatelessWidget {
                       lastName: state.lastName,
                       birthDate: formatter.apply(state.birthDate),
                       isActive: true),
-                ),
-              );
+                ),*/
             return null;
           },
           padding: EdgeInsets.all(15.0),

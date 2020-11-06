@@ -13,6 +13,7 @@ import '../authentication/authentication_guard.dart';
 import '../loggedin/home.dart';
 import '../login/login.dart';
 import '../registration/registration.dart';
+import '../repositories/user_repository.dart';
 
 class Routes {
   static const String loginWidget = '/';
@@ -38,17 +39,22 @@ class Router extends RouterBase {
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
     LoginWidget: (data) {
+      final args = data.getArgs<LoginWidgetArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => LoginWidget(),
+        builder: (context) => LoginWidget(
+          key: args.key,
+          userRepository: args.userRepository,
+        ),
         settings: data,
       );
     },
     RegistrationWidget: (data) {
-      final args = data.getArgs<RegistrationWidgetArguments>(
-        orElse: () => RegistrationWidgetArguments(),
-      );
+      final args = data.getArgs<RegistrationWidgetArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => RegistrationWidget(key: args.key),
+        builder: (context) => RegistrationWidget(
+          key: args.key,
+          userRepository: args.userRepository,
+        ),
         settings: data,
       );
     },
@@ -68,10 +74,18 @@ class Router extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
+/// LoginWidget arguments holder class
+class LoginWidgetArguments {
+  final Key key;
+  final UserRepository userRepository;
+  LoginWidgetArguments({this.key, @required this.userRepository});
+}
+
 /// RegistrationWidget arguments holder class
 class RegistrationWidgetArguments {
   final Key key;
-  RegistrationWidgetArguments({this.key});
+  final UserRepository userRepository;
+  RegistrationWidgetArguments({this.key, @required this.userRepository});
 }
 
 /// AtleticoWidget arguments holder class

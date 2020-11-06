@@ -1,25 +1,31 @@
-import 'package:atletico_app/endpoints/login.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
+import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginForm extends StatefulWidget {
-  LoginForm({Key key}) : super(key: key);
+  final UserRepository userRepository;
+
+  LoginForm({Key key, this.userRepository}) : super(key: key);
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _LoginFormState createState() =>
+      _LoginFormState(userRepository: this.userRepository);
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final UserRepository userRepository;
+
+  _LoginFormState({@required this.userRepository});
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginFormState>(
         listener: (context, state) {
-          if (state.loggedIn)
+          if (state.isLoggedIn)
             ExtendedNavigator.of(context).push(Routes.atleticoWidget);
         },
         child: buildForm(context));
@@ -69,7 +75,7 @@ class _LoginFormState extends State<LoginForm> {
         ForgotPasswordInput(),
         RememberMeInput(),
         LoginButton(),
-        RegistrationInput(),
+        RegistrationInput(userRepostory: userRepository),
         buildSignInWithText(),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -233,12 +239,17 @@ class RememberMeInput extends StatelessWidget {
 }
 
 class RegistrationInput extends StatelessWidget {
+  final UserRepository userRepostory;
+
+  const RegistrationInput({Key key, @required this.userRepostory})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
       return GestureDetector(
-        onTap: () =>
-            ExtendedNavigator.of(context).push(Routes.registrationWidget),
+        onTap: () => ExtendedNavigator.of(context)
+            .push(Routes.registrationWidget, arguments: userRepostory),
         child: RichText(
           text: TextSpan(
             children: [
@@ -307,9 +318,7 @@ class FacebookLoginButton extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () {
-            return null;
-          },
+          onPressed: () => context.bloc<LoginBloc>().add(LoginWithFacebook()),
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
@@ -340,18 +349,7 @@ class GoogleLoginButton extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () async {
-            GoogleSignIn googleSignIn = GoogleSignIn(
-              scopes: [
-                'email',
-                'https://www.googleapis.com/auth/user.birthday.read',
-                'https://www.googleapis.com/auth/userinfo.profile'
-              ],
-            );
-            var credentials = await getGoogleCredentials(googleSignIn);
-            print(credentials);
-            return null;
-          },
+          onPressed: () => context.bloc<LoginBloc>().add(LoginWithGoogle()),
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),

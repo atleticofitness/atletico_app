@@ -7,30 +7,26 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthenticationStarted extends AuthenticationEvent {}
+class AuthenticationStarted extends AuthenticationEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'AuthenticationStarted { }';
+}
 
 class AuthenticationLoggedIn extends AuthenticationEvent {
-  final Token token;
-
-  const AuthenticationLoggedIn({@required this.token});
-
-  void saveToken() async {
-    var box = await Hive.openBox("user_information");
-    if (box.containsKey("remember_me")) if (box.get("remember_me"))
-      box.put("token_data", token.toJson());
-  }
+  @override
+  List<Object> get props => [];
 
   @override
-  List<Object> get props => [token];
-
-  @override
-  String toString() => 'AuthenticationLoggedIn { token: $token }';
+  String toString() => 'AuthenticationLoggedIn { }';
 }
 
 class AuthenticationLoggedOut extends AuthenticationEvent {
-  void deleteToken() async {
-    var box = await Hive.openBox("user_information");
-    if (box.containsKey("token_data")) box.delete("token_data");
-    if (box.containsKey("remember_me")) box.delete("remember_me");
-  }
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'AuthenticationLoggedOut { }';
 }

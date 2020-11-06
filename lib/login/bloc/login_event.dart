@@ -14,6 +14,14 @@ class LoginEmailForm extends LoginEvent {
 
   @override
   String toString() => 'LoginEmailForm Pressed { email: $email }';
+
+  FormStatus validate() {
+    if (email.isEmpty) return FormStatus.undecided;
+    if (!email.contains("@")) return FormStatus.inprogress;
+    if (!email.contains(".")) return FormStatus.inprogress;
+    if (!validator.email(email)) return FormStatus.invalid;
+    return FormStatus.complete;
+  }
 }
 
 class LoginPasswordForm extends LoginEvent {
@@ -28,6 +36,13 @@ class LoginPasswordForm extends LoginEvent {
   @override
   String toString() =>
       'LoginPasswordForm Pressed { password: $password, obscured: $obscured }';
+
+  FormStatus validate() {
+    if (password.isEmpty) return FormStatus.undecided;
+    if (password.length < 8) return FormStatus.inprogress;
+    if (!validator.password(password)) return FormStatus.invalid;
+    return FormStatus.complete;
+  }
 }
 
 class LoginRememberMeForm extends LoginEvent {
@@ -60,16 +75,6 @@ class LoginButtonPressed extends LoginEvent {
   @override
   String toString() =>
       'LoginButton Pressed { email: $email, password: $password }';
-
-  bool isValid() {
-    if (email.isEmpty) return false;
-    if (!email.contains("@")) return false;
-    if (!email.contains(".")) return false;
-    if (!validator.email(email)) return false;
-    if (password.isEmpty) return false;
-    if (!validator.password(password)) return false;
-    return true;
-  }
 }
 
 class LoginWithApple extends LoginEvent {
@@ -95,5 +100,21 @@ class LoginWithApple extends LoginEvent {
   List<Object> get props => [];
 
   @override
-  String toString() => 'LoginWithApple Pressed {}';
+  String toString() => 'LoginWithApple Pressed { }';
+}
+
+class LoginWithGoogle extends LoginEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'LoginWithGoogle Pressed {}';
+}
+
+class LoginWithFacebook extends LoginEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'LoginWithFacebook Pressed {}';
 }

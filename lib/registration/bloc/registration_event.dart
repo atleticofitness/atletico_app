@@ -9,28 +9,22 @@ abstract class RegistrationEvent extends Equatable {
 }
 
 class RegistrationButtonPressed extends RegistrationEvent {
-  final User user;
-
-  const RegistrationButtonPressed({@required this.user});
+  const RegistrationButtonPressed();
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [];
 
   @override
-  String toString() => 'RegistrationButtonPressed { user: $user }';
-
-  void processRegistration() async {
-    await sendRegistrationInfomation(user);
-  }
+  String toString() => 'RegistrationButtonPressed { }';
 
   @override
   Future<FormStatus> validate() async {
-    if (user.firstName == null ||
+    /*if (user.firstName == null ||
         user.lastName == null ||
         user.password == null ||
         user.email == null ||
         user.birthDate == null) return FormStatus.invalid;
-    return FormStatus.inprogress;
+    return FormStatus.inprogress;*/
   }
 }
 

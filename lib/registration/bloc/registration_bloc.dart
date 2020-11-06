@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:atletico_app/endpoints/registration.dart';
 import 'package:atletico_app/models/users.dart';
+import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,12 @@ part 'registration_event.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
-  RegistrationBloc() : super(RegistrationFormState());
+  final UserRepository userRepository;
+
+  RegistrationBloc({@required userRepository})
+      : assert(userRepository != null),
+        this.userRepository = userRepository,
+        super(RegistrationFormState());
 
   @override
   Stream<RegistrationFormState> mapEventToState(
@@ -45,9 +51,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
             birthDateStatus: await event.validate());
 
       if (event is RegistrationButtonPressed) {
-        yield state.copyWith(userStatus: await event.validate());
-        if (state.userStatus == FormStatus.inprogress) {
-          event.processRegistration();
+        if (state.emailStatus == FormStatus.complete &&
+            state.passwordStatus == FormStatus.complete) {
+          userRepository.firebaseAuth.createUserWithEmailAndPassword(
+              email: state.email, password: state.password);
           yield state.copyWith(userStatus: FormStatus.complete);
         }
       }

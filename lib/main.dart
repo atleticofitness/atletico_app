@@ -1,6 +1,6 @@
 import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/authentication/authentication_guard.dart';
-import 'package:atletico_app/models/token.dart';
+import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart' as route;
 import 'package:atletico_app/util/bloc_observer.dart';
 import 'package:auto_route/auto_route.dart';
@@ -14,21 +14,22 @@ import 'package:device_preview/device_preview.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox("user_information");
-  final Token token = Token.loadToken();
   Bloc.observer = SimpleBlocObserver();
+  final UserRepository userRepository = UserRepository();
   runApp(BlocProvider<AuthenticationBloc>(
       create: (context) {
-        return AuthenticationBloc(token: token)..add(AuthenticationStarted());
+        return AuthenticationBloc(userRepository: userRepository)
+          ..add(AuthenticationStarted());
       },
       child: DevicePreview(
           enabled: !kReleaseMode == false,
-          builder: (context) => MyApp(token: token))));
+          builder: (context) => MyApp(userRepository: userRepository))));
 }
 
 class MyApp extends StatelessWidget {
-  final Token token;
+  final UserRepository userRepository;
 
-  MyApp({Key key, @required this.token}) : super(key: key);
+  MyApp({Key key, @required this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
             if (state is AuthenticationSuccess)
               ExtendedNavigator.of(context).push(route.Routes.atleticoWidget);
             if (state is AuthenticationFailure)
-              ExtendedNavigator.of(context).push(route.Routes.loginWidget);
+              ExtendedNavigator.of(context)
+                  .push(route.Routes.loginWidget, arguments: userRepository);
 
             if (state is AuthenticationInProgress)
               return CircularProgressIndicator();

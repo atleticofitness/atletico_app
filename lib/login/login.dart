@@ -1,18 +1,27 @@
 import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
 import 'package:atletico_app/login/login_form.dart';
+import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginWidget extends StatefulWidget {
+  final UserRepository userRepository;
+
+  const LoginWidget({Key key, @required this.userRepository}) : super(key: key);
   @override
-  LoginWidgetState createState() => LoginWidgetState();
+  LoginWidgetState createState() =>
+      LoginWidgetState(userRepository: this.userRepository);
 }
 
 class LoginWidgetState extends State<LoginWidget>
     with SingleTickerProviderStateMixin {
+  final UserRepository userRepository;
+
+  LoginWidgetState({@required this.userRepository});
+
   @override
   Widget build(BuildContext context) {
     return BaseWidget(builder: (context, sizingInformation) {
@@ -20,11 +29,9 @@ class LoginWidgetState extends State<LoginWidget>
           context,
           BlocProvider(
               create: (context) {
-                return LoginBloc(
-                    authenticationBloc:
-                        BlocProvider.of<AuthenticationBloc>(context));
+                return LoginBloc(userRepository: userRepository);
               },
-              child: LoginForm()));
+              child: LoginForm(userRepository: userRepository)));
     });
   }
 }
