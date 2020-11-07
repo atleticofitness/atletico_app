@@ -10,7 +10,11 @@ class Token extends HiveObject with EquatableMixin {
   final String accessToken;
   @HiveField(1)
   final String tokenType;
-  Token({this.accessToken, this.tokenType});
+  @HiveField(2)
+  final String idToken;
+  @HiveField(3)
+  final String expiresIn;
+  Token({this.accessToken, this.tokenType, this.idToken, this.expiresIn});
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
   Map<String, dynamic> toJson() => _$TokenToJson(this);
   Map<String, dynamic> makeHeader() =>
@@ -21,11 +25,14 @@ class Token extends HiveObject with EquatableMixin {
     if (!box.containsKey('token_data')) return Token();
     Map<String, dynamic> json = box.get('token_data');
     return Token(
-        accessToken: json['access_token'], tokenType: json['token_type']);
+        accessToken: json['access_token'],
+        tokenType: json['token_type'],
+        idToken: json['id_token'],
+        expiresIn: json['expires_in']);
   }
 
   @override
-  List<Object> get props => [accessToken, tokenType];
+  List<Object> get props => [accessToken, tokenType, idToken, expiresIn];
 
   bool hasToken() {
     return Hive.box('user_information').containsKey('token_data');

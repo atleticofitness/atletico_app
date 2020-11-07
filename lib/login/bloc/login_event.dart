@@ -80,22 +80,6 @@ class LoginButtonPressed extends LoginEvent {
 class LoginWithApple extends LoginEvent {
   const LoginWithApple();
 
-  Future<Token> signIn() async {
-    final credentials = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName
-      ],
-      webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: appleSignInClientID,
-          redirectUri: Uri.parse(
-            '$localAtleticoURL/login/sign-in-with-apple',
-          )),
-    );
-    var token = await getAppleCredentials(credentials);
-    return token;
-  }
-
   @override
   List<Object> get props => [];
 

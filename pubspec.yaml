@@ -27,10 +27,10 @@ dependencies:
   #cloud_firestore: ^0.12.9+5
   rxdart: ^0.24.1
   flutter_password_strength: ^0.1.4
-  sign_in_with_apple: ^2.5.1
   firebase_auth: ^0.18.2
-
+  sign_in_with_apple: ^2.5.1
   google_sign_in: ^4.5.5
+  flutter_facebook_login: ^3.0.0
   regexed_validator: ^1.0.4
   string_mask: ^0.1.0
   intl: ^0.16.1
