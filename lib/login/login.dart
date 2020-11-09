@@ -1,4 +1,3 @@
-import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/login/bloc/login_bloc.dart';
 import 'package:atletico_app/login/login_form.dart';
 import 'package:atletico_app/repositories/user_repository.dart';

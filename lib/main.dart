@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
 
             if (state is AuthenticationSuccess)
-              ExtendedNavigator.of(context).push(route.Routes.atleticoWidget);
+              ExtendedNavigator.of(context).push(route.Routes.homePageWidget);
             if (state is AuthenticationFailure)
               ExtendedNavigator.of(context)
                   .push(route.Routes.loginWidget);

@@ -16,11 +16,11 @@ import '../registration/registration.dart';
 
 class Routes {
   static const String loginWidget = '/';
-  static const String atleticoWidget = '/home';
+  static const String homePageWidget = '/home';
   static const String registrationWidget = '/registration';
   static const all = <String>{
     loginWidget,
-    atleticoWidget,
+    homePageWidget,
     registrationWidget,
   };
 }
@@ -30,7 +30,7 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.loginWidget, page: LoginWidget),
-    RouteDef(Routes.atleticoWidget, page: AtleticoWidget),
+    RouteDef(Routes.homePageWidget, page: HomePageWidget),
     RouteDef(Routes.registrationWidget,
         page: RegistrationWidget, guards: [AuthenticationGuard]),
   ];
@@ -43,12 +43,9 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    AtleticoWidget: (data) {
-      final args = data.getArgs<AtleticoWidgetArguments>(
-        orElse: () => AtleticoWidgetArguments(),
-      );
+    HomePageWidget: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AtleticoWidget(key: args.key),
+        builder: (context) => const HomePageWidget(),
         settings: data,
       );
     },
@@ -67,12 +64,6 @@ class Router extends RouterBase {
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
-
-/// AtleticoWidget arguments holder class
-class AtleticoWidgetArguments {
-  final Key key;
-  AtleticoWidgetArguments({this.key});
-}
 
 /// RegistrationWidget arguments holder class
 class RegistrationWidgetArguments {

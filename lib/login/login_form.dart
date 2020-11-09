@@ -20,7 +20,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginBloc, LoginFormState>(
         listener: (context, state) {
           if (state.isLoggedIn)
-            ExtendedNavigator.of(context).push(Routes.atleticoWidget);
+            ExtendedNavigator.of(context).push(Routes.homePageWidget);
 
         },
         child: buildForm(context));

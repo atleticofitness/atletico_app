@@ -1,29 +1,30 @@
+import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:atletico_app/util/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AtleticoWidget extends StatefulWidget {
-  AtleticoWidget({Key key}) : super(key: key);
+import 'home_form.dart';
 
+class HomePageWidget extends StatefulWidget {
+
+  const HomePageWidget({Key key}) : super(key: key);
   @override
-  AtleticoWidgetState createState() => AtleticoWidgetState();
+  HomePageWidgetState createState() => HomePageWidgetState();
 }
 
-class AtleticoWidgetState extends State<AtleticoWidget> {
+class HomePageWidgetState extends State<HomePageWidget>
+    with SingleTickerProviderStateMixin {
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.directions_car)),
-              Tab(icon: Icon(Icons.directions_transit)),
-              Tab(icon: Icon(Icons.person), child: null),
-            ],
-          ),
-        ),
-      ),
-    );
+    return BaseWidget(builder: (context, sizingInformation) {
+      return loginRegistrationScaffold(
+          context,
+          BlocProvider(
+              create: (context) {
+                //return LoginBloc(userRepository: UserRepository.users());
+              },
+              child: HomePageForm()));
+    });
   }
 }
