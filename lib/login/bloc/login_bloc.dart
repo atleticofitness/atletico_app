@@ -39,22 +39,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
 
       if (event is LoginWithApple) {
         await userRepository.signInWithApple();
-        yield state.copyWith(isLoggedIn: true);
       }
 
       if (event is LoginWithGoogle) {
         await userRepository.signInWithGoogle();
-        yield state.copyWith(isLoggedIn: true);
       }
 
       if (event is LoginWithFacebook) {
         await userRepository.signInWithFacebook();
-        yield state.copyWith(isLoggedIn: true);
       }
 
       if (event is LoginButtonPressed) {
         if (state.isValid) {
-          yield state.copyWith(isLoggedIn: true);
+          await userRepository.signInWithCredentials(
+              event.email, event.password);
         }
       }
     } catch (e) {

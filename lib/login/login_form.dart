@@ -1,4 +1,5 @@
 import 'package:atletico_app/login/bloc/login_bloc.dart';
+import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginForm extends StatefulWidget {
-
   LoginForm({Key key}) : super(key: key);
 
   @override
@@ -14,14 +14,13 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginFormState>(
         listener: (context, state) {
-          if (state.isLoggedIn) {
+          UserRepository userRepository = UserRepository.users();
+          if (userRepository.isSignedIn())
             ExtendedNavigator.of(context).push(Routes.homePageWidget);
-          }
         },
         child: buildForm(context));
   }
@@ -234,16 +233,14 @@ class RememberMeInput extends StatelessWidget {
 }
 
 class RegistrationInput extends StatelessWidget {
-
-  const RegistrationInput({Key key})
-      : super(key: key);
+  const RegistrationInput({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
       return GestureDetector(
-        onTap: () => ExtendedNavigator.of(context)
-            .push(Routes.registrationWidget),
+        onTap: () =>
+            ExtendedNavigator.of(context).push(Routes.registrationWidget),
         child: RichText(
           text: TextSpan(
             children: [

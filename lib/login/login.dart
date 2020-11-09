@@ -7,7 +7,6 @@ import 'package:atletico_app/util/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginWidget extends StatefulWidget {
-
   const LoginWidget({Key key}) : super(key: key);
   @override
   LoginWidgetState createState() => LoginWidgetState();
@@ -15,7 +14,6 @@ class LoginWidget extends StatefulWidget {
 
 class LoginWidgetState extends State<LoginWidget>
     with SingleTickerProviderStateMixin {
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget(builder: (context, sizingInformation) {

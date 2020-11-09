@@ -52,8 +52,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
       if (event is RegistrationButtonPressed) {
         if (state.emailStatus == FormStatus.complete &&
             state.passwordStatus == FormStatus.complete) {
-          userRepository.firebaseAuth.createUserWithEmailAndPassword(
-              email: state.email, password: state.password);
+          userRepository.signUp(email: state.email, password: state.password);
           yield state.copyWith(userStatus: FormStatus.complete);
         }
       }

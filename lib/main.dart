@@ -24,14 +24,10 @@ void main() async {
           ..add(AuthenticationStarted());
       },
       child: DevicePreview(
-          enabled: !kReleaseMode == false,
-          builder: (context) => MyApp())));
+          enabled: !kReleaseMode == false, builder: (context) => MyApp())));
 }
 
-
-
 class MyApp extends StatelessWidget {
-
   MyApp({Key key}) : super(key: key);
 
   @override
@@ -50,12 +46,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: true,
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-
             if (state is AuthenticationSuccess)
               ExtendedNavigator.of(context).push(route.Routes.homePageWidget);
             if (state is AuthenticationFailure)
-              ExtendedNavigator.of(context)
-                  .push(route.Routes.loginWidget);
+              ExtendedNavigator.of(context).push(route.Routes.loginWidget);
 
             if (state is AuthenticationInProgress)
               return CircularProgressIndicator();

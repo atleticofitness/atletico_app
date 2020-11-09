@@ -74,16 +74,20 @@ class UserRepository {
         password: password,
       );
     } on FirebaseAuthException catch (fbError) {
-      print(fbError);
+      print(fbError.code);
     }
     return credential;
   }
 
   Future<void> signUp({String email, String password}) async {
-    return await firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (fbError) {
+      print(fbError.code);
+    }
   }
 
   Future<void> signOut() async {
@@ -107,7 +111,8 @@ class UserRepository {
     try {
       await firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (fbError) {
-      firebaseAuth.currentUser.linkWithCredential(fbError.credential);
+      if (fbError.code == "account-exists-with-different-credential")
+        firebaseAuth.currentUser.linkWithCredential(fbError.credential);
     }
   }
 

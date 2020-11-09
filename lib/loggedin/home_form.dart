@@ -13,10 +13,7 @@ class _HomepageFormState extends State<HomepageForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomepageBloc, HomepageState>(
-        listener: (context, state) {
-
-        },
-        child: buildForm(context));
+        listener: (context, state) {}, child: buildForm(context));
   }
 
   Widget buildForm(BuildContext context) {

@@ -7,7 +7,6 @@ import 'bloc/homepage_bloc.dart';
 import 'home_form.dart';
 
 class HomepageWidget extends StatefulWidget {
-
   const HomepageWidget({Key key}) : super(key: key);
   @override
   HomepageWidgetState createState() => HomepageWidgetState();
@@ -15,7 +14,6 @@ class HomepageWidget extends StatefulWidget {
 
 class HomepageWidgetState extends State<HomepageWidget>
     with SingleTickerProviderStateMixin {
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget(builder: (context, sizingInformation) {
