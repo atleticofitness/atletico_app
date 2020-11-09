@@ -33,26 +33,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
             passwordStatus: event.validate());
 
       if (event is LoginRememberMeForm) {
-        yield state.copyWith(rememberMe: event.rememberMe);
         event.saveRememberMe();
+        yield state.copyWith(rememberMe: event.rememberMe);
       }
 
       if (event is LoginWithApple) {
         await userRepository.signInWithApple();
+        yield state;
       }
 
       if (event is LoginWithGoogle) {
         await userRepository.signInWithGoogle();
+        yield state;
       }
 
       if (event is LoginWithFacebook) {
         await userRepository.signInWithFacebook();
+        yield state;
       }
 
       if (event is LoginButtonPressed) {
         if (state.isValid) {
           await userRepository.signInWithCredentials(
               event.email, event.password);
+          yield state;
         }
       }
     } catch (e) {

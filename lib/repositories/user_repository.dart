@@ -77,7 +77,7 @@ class UserRepository {
     return firebaseAuth.currentUser;
   }
 
-  Future<User> signUp({String email, String password}) async {
+  Future<User> signUpAndLogin({String email, String password}) async {
     try {
       UserCredential userCredentials =
           await firebaseAuth.createUserWithEmailAndPassword(

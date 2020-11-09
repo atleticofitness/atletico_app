@@ -56,16 +56,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
           ),
         ],
       ),
-/*      SizedBox(height: 15.0),
-      FirstNameInput(),
-      SizedBox(height: 15.0),
-      LastNameInput(),*/
       SizedBox(height: 15.0),
       EmailInput(),
       SizedBox(height: 15.0),
       PasswordInput(),
-//      SizedBox(height: 15.0),
-//      DateOfBirthInput(),
       SizedBox(height: 15.0),
       SubmitButton(),
     ]);
