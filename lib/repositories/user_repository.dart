@@ -102,4 +102,8 @@ class UserRepository {
   User getUser() {
     return firebaseAuth.currentUser;
   }
+
+  factory UserRepository.users() {
+    return UserRepository();
+  }
 }

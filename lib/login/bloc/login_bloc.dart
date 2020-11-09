@@ -1,17 +1,12 @@
 import 'dart:async';
 
-import 'package:atletico_app/authentication/bloc/authentication_bloc.dart';
 import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/util/constants.dart';
-import 'package:atletico_app/models/token.dart';
-import 'package:atletico_app/endpoints/login.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:regexed_validator/regexed_validator.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -43,18 +38,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
       }
 
       if (event is LoginWithApple) {
+        await userRepository.signInWithApple();
         yield state.copyWith(isLoggedIn: true);
-        //authenticationBloc.add(AuthenticationLoggedIn());
       }
 
       if (event is LoginWithGoogle) {
         await userRepository.signInWithGoogle();
         yield state.copyWith(isLoggedIn: true);
-        //authenticationBloc.add(AuthenticationLoggedIn());
       }
+
       if (event is LoginWithFacebook) {
+        await userRepository.signInWithFacebook();
         yield state.copyWith(isLoggedIn: true);
-        //authenticationBloc.add(AuthenticationLoggedIn());
       }
 
       if (event is LoginButtonPressed) {

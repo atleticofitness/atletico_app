@@ -1,5 +1,4 @@
 import 'package:atletico_app/login/bloc/login_bloc.dart';
-import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
@@ -7,19 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginForm extends StatefulWidget {
-  final UserRepository userRepository;
 
-  LoginForm({Key key, this.userRepository}) : super(key: key);
+  LoginForm({Key key}) : super(key: key);
 
   @override
-  _LoginFormState createState() =>
-      _LoginFormState(userRepository: this.userRepository);
+  _LoginFormState createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final UserRepository userRepository;
-
-  _LoginFormState({@required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +21,7 @@ class _LoginFormState extends State<LoginForm> {
         listener: (context, state) {
           if (state.isLoggedIn)
             ExtendedNavigator.of(context).push(Routes.atleticoWidget);
+
         },
         child: buildForm(context));
   }
@@ -75,7 +70,7 @@ class _LoginFormState extends State<LoginForm> {
         ForgotPasswordInput(),
         RememberMeInput(),
         LoginButton(),
-        RegistrationInput(userRepostory: userRepository),
+        RegistrationInput(),
         buildSignInWithText(),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -239,9 +234,8 @@ class RememberMeInput extends StatelessWidget {
 }
 
 class RegistrationInput extends StatelessWidget {
-  final UserRepository userRepostory;
 
-  const RegistrationInput({Key key, @required this.userRepostory})
+  const RegistrationInput({Key key})
       : super(key: key);
 
   @override
@@ -249,7 +243,7 @@ class RegistrationInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginFormState>(builder: (context, state) {
       return GestureDetector(
         onTap: () => ExtendedNavigator.of(context)
-            .push(Routes.registrationWidget, arguments: userRepostory),
+            .push(Routes.registrationWidget),
         child: RichText(
           text: TextSpan(
             children: [

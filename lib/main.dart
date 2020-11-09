@@ -17,7 +17,7 @@ void main() async {
   await Hive.openBox("user_information");
   await Firebase.initializeApp();
   Bloc.observer = SimpleBlocObserver();
-  final UserRepository userRepository = UserRepository();
+  final UserRepository userRepository = UserRepository.users();
   runApp(BlocProvider<AuthenticationBloc>(
       create: (context) {
         return AuthenticationBloc(userRepository: userRepository)
@@ -25,13 +25,14 @@ void main() async {
       },
       child: DevicePreview(
           enabled: !kReleaseMode == false,
-          builder: (context) => MyApp(userRepository: userRepository))));
+          builder: (context) => MyApp())));
 }
 
-class MyApp extends StatelessWidget {
-  final UserRepository userRepository;
 
-  MyApp({Key key, @required this.userRepository}) : super(key: key);
+
+class MyApp extends StatelessWidget {
+
+  MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +50,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: true,
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
+
             if (state is AuthenticationSuccess)
               ExtendedNavigator.of(context).push(route.Routes.atleticoWidget);
             if (state is AuthenticationFailure)
               ExtendedNavigator.of(context)
-                  .push(route.Routes.loginWidget, arguments: userRepository);
+                  .push(route.Routes.loginWidget);
 
             if (state is AuthenticationInProgress)
               return CircularProgressIndicator();

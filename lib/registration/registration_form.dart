@@ -1,4 +1,3 @@
-import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/registration/bloc/registration_bloc.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_password_strength/flutter_password_strength.dart';
-import 'package:string_mask/string_mask.dart';
 
 class RegistrationForm extends StatefulWidget {
   RegistrationForm({Key key}) : super(key: key);
