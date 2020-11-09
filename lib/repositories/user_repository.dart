@@ -29,11 +29,11 @@ class UserRepository {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
+    final AuthCredential credentials = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    await firebaseAuth.signInWithCredential(credential);
+    _handleSignInCredentials(credentials);
     return firebaseAuth.currentUser;
   }
 
@@ -42,9 +42,9 @@ class UserRepository {
         .logIn(['public_profile', 'user_birthday', 'email']);
     switch (facebookAuth.status) {
       case FacebookLoginStatus.loggedIn:
-        final AuthCredential credential =
+        final AuthCredential credentials =
             FacebookAuthProvider.credential(facebookAuth.accessToken.token);
-        await firebaseAuth.signInWithCredential(credential);
+        _handleSignInCredentials(credentials);
         break;
       case FacebookLoginStatus.cancelledByUser:
         break;
@@ -61,7 +61,7 @@ class UserRepository {
     ]);
     final OAuthCredential credentials = OAuthProvider('apple.com').credential(
         accessToken: appleAuth.accessToken, idToken: appleAuth.idToken);
-    await firebaseAuth.signInWithCredential(credentials);
+    _handleSignInCredentials(credentials);
     return firebaseAuth.currentUser;
   }
 
@@ -101,6 +101,14 @@ class UserRepository {
 
   User getUser() {
     return firebaseAuth.currentUser;
+  }
+
+  void _handleSignInCredentials(AuthCredential credential) async {
+    try {
+      await firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (fbError) {
+      firebaseAuth.currentUser.linkWithCredential(fbError.credential);
+    }
   }
 
   factory UserRepository.users() {

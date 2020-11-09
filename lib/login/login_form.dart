@@ -19,9 +19,9 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginFormState>(
         listener: (context, state) {
-          if (state.isLoggedIn)
+          if (state.isLoggedIn) {
             ExtendedNavigator.of(context).push(Routes.homePageWidget);
-
+          }
         },
         child: buildForm(context));
   }

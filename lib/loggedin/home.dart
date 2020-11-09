@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/homepage_bloc.dart';
 import 'home_form.dart';
 
-class HomePageWidget extends StatefulWidget {
+class HomepageWidget extends StatefulWidget {
 
-  const HomePageWidget({Key key}) : super(key: key);
+  const HomepageWidget({Key key}) : super(key: key);
   @override
-  HomePageWidgetState createState() => HomePageWidgetState();
+  HomepageWidgetState createState() => HomepageWidgetState();
 }
 
-class HomePageWidgetState extends State<HomePageWidget>
+class HomepageWidgetState extends State<HomepageWidget>
     with SingleTickerProviderStateMixin {
 
   @override
@@ -22,9 +23,9 @@ class HomePageWidgetState extends State<HomePageWidget>
           context,
           BlocProvider(
               create: (context) {
-                //return LoginBloc(userRepository: UserRepository.users());
+                return HomepageBloc();
               },
-              child: HomePageForm()));
+              child: HomepageForm()));
     });
   }
 }

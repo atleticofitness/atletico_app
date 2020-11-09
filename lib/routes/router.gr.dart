@@ -30,7 +30,7 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.loginWidget, page: LoginWidget),
-    RouteDef(Routes.homePageWidget, page: HomePageWidget),
+    RouteDef(Routes.homePageWidget, page: HomepageWidget),
     RouteDef(Routes.registrationWidget,
         page: RegistrationWidget, guards: [AuthenticationGuard]),
   ];
@@ -43,9 +43,9 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    HomePageWidget: (data) {
+    HomepageWidget: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const HomePageWidget(),
+        builder: (context) => const HomepageWidget(),
         settings: data,
       );
     },
