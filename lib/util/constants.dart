@@ -7,7 +7,7 @@ final String baseURL = "https://atletico.fitness";
 final String localAtleticoURL = "$baseURL/api/v1";
 final String appleSignInClientID = "fitness.atletico.signin";
 
-enum FormStatus { undecided, valid, invalid, inprogress, complete }
+enum FormStatus { undecided, valid, invalid, inprogress, complete, emailInUse, weakPassword, operationNotAllowed }
 
 final Color primaryColor = Colors.white;
 final Color secondaryColor = Color.fromARGB(255, 254, 74, 86);

@@ -66,7 +66,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
 
   Stream<void> _handleSignInError(String code) async* {
     if (code == "email-already-in-use") {
-      yield state.copyWith(emailStatus: FormStatus.invalid);
+      yield state.copyWith(emailStatus: FormStatus.emailInUse);
       return;
     }
 
@@ -81,7 +81,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
     }
 
     if (code == "weak-password") {
-      yield state.copyWith(passwordStatus: FormStatus.invalid);
+      yield state.copyWith(passwordStatus: FormStatus.weakPassword);
       return;
     }
 
