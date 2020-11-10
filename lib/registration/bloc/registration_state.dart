@@ -36,7 +36,7 @@ class RegistrationFormState extends RegistrationState {
     this.userStatus = FormStatus.undecided,
   });
 
-  bool isValid() =>
+  bool get isValid =>
       firstNameStatus == FormStatus.valid ||
       lastNameStatus == FormStatus.valid ||
       emailStatus == FormStatus.valid ||

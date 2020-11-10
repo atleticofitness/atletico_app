@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:atletico_app/endpoints/registration.dart';
+import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -24,11 +25,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
   Stream<RegistrationFormState> mapEventToState(
       RegistrationEvent event) async* {
     try {
-      if (event is RegistrationFirstNameForm) {
+      if (event is RegistrationFirstNameForm)
         yield state.copyWith(
             firstName: event.firstName,
             firstNameStatus: await event.validate());
-      }
 
       if (event is RegistrationLastNameForm)
         yield state.copyWith(
@@ -50,19 +50,24 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
             birthDateStatus: await event.validate());
 
       if (event is RegistrationButtonPressed) {
-        if (state.emailStatus == FormStatus.complete &&
-            state.passwordStatus == FormStatus.complete) {
-          String loginStatusCode = await userRepository.signUpAndLogin(
-              email: state.email, password: state.password);
-          _handleSignInError(loginStatusCode);
+        yield state.copyWith(userStatus: FormStatus.inprogress);
 
-        }
+        sendRegistrationInfomation(User(
+            email: state.email,
+            password: state.password,
+            firstName: state.firstName,
+            lastName: state.lastName,
+            birthDate: state.birthDate));
+
+        String loginStatusCode = await userRepository.signUpAndLogin(
+            email: state.email, password: state.password);
+        _handleSignInError(loginStatusCode);
       }
     } catch (e) {
+      yield state.copyWith(userStatus: FormStatus.undecided);
       print(e);
     }
   }
-
 
   Stream<void> _handleSignInError(String code) async* {
     if (code == "email-already-in-use") {
@@ -76,7 +81,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
     }
 
     if (code == "operation-not-allowed") {
-      yield state.copyWith(emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
+      yield state.copyWith(
+          emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
       return;
     }
 
@@ -87,5 +93,4 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
 
     yield state.copyWith(userStatus: FormStatus.complete);
   }
-
 }

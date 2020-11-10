@@ -57,9 +57,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
         ],
       ),
       SizedBox(height: 15.0),
+      FirstNameInput(),
+      SizedBox(height: 15.0),
+      LastNameInput(),
+      SizedBox(height: 15.0),
       EmailInput(),
       SizedBox(height: 15.0),
       PasswordInput(),
+      SizedBox(height: 15.0),
+      DateOfBirthInput(),
       SizedBox(height: 15.0),
       SubmitButton(),
     ]);
@@ -184,7 +190,8 @@ class EmailInput extends StatelessWidget {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(Icons.email, color: Colors.grey),
-                suffixIcon: (state.emailStatus == FormStatus.invalid)
+                suffixIcon: (state.emailStatus == FormStatus.invalid ||
+                        state.emailStatus == FormStatus.emailInUse)
                     ? Icon(Icons.error, color: secondaryColor)
                     : (state.emailStatus == FormStatus.valid)
                         ? Icon(Icons.error, color: Colors.green)
@@ -315,12 +322,12 @@ class SubmitButton extends StatelessWidget {
         child: RaisedButton(
           elevation: 5.0,
           onPressed: () {
-            if (!state.isValid()) return null;
-            if (state.userStatus != FormStatus.complete &&
-                state.userStatus != FormStatus.inprogress)
-              return BlocProvider.of<RegistrationBloc>(context)
-                  .add(RegistrationButtonPressed());
-            return null;
+            if (!state.isValid) return null;
+            if (state.userStatus == FormStatus.inprogress) return null;
+            if (state.userStatus == FormStatus.complete) return null;
+            if (UserRepository.users().isSignedIn()) return null;
+            return BlocProvider.of<RegistrationBloc>(context)
+                .add(RegistrationButtonPressed());
           },
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(

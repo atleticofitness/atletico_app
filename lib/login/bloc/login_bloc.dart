@@ -64,7 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
     }
   }
 
-    Stream<void> _handleSignInError(String code) async* {
+  Stream<void> _handleSignInError(String code) async* {
     if (code == "email-already-in-use") {
       yield state.copyWith(emailStatus: FormStatus.emailInUse);
       return;
@@ -76,7 +76,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
     }
 
     if (code == "operation-not-allowed") {
-      yield state.copyWith(emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
+      yield state.copyWith(
+          emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
       return;
     }
 
