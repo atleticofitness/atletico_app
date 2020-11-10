@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 final String testIpAddress = "192.168.50.196:8080";
 final String baseURL = "https://atletico.fitness";
 final String localAtleticoURL = "$baseURL/api/v1";
-final String appleSignInClientID = "fitness.atletico.signin";
+final String appleSignInClientId = "fitness.atletico.signin";
 
 enum FormStatus {
   undecided,

@@ -4,6 +4,7 @@ import 'package:atletico_app/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:hive/hive.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class UserRepository {
@@ -22,7 +23,7 @@ class UserRepository {
         facebookSignIn = facebookSignIn ?? FacebookLogin(),
         appleSignIn = appleSignIn ??
             AppleSignIn(
-                clientID: appleSignInClientID,
+                clientId: appleSignInClientId,
                 redirectUri: '$localAtleticoURL/login/sign-in-with-apple');
 
   Future<User> signInWithGoogle() async {
@@ -34,6 +35,11 @@ class UserRepository {
       idToken: googleAuth.idToken,
     );
     _handleSignInCredentials(credentials);
+    Token token = Token(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+        providerId: credentials.providerId);
+    token.save();
     return firebaseAuth.currentUser;
   }
 
@@ -42,13 +48,19 @@ class UserRepository {
         .logIn(['public_profile', 'user_birthday', 'email']);
     switch (facebookAuth.status) {
       case FacebookLoginStatus.loggedIn:
+        String accessToken = facebookAuth.accessToken.token;
         final AuthCredential credentials =
-            FacebookAuthProvider.credential(facebookAuth.accessToken.token);
+            FacebookAuthProvider.credential(accessToken);
         _handleSignInCredentials(credentials);
+        Token token =
+            Token(accessToken: accessToken, providerId: credentials.providerId);
+        token.save();
         break;
       case FacebookLoginStatus.cancelledByUser:
+        return null;
         break;
       case FacebookLoginStatus.error:
+        return null;
         break;
     }
     return firebaseAuth.currentUser;
@@ -62,15 +74,25 @@ class UserRepository {
     final OAuthCredential credentials = OAuthProvider('apple.com').credential(
         accessToken: appleAuth.accessToken, idToken: appleAuth.idToken);
     _handleSignInCredentials(credentials);
+    appleAuth.save();
     return firebaseAuth.currentUser;
   }
 
   Future<String> signInWithCredentials(String email, String password) async {
     try {
-      await firebaseAuth.signInWithEmailAndPassword(
+      UserCredential userCredentials =
+          await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      var box = Hive.box('user_information');
+      bool rememberMe = box.get('remember_me', defaultValue: false);
+      if (rememberMe) {
+        Token token = Token(
+            accessToken: userCredentials.credential.token.toString(),
+            providerId: userCredentials.credential.providerId);
+        token.save();
+      }
     } on FirebaseAuthException catch (fbError) {
       return fbError.code;
     }

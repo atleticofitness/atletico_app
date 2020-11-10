@@ -19,10 +19,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
     createdDate: json['created_date'] as String,
     lastLoginDate: json['last_login_date'] as String,
     emailVerified: json['email_verified'] as bool,
-    appleSubscriberID: json['apple_subscriber_i_d'] as String,
+    appleSubscriberId: json['apple_subscriber_id'] as String,
     isPrivateEmail: json['is_private_email'] as bool,
     realAppleUserStatus: json['real_apple_user_status'] as int,
-    googleSubscriberID: json['google_subscriber_i_d'] as String,
+    googleSubscriberId: json['google_subscriber_id'] as String,
   );
 }
 
@@ -38,8 +38,8 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'created_date': instance.createdDate,
       'last_login_date': instance.lastLoginDate,
       'email_verified': instance.emailVerified,
-      'apple_subscriber_i_d': instance.appleSubscriberID,
+      'apple_subscriber_id': instance.appleSubscriberId,
       'is_private_email': instance.isPrivateEmail,
       'real_apple_user_status': instance.realAppleUserStatus,
-      'google_subscriber_i_d': instance.googleSubscriberID,
+      'google_subscriber_id': instance.googleSubscriberId,
     };

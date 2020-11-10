@@ -15,10 +15,10 @@ class User extends Equatable {
   final String createdDate;
   final String lastLoginDate;
   final bool emailVerified;
-  final String appleSubscriberID;
+  final String appleSubscriberId;
   final bool isPrivateEmail;
   final int realAppleUserStatus;
-  final String googleSubscriberID;
+  final String googleSubscriberId;
 
   User(
       {this.id,
@@ -32,10 +32,10 @@ class User extends Equatable {
       this.createdDate,
       this.lastLoginDate,
       this.emailVerified,
-      this.appleSubscriberID,
+      this.appleSubscriberId,
       this.isPrivateEmail,
       this.realAppleUserStatus,
-      this.googleSubscriberID});
+      this.googleSubscriberId});
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
@@ -52,9 +52,9 @@ class User extends Equatable {
         createdDate,
         lastLoginDate,
         emailVerified,
-        appleSubscriberID,
+        appleSubscriberId,
         isPrivateEmail,
         realAppleUserStatus,
-        googleSubscriberID
+        googleSubscriberId
       ];
 }

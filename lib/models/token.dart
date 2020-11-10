@@ -14,21 +14,36 @@ class Token extends HiveObject with EquatableMixin {
   final String idToken;
   @HiveField(3)
   final String expiresIn;
-  Token({this.accessToken, this.tokenType, this.idToken, this.expiresIn});
+  @HiveField(4)
+  final String providerId;
+
+  Token(
+      {this.accessToken,
+      this.tokenType,
+      this.idToken,
+      this.expiresIn,
+      this.providerId});
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
   Map<String, dynamic> toJson() => _$TokenToJson(this);
   Map<String, dynamic> makeHeader() =>
       {"Authorization": "$tokenType $accessToken"};
 
-  factory Token.loadToken() {
+  factory Token.load() {
     var box = Hive.box('user_information');
-    if (!box.containsKey('token_data')) return Token();
+    if (!box.containsKey('token_data')) return null;
     Map<String, dynamic> json = box.get('token_data');
     return Token(
         accessToken: json['access_token'],
         tokenType: json['token_type'],
         idToken: json['id_token'],
-        expiresIn: json['expires_in']);
+        expiresIn: json['expires_in'],
+        providerId: json['provider_id']);
+  }
+
+  factory Token.delete() {
+    var box = Hive.box('user_information');
+    if (box.containsKey('token_data')) box.delete('token_data');
+    return null;
   }
 
   @override
