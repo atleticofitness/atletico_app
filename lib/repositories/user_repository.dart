@@ -114,6 +114,7 @@ class UserRepository {
     } on FirebaseAuthException catch (fbError) {
       if (fbError.code == "account-exists-with-different-credential")
         firebaseAuth.currentUser.linkWithCredential(fbError.credential);
+      print(fbError.code);
     }
   }
 

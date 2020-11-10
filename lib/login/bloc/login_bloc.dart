@@ -54,13 +54,36 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
 
       if (event is LoginButtonPressed) {
         if (state.isValid) {
-          await userRepository.signInWithCredentials(
+          String loginStatusCode = await userRepository.signInWithCredentials(
               event.email, event.password);
-          yield state;
+          _handleSignInError(loginStatusCode);
         }
       }
     } catch (e) {
       print(e);
     }
+  }
+
+    Stream<void> _handleSignInError(String code) async* {
+    if (code == "email-already-in-use") {
+      yield state.copyWith(emailStatus: FormStatus.invalid);
+      return;
+    }
+
+    if (code == "invalid-email") {
+      yield state.copyWith(emailStatus: FormStatus.invalid);
+      return;
+    }
+
+    if (code == "operation-not-allowed") {
+      yield state.copyWith(emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
+      return;
+    }
+
+    if (code == "weak-password") {
+      yield state.copyWith(passwordStatus: FormStatus.invalid);
+      return;
+    }
+    yield state;
   }
 }
