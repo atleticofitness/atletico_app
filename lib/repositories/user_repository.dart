@@ -65,19 +65,19 @@ class UserRepository {
     return firebaseAuth.currentUser;
   }
 
-  Future<User> signInWithCredentials(String email, String password) async {
+  Future<String> signInWithCredentials(String email, String password) async {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (fbError) {
-      print(fbError.code);
+      return fbError.code;
     }
-    return firebaseAuth.currentUser;
+    return null;
   }
 
-  Future<User> signUpAndLogin({String email, String password}) async {
+  Future<String> signUpAndLogin({String email, String password}) async {
     try {
       UserCredential userCredentials =
           await firebaseAuth.createUserWithEmailAndPassword(
@@ -86,9 +86,9 @@ class UserRepository {
       );
       _handleSignInCredentials(userCredentials.credential);
     } on FirebaseAuthException catch (fbError) {
-      print(fbError.code);
+      return fbError.code;
     }
-    return firebaseAuth.currentUser;
+    return null;
   }
 
   Future<void> signOut() async {
