@@ -8,7 +8,6 @@ abstract class HomepageEvent extends Equatable {
 }
 
 class HomepageUserEvent extends HomepageEvent {
-  const HomepageUserEvent();
 
   Future<Token> loadToken() async {
     var box = await Hive.openBox('token');
@@ -22,4 +21,11 @@ class HomepageUserEvent extends HomepageEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class HomepagePetEvent extends HomepageEvent {
+
+  @override
+  List<Object> get props => [];
+
 }

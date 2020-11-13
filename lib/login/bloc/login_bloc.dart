@@ -54,9 +54,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
 
       if (event is LoginButtonPressed) {
         if (state.isValid) {
-          String loginStatusCode = await userRepository.signInWithCredentials(
+          await userRepository.signInWithCredentials(
               event.email, event.password);
-          _handleSignInError(loginStatusCode);
+          yield state;
         }
       }
     } catch (e) {
@@ -64,28 +64,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginFormState> {
     }
   }
 
-  Stream<void> _handleSignInError(String code) async* {
-    if (code == "email-already-in-use") {
-      yield state.copyWith(emailStatus: FormStatus.emailInUse);
-      return;
-    }
-
-    if (code == "invalid-email") {
-      yield state.copyWith(emailStatus: FormStatus.invalid);
-      return;
-    }
-
-    if (code == "operation-not-allowed") {
-      yield state.copyWith(
-          emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
-      return;
-    }
-
-    if (code == "weak-password") {
-      yield state.copyWith(passwordStatus: FormStatus.weakPassword);
-      return;
-    }
-
-    yield state;
-  }
 }

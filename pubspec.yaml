@@ -21,13 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  firebase_core: ^0.5.1
-    # Add the dependency for the FlutterFire plugin for Google Analytics
-  #firebase_analytics: ^5.0.2
-  #cloud_firestore: ^0.12.9+5
   rxdart: ^0.24.1
   flutter_password_strength: ^0.1.4
-  firebase_auth: ^0.18.2
   sign_in_with_apple: ^2.5.1
   google_sign_in: ^4.5.5
   flutter_facebook_login: ^3.0.0

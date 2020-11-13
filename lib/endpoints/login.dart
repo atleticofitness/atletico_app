@@ -3,7 +3,6 @@ import 'package:atletico_app/models/token.dart';
 import 'package:dio/dio.dart' show DioError, FormData;
 import 'package:atletico_app/endpoints/client.dart' show dio;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:atletico_app/util/constants.dart';
 
 Future<Token> getToken({String email, String password}) async {
@@ -11,6 +10,20 @@ Future<Token> getToken({String email, String password}) async {
     var response = await dio.post("/login/token",
         data: FormData.fromMap(
             {"username": email, "password": password, "scope": "me"}));
+    return Token.fromJson(response.data);
+  } on DioError catch (error) {
+    if (error.response.statusCode == 401)
+      throw CouldNotObtainTokenError(
+          "Could not obtain token from server, either account does not exist or the credentials are wrong.");
+    throw Exception(error.toString());
+  }
+}
+
+Future<Token> verifyGoogleToken({String idToken}) async {
+  try {
+    var response = await dio.post("/login/sign-in-with-google-verify",
+        data: FormData.fromMap(
+            {"id_token": idToken}));
     return Token.fromJson(response.data);
   } on DioError catch (error) {
     if (error.response.statusCode == 401)
@@ -50,16 +63,6 @@ Future<Token> getAppleCredentials(
     final response = await dio.postUri(signInWithAppleEndpoint);
     return Token.fromJson(response.data);
   } on DioError catch (error) {
-    throw error;
-  }
-}
-
-Future<GoogleSignInAccount> getGoogleCredentials(
-    GoogleSignIn googleSignIn) async {
-  try {
-    var account = await googleSignIn.signIn();
-    return account;
-  } catch (error) {
     throw error;
   }
 }

@@ -1,3 +1,6 @@
+import 'package:atletico_app/endpoints/users.dart';
+import 'package:atletico_app/models/token.dart';
+import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +9,21 @@ final String testIpAddress = "192.168.50.196:8080";
 final String baseURL = "https://atletico.fitness";
 final String localAtleticoURL = "$baseURL/api/v1";
 final String appleSignInClientId = "fitness.atletico.signin";
+
+Token localToken;
+User localUser;
+
+bool isSignedIn() {
+  return localToken != null;
+}
+
+Future<User> getUser() async {
+  if (!isSignedIn()) return null;
+  if (localUser != null)
+    return localUser;
+  localUser =  await getCurrentUser(localToken);
+  return localUser;
+}
 
 enum FormStatus {
   undecided,

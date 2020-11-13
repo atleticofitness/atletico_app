@@ -3,6 +3,7 @@ import 'package:atletico_app/authentication/authentication_guard.dart';
 import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart' as route;
 import 'package:atletico_app/util/bloc_observer.dart';
+import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:firebase_core/firebase_core.dart';
+
+import 'models/token.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Firebase.initializeApp();
   Bloc.observer = SimpleBlocObserver();
-  final UserRepository userRepository = UserRepository.users();
+  var box = await Hive.openBox('token');
+  localToken = Token.fromJson(box.getAt(0));
+  final UserRepository userRepository = UserRepository();
   runApp(BlocProvider<AuthenticationBloc>(
       create: (context) {
         return AuthenticationBloc(userRepository: userRepository)

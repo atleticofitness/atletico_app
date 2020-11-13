@@ -7,8 +7,6 @@ abstract class HomepageState extends Equatable {
   List<Object> get props => [];
 }
 
-class HomepageInitial extends HomepageState {}
-
 class HomepageFormState extends HomepageState {
   final bool isInitial;
   final Token token;

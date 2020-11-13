@@ -1,5 +1,4 @@
 import 'package:atletico_app/login/bloc/login_bloc.dart';
-import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
@@ -18,8 +17,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginFormState>(
         listener: (context, state) {
-          UserRepository userRepository = UserRepository.users();
-          if (userRepository.isSignedIn())
+          if (isSignedIn())
             ExtendedNavigator.of(context).push(Routes.homePageWidget);
         },
         child: buildForm(context));

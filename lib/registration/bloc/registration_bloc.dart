@@ -51,46 +51,19 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationFormState> {
 
       if (event is RegistrationButtonPressed) {
         yield state.copyWith(userStatus: FormStatus.inprogress);
-
-        sendRegistrationInfomation(User(
+        User user = User(
             email: state.email,
             password: state.password,
             firstName: state.firstName,
             lastName: state.lastName,
-            birthDate: state.birthDate));
-
-        String loginStatusCode = await userRepository.signUpAndLogin(
-            email: state.email, password: state.password);
-        _handleSignInError(loginStatusCode);
+            birthDate: state.birthDate);
+        sendRegistrationInfomation(user);
+        await userRepository.signInWithCredentials(user.email, user.password);
+        yield state.copyWith(userStatus: FormStatus.complete);
       }
     } catch (e) {
       yield state.copyWith(userStatus: FormStatus.undecided);
       print(e);
     }
-  }
-
-  Stream<void> _handleSignInError(String code) async* {
-    if (code == "email-already-in-use") {
-      yield state.copyWith(emailStatus: FormStatus.emailInUse);
-      return;
-    }
-
-    if (code == "invalid-email") {
-      yield state.copyWith(emailStatus: FormStatus.invalid);
-      return;
-    }
-
-    if (code == "operation-not-allowed") {
-      yield state.copyWith(
-          emailStatus: FormStatus.invalid, passwordStatus: FormStatus.invalid);
-      return;
-    }
-
-    if (code == "weak-password") {
-      yield state.copyWith(passwordStatus: FormStatus.weakPassword);
-      return;
-    }
-
-    yield state.copyWith(userStatus: FormStatus.complete);
   }
 }

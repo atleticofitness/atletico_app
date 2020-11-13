@@ -1,7 +1,8 @@
+import 'package:atletico_app/models/users.dart';
 import 'package:atletico_app/repositories/user_repository.dart';
+import 'package:atletico_app/util/constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 part 'authentication_event.dart';
@@ -30,10 +31,8 @@ class AuthenticationBloc
 
   Stream<AuthenticationState> mapAppStartedToState() async* {
     try {
-      final isSignedIn = userRepository.isSignedIn();
-      if (isSignedIn) {
-        final user = userRepository.getUser();
-        yield AuthenticationSuccess(user: user);
+      if (isSignedIn()) {
+        mapLoggedInToState();
       } else {
         yield AuthenticationInitial();
       }
@@ -43,7 +42,7 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> mapLoggedInToState() async* {
-    yield AuthenticationSuccess(user: userRepository.getUser());
+    yield AuthenticationSuccess(user: await getUser());
   }
 
   Stream<AuthenticationState> mapLoggedOutToState() async* {

@@ -1,5 +1,4 @@
 import 'package:atletico_app/registration/bloc/registration_bloc.dart';
-import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/routes/router.gr.dart';
 import 'package:atletico_app/util/constants.dart';
 import 'package:auto_route/auto_route.dart';
@@ -20,7 +19,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationFormState>(
         listener: (context, state) {
-          if (UserRepository.users().isSignedIn())
+          if (isSignedIn())
             ExtendedNavigator.of(context).push(Routes.homePageWidget);
         },
         child: buildForm(context));
@@ -321,11 +320,11 @@ class SubmitButton extends StatelessWidget {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () {
+          onPressed: () async {
             if (!state.isValid) return null;
             if (state.userStatus == FormStatus.inprogress) return null;
             if (state.userStatus == FormStatus.complete) return null;
-            if (UserRepository.users().isSignedIn()) return null;
+            if (isSignedIn()) return null;
             return BlocProvider.of<RegistrationBloc>(context)
                 .add(RegistrationButtonPressed());
           },
