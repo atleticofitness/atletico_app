@@ -21,4 +21,8 @@ class HomepageFormState extends HomepageState {
           isInitial: isInitial ?? this.isInitial,
           token: token ?? this.token,
           user: user ?? this.user);
+
+  @override
+  List<Object> get props => [isInitial, token, user];
+
 }

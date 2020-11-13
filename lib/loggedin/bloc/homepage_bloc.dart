@@ -23,12 +23,17 @@ class HomepageBloc extends Bloc<HomepageEvent, HomepageFormState> {
   Stream<HomepageFormState> mapEventToState(
     HomepageEvent event,
   ) async* {
-    if (event is HomepageUserEvent) {
-      if (userRepository.isSignedIn()) {
-        Token token = await event.loadToken();
-        User user = await event.getUser(token);
-        yield state.copyWith(isInitial: false, token: token, user: user);
-      }
+    if (userRepository.isSignedIn()) {
+      _signedInEvents(event);
     }
   }
+
+  Stream<void> _signedInEvents(HomepageEvent event) async* {
+    if (event is HomepageUserEvent) {
+      Token token = await event.loadToken();
+      User user = await event.getUser(token);
+      yield state.copyWith(isInitial: false, token: token, user: user);
+    }
+  }
+
 }
