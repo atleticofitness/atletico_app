@@ -1,7 +1,6 @@
 import 'package:atletico_app/loggedin/bloc/homepage_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 
 class HomepageForm extends StatefulWidget {
   HomepageForm({Key key}) : super(key: key);
@@ -13,8 +12,12 @@ class HomepageForm extends StatefulWidget {
 class _HomepageFormState extends State<HomepageForm> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomepageBloc, HomepageState>(
-        listener: (context, state) {}, child: buildForm(context));
+    return BlocListener<HomepageBloc, HomepageFormState>(
+        listener: (context, state) {
+          if (state.isInitial)
+            context.bloc<HomepageBloc>().add(HomepageUserEvent());
+        },
+        child: buildForm(context));
   }
 
   Widget buildForm(BuildContext context) {
@@ -28,7 +31,6 @@ class _HomepageFormState extends State<HomepageForm> {
 class FixedHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Container();
   }
 }

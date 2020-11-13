@@ -1,6 +1,7 @@
 import 'package:atletico_app/endpoints/login.dart';
 import 'package:atletico_app/models/token.dart';
 import 'package:atletico_app/routes/router.gr.dart';
+import 'package:hive/hive.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AppleSignIn {
@@ -23,10 +24,6 @@ class AppleSignIn {
     return appleToken;
   }
 
-  Future<void> logOut() async {
-    Token.delete();
-  }
-
   Future<String> authenticateUserToWidget(String userIdentifier) async {
     CredentialState state =
         await SignInWithApple.getCredentialState(userIdentifier);
@@ -36,7 +33,8 @@ class AppleSignIn {
         widgetPage = Routes.homePageWidget;
         break;
       case CredentialState.revoked:
-        logOut();
+        var box = await Hive.openBox('token');
+        box.clear();
         widgetPage = Routes.loginWidget;
         break;
       case CredentialState.notFound:

@@ -37,9 +37,9 @@ class UserRepository {
     _handleSignInCredentials(credentials);
     Token token = Token(
         accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+        idToken: await firebaseAuth.currentUser.getIdToken(true),
         providerId: credentials.providerId);
-    token.save();
+    _storeToken(token);
     return firebaseAuth.currentUser;
   }
 
@@ -52,9 +52,11 @@ class UserRepository {
         final AuthCredential credentials =
             FacebookAuthProvider.credential(accessToken);
         _handleSignInCredentials(credentials);
-        Token token =
-            Token(accessToken: accessToken, providerId: credentials.providerId);
-        token.save();
+        Token token = Token(
+            accessToken: accessToken,
+            idToken: await firebaseAuth.currentUser.getIdToken(true),
+            providerId: credentials.providerId);
+        _storeToken(token);
         break;
       case FacebookLoginStatus.cancelledByUser:
         return null;
@@ -74,7 +76,7 @@ class UserRepository {
     final OAuthCredential credentials = OAuthProvider('apple.com').credential(
         accessToken: appleAuth.accessToken, idToken: appleAuth.idToken);
     _handleSignInCredentials(credentials);
-    appleAuth.save();
+    _storeToken(appleAuth);
     return firebaseAuth.currentUser;
   }
 
@@ -89,9 +91,9 @@ class UserRepository {
       bool rememberMe = box.get('remember_me', defaultValue: false);
       if (rememberMe) {
         Token token = Token(
-            accessToken: userCredentials.credential.token.toString(),
+            idToken: userCredentials.credential.token.toString(),
             providerId: userCredentials.credential.providerId);
-        token.save();
+        _storeToken(token);
       }
     } on FirebaseAuthException catch (fbError) {
       return fbError.code;
@@ -107,18 +109,29 @@ class UserRepository {
         password: password,
       );
       _handleSignInCredentials(userCredentials.credential);
+      Token token = Token(
+          accessToken: userCredentials.credential.token.toString(),
+          idToken: await firebaseAuth.currentUser.getIdToken(true),
+          providerId: userCredentials.credential.providerId);
+      _storeToken(token);
     } on FirebaseAuthException catch (fbError) {
       return fbError.code;
     }
     return null;
   }
 
+  void _storeToken(Token token) async {
+    var box = await Hive.openBox('token');
+    box.add(token);
+  }
+
   Future<void> signOut() async {
+    var box = await Hive.openBox('token');
+    box.clear();
     return Future.wait([
       firebaseAuth.signOut(),
       googleSignIn.signOut(),
-      facebookSignIn.logOut(),
-      appleSignIn.logOut()
+      facebookSignIn.logOut()
     ]);
   }
 
@@ -136,7 +149,6 @@ class UserRepository {
     } on FirebaseAuthException catch (fbError) {
       if (fbError.code == "account-exists-with-different-credential")
         firebaseAuth.currentUser.linkWithCredential(fbError.credential);
-      print(fbError.code);
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:atletico_app/repositories/user_repository.dart';
 import 'package:atletico_app/util/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:atletico_app/util/constants.dart';
@@ -21,7 +22,7 @@ class HomepageWidgetState extends State<HomepageWidget>
           context,
           BlocProvider(
               create: (context) {
-                return HomepageBloc();
+                return HomepageBloc(userRepository: UserRepository.users());
               },
               child: HomepageForm()));
     });

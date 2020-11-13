@@ -14,7 +14,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox("user_information");
   await Firebase.initializeApp();
   Bloc.observer = SimpleBlocObserver();
   final UserRepository userRepository = UserRepository.users();
